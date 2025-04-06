@@ -26,7 +26,7 @@ This includes:
 - Python linting using Ruff
 - Python strict type checking using pylance + mypy
 
-## venv
+### venv
 
 It is highly recommended to set up a virtual env to isolate the project setup
 with your global system Python / packages.
@@ -40,7 +40,23 @@ pip install -r requirements.txt
 After initial setup, VSCode should automatically pick up the environment and
 iniitalize future terminal sessions in the venv.
 
-## unittest
+## Testing
+
+### doctest
+
+To run doctests for a file, we can use the following (`-v` for verbose):
+
+```bash
+python3 -m doctest algorithms/scan.py
+```
+
+or for all python files in the package:
+
+```bash
+python3 -m doctest $(find algorithms/ -name "*.py")
+```
+
+### unittest
 
 To run all unittests across the projects, we can use `unittest` discovery:
 
