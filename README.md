@@ -1,11 +1,11 @@
-# python-template
+# py-alg
 
-Python repo template with full initial set up, settings, and extensions.
+Python algorithms repository with common algorithms (for learning).
 
 ## Usage
 
-To actually import and use this (basic / boilerplate) package, you can start in
-the root directory. Open a python3 interpreter, and try the following:
+To actually import and use this package, you can start in the root directory.
+Open a python3 interpreter, and try the following:
 
 ```python
 >>> from package import sample
