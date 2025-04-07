@@ -42,27 +42,10 @@ iniitalize future terminal sessions in the venv.
 
 ## Testing
 
-### doctest
+### pytest
 
-To run doctests for a file, we can use the following (`-v` for verbose):
-
-```bash
-python3 -m doctest algorithms/scan.py
-```
-
-or for all python files in the package:
+To run pytest for all files, including doctests on modules:
 
 ```bash
-python3 -m doctest $(find algorithms/ -name "*.py")
+pytest --doctest-modules
 ```
-
-### unittest
-
-To run all unittests across the projects, we can use `unittest` discovery:
-
-```bash
-python3 -m unittest discover -p "*_test.py" -v
-```
-
-Note: `-p "*_test.py"` is needed because the default format is `test*.py`. We
-use `-v` (verbose), for now, but as the project grows it can be removed.
