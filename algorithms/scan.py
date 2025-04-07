@@ -13,6 +13,9 @@ def scan[T](
     Optionally takes an accumulator function (in the format of reduce(acc, val)). Can
     take an initial value, which will be yielded first.
 
+    Similar / related algorithms: itertools.accumulate, inclusive/exclusive scan, prefix
+    sum, cumulative sum, partial sums.
+
     Args:
         iterable (Iterable[T]): Input values to accumulate. Can be empty.
         function (Callable[[T, T], T], optional): Function to call on each value.

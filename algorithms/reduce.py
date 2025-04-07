@@ -10,6 +10,9 @@ def reduce[T](
 ) -> Optional[T]:
     """Perform a reduction algorithm on the given iterable.
 
+    Similar / related algorithms: functools.reduce, fold (fold_left, fold_right),
+    accumulate, aggregate, compress.
+
     Args:
         iterable (Iterable[T]): Input values to accumulate. Can be empty.
         function (Callable[[T, T], T], optional): Function to call on each value.
