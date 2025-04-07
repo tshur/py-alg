@@ -2,12 +2,12 @@ import operator
 from typing import Callable, Iterable, Iterator, Optional
 
 
-def scan[T, U](
+def scan[T](
     iterable: Iterable[T],
-    function: Callable[[T | U, T], T | U] = operator.add,
+    function: Callable[[T, T], T] = operator.add,
     *,
-    initial: Optional[T | U] = None,
-) -> Iterator[T | U]:
+    initial: Optional[T] = None,
+) -> Iterator[T]:
     """Generate accumulated values from an iterable (left scan algorithm).
 
     Optionally takes an accumulator function (in the format of reduce(acc, val)). Can
