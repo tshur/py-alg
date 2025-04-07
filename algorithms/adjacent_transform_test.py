@@ -21,7 +21,8 @@ class PairwiseTransformTest(unittest.TestCase):
         self.assertEqual(list(pairwise_transform([10, 10], operator.sub)), [0])
 
     def test_moving_average(self):
-        def average(a: int, b: int) -> int:
-            return (a + b) // 2
+        def average(a: int, b: int) -> float:
+            return (a + b) / 2
 
         self.assertEqual(list(pairwise_transform([1, 3, -1, 1], average)), [2, 1, 0])
+        self.assertEqual(list(pairwise_transform([1, 2, 5], average)), [1.5, 3.5])

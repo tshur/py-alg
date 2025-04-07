@@ -27,8 +27,8 @@ class ScanTest(unittest.TestCase):
         self.assertEqual(list(scan.scan([], initial=100)), [100])
 
     def test_empty_input_iterator(self):
-        self.assertEqual(list(scan.scan([])), [])
-        self.assertEqual(list(scan.scan([], operator.mul)), [])
+        self.assertEqual(list(*scan.scan([])), [])
+        self.assertEqual(list(*scan.scan([], operator.mul)), [])
 
     def test_count_ones(self):
         def count_if_even(total: int, item: int) -> int:

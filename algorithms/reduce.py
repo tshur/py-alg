@@ -2,12 +2,12 @@ import operator
 from typing import Callable, Iterable, Optional
 
 
-def reduce[T](
+def reduce[T, U](
     iterable: Iterable[T],
-    function: Callable[[T, T], T] = operator.add,
+    function: Callable[[T | U, T], T | U] = operator.add,
     *,
-    initial: Optional[T] = None,
-) -> Optional[T]:
+    initial: Optional[T | U] = None,
+) -> Optional[T | U]:
     """Perform a reduction algorithm on the given iterable.
 
     Similar / related algorithms: functools.reduce, fold (fold_left, fold_right),
@@ -18,7 +18,7 @@ def reduce[T](
         function (Callable[[T, T], T], optional): Function to call on each value.
           The first argument will be the accumulator, and the second argument will be
           the new value from the iterable. Defaults to operator.add.
-       initial (Optional[T], optional): An initial value for the accumulator. If
+        initial (Optional[T], optional): An initial value for the accumulator. If
           given, the output will start with this value and be one longer than the input
           iterable. Defaults to None.
 
