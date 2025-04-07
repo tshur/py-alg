@@ -44,8 +44,16 @@ iniitalize future terminal sessions in the venv.
 
 ### pytest
 
-To run pytest for all files, including doctests on modules:
+To run pytest for all files, including doctests on modules, and collect test
+coverage reports:
 
 ```bash
-pytest --doctest-modules
+pytest --doctest-modules --cov=algorithms
+```
+
+To test code in "watch" mode, try the following command (re-runs only affected
+tests):
+
+```bash
+ptw . --clear --doctest-modules --testmon
 ```
