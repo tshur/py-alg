@@ -36,8 +36,8 @@ dependencies, and the set of test dependencies to enable testing commands.
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install .
-pip install .[test]
+pip install -e .
+pip install -e .[test]
 ```
 
 After initial setup, VSCode should automatically pick up the environment and
@@ -59,4 +59,12 @@ tests):
 
 ```bash
 ptw . --clear --doctest-modules --testmon
+```
+
+## Packaging
+
+To build the project for packaging / distribution, you can run the following:
+
+```bash
+python3 -m build
 ```

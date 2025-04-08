@@ -17,7 +17,6 @@
     ".mypy_cache": true,
     ".pytest_cache": true,
     ".coverage": true,
-    ".testmondata": true,
-    "*.egg-info": true
+    ".testmondata": true
   }
 }
