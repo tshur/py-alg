@@ -1,6 +1,6 @@
 import operator
 
-from algorithms.adjacent_transform import adjacent_transform, pairwise_transform
+from algorithms.iterable import adjacent_transform, pairwise_transform
 
 
 class TestAdjacentTransform:
