@@ -1,8 +1,7 @@
-from abc import ABCMeta, abstractmethod
-from typing import Any
+from typing import Any, Protocol
 
-class Comparable(metaclass=ABCMeta):
+
+class Comparable(Protocol):
     """An abstract class supporting < comparison for typing usage."""
 
-    @abstractmethod
-    def __lt__(self, other: Any) -> bool: ...
+    def __lt__(self, other: Any, /) -> bool: ...

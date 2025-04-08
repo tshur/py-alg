@@ -1,13 +1,8 @@
-from typing import Generic, Iterable, NamedTuple, TypeVar
+from typing import Iterable, TypeVar
 
 from algorithms.sort.comparable import Comparable
 
 CT = TypeVar("CT", bound=Comparable)
-
-
-class Element(NamedTuple, Generic[CT]):
-    i: int
-    value: CT
 
 
 def selection_sort(iterable: Iterable[CT]) -> list[CT]:
@@ -46,11 +41,11 @@ def selection_sort(iterable: Iterable[CT]) -> list[CT]:
     """
 
     def get_index_of_minimum(array: list[CT], start: int) -> int:
-        minimum = Element(start, value=array[start])
+        min_index = start
         for i in range(start + 1, len(array)):
-            if array[i] < minimum.value:
-                minimum = Element(i, value=array[i])
-        return minimum.i
+            if array[i] < array[min_index]:
+                min_index = i
+        return min_index
 
     array = list(iterable)
     for i in range(len(array) - 1):

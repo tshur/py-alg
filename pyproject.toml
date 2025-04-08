@@ -15,6 +15,7 @@ dependencies = []
 test = [
     "build",
     "ruff",
+    "mypy",
     "pytest",
     "pytest-cov",
     "pytest-testmon",
