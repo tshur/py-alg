@@ -8,9 +8,9 @@ To actually import and use this package, you can start in the root directory.
 Open a python3 interpreter, and try the following:
 
 ```python
->>> from package import sample
->>> sample.square(-3)
-9
+>>> from algorithms.reduce import reduce
+>>> reduce([1, 2, 3, 4, 5])
+15
 ```
 
 ## Setup
@@ -25,16 +25,19 @@ This includes:
 - Python Black Formatter
 - Python linting using Ruff
 - Python strict type checking using pylance + mypy
+- Testing using pytest + plugins
 
 ### venv
 
 It is highly recommended to set up a virtual env to isolate the project setup
-with your global system Python / packages.
+from your global system Python / packages. We install the core project
+dependencies, and the set of test dependencies to enable testing commands.
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install .
+pip install .[test]
 ```
 
 After initial setup, VSCode should automatically pick up the environment and

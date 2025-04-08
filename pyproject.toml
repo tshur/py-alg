@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "algorithms"
+version = "0.0.1"
+description = "Common algorithms written in Python for learning"
+readme = "README.md"
+authors = [{ name = "Tim Shur" }]
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov", "pytest-testmon", "pytest-watcher"]
