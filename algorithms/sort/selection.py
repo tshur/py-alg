@@ -1,10 +1,14 @@
-from typing import Iterable, TypeVar
-from collections import namedtuple
+from typing import Generic, Iterable, NamedTuple, TypeVar
+
 from algorithms.sort.comparable import Comparable
 
 CT = TypeVar("CT", bound=Comparable)
 
-Element = namedtuple("Element", ["index", "value"])
+
+class Element(NamedTuple, Generic[CT]):
+    i: int
+    value: CT
+
 
 def selection_sort(iterable: Iterable[CT]) -> list[CT]:
     """Returns a sorted copy of the input iterable using selection sort method.
@@ -28,7 +32,7 @@ def selection_sort(iterable: Iterable[CT]) -> list[CT]:
     Args:
         iterable (Iterable[CT]): The input iterable to sort. By the CT template, this
           iterable must consist of elements that support basic __lt__ comparison.
-    
+
     Returns:
         list[CT]: Sorted list. Sorts in ascending order.
 
@@ -40,12 +44,13 @@ def selection_sort(iterable: Iterable[CT]) -> list[CT]:
         >>> selection_sort([])
         []
     """
+
     def get_index_of_minimum(array: list[CT], start: int) -> int:
-        minimum = Element(index=start, value=array[start])
+        minimum = Element(start, value=array[start])
         for i in range(start + 1, len(array)):
             if array[i] < minimum.value:
-                minimum = Element(index=i, value=array[i])
-        return minimum.index
+                minimum = Element(i, value=array[i])
+        return minimum.i
 
     array = list(iterable)
     for i in range(len(array) - 1):

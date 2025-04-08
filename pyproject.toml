@@ -12,7 +12,14 @@ license = "MIT"
 dependencies = []
 
 [project.optional-dependencies]
-test = ["build", "pytest", "pytest-cov", "pytest-testmon", "pytest-watcher"]
+test = [
+    "build",
+    "ruff",
+    "pytest",
+    "pytest-cov",
+    "pytest-testmon",
+    "pytest-watcher",
+]
 
 [tool.setuptools.packages.find]
 exclude = ["*_test.py"]
