@@ -16,6 +16,10 @@ def scan[T](
     Similar / related algorithms: itertools.accumulate, inclusive/exclusive scan, prefix
     sum, cumulative sum, partial sums.
 
+    Complexity:
+        Time: O(n)
+        Space: O(1)
+
     Args:
         iterable (Iterable[T]): Input values to accumulate. Can be empty.
         function (Callable[[T | U, T], T | U], optional): Function to call on each value.

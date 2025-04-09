@@ -13,6 +13,10 @@ def reduce[T](
     Similar / related algorithms: functools.reduce, fold (fold_left, fold_right),
     accumulate, aggregate, compress.
 
+    Complexity:
+        Time: O(n)
+        Space: O(1)
+
     Args:
         iterable (Iterable[T]): Input values to accumulate. Can be empty.
         function (Callable[[T, T], T], optional): Function to call on each value.

@@ -13,6 +13,10 @@ def adjacent_transform[T, U](
     Similar / equivalent algorithms: itertools.pairwise, pairwise_transform, sliding
     window.
 
+    Complexity:
+        Time: O(n * k), where k is the window size, due to zipping k iterators
+        Space: O(k), due to tee'ing the input iterator k times
+
     Args:
         iterable (Iterable[T]): Input values, which will be traversed in windows of size
           window_size.

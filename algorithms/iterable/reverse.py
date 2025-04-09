@@ -9,6 +9,10 @@ def reverse[T](
     If no start and/or end are given, the default behavior is to reverse the entire
     input array. This function mutates the input argument, and returns it as well.
 
+    Complexity:
+        Time: O(n), n/2 total swaps, where n = end - start
+        Space: O(1), in-place algorithm
+
     Args:
         array (MutableSequence[T]): Input sequence to reverse. The input array will be
           modified (reversed in-place).

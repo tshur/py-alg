@@ -11,7 +11,7 @@ def selection_sort[CT: Comparable](iterable: Iterable[CT]) -> list[CT]:
     partition to the right by "selecting" the next smallest element to be moved
     (swapped) to the left of the partition.
 
-    Sample using | to denote the partition location.
+    Sample: (using | to denote the partition location)
     [|5, 1, 3, 2, 4]
     [1, |5, 3, 2, 4]
     [1, 2, |3, 5, 4]
