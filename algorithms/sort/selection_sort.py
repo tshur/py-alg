@@ -1,11 +1,9 @@
-from typing import Iterable, TypeVar
+from typing import Iterable
 
 from algorithms.typing.comparison import Comparable
 
-CT = TypeVar("CT", bound=Comparable)
 
-
-def selection_sort(iterable: Iterable[CT]) -> list[CT]:
+def selection_sort[CT: Comparable](iterable: Iterable[CT]) -> list[CT]:
     """Returns a sorted copy of the input iterable using selection sort method.
 
     Selection sort uses a partition to separate the sorted area (left of the partition)

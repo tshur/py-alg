@@ -1,11 +1,9 @@
-from typing import Optional, Sequence, TypeVar
+from typing import Optional, Sequence
 
 from algorithms.typing.comparison import Comparable
 
-CT = TypeVar("CT", bound=Comparable)
 
-
-def binary_search(array: Sequence[CT], target: CT) -> Optional[int]:
+def binary_search[CT: Comparable](array: Sequence[CT], target: CT) -> Optional[int]:
     # Define the search space as [0, len(array)), with an exclusive end bounds to match
     # how slicing does it.
     lo = 0
