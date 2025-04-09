@@ -1,4 +1,4 @@
-from algorithms.sort import selection_sort
+from dsa.sort import selection_sort
 
 
 class TestSelectionSort:

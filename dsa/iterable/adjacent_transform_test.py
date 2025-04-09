@@ -1,6 +1,6 @@
 import operator
 
-from algorithms.iterable import adjacent_transform, pairwise_transform
+from dsa.iterable import adjacent_transform, pairwise_transform
 
 
 class TestAdjacentTransform:

@@ -1,6 +1,6 @@
 import operator
 
-from algorithms.iterable import scan
+from dsa.iterable import scan
 
 
 class TestScan:

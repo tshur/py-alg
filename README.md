@@ -1,6 +1,6 @@
 # py-alg
 
-Python algorithms repository with common algorithms (for learning).
+Python data structures & algorithms repository (for learning).
 
 ## Usage
 
@@ -8,7 +8,7 @@ To actually import and use this package, you can start in the root directory.
 Open a python3 interpreter, and try the following:
 
 ```python
->>> from algorithms.reduce import reduce
+>>> from dsa.reduce import reduce
 >>> reduce([1, 2, 3, 4, 5])
 15
 ```
@@ -51,7 +51,7 @@ To run pytest for all files, including doctests on modules, and collect test
 coverage reports:
 
 ```bash
-pytest --doctest-modules --cov=algorithms
+pytest --doctest-modules --cov=dsa
 ```
 
 To test code in "watch" mode, try the following command (re-runs only affected

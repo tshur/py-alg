@@ -8,6 +8,7 @@ def reverse[T](
 
     If no start and/or end are given, the default behavior is to reverse the entire
     input array. This function mutates the input argument, and returns it as well.
+    Similar/related algorithms: list.reverse, reversed, list[::-1].
 
     Complexity:
         Time: O(n), n/2 total swaps, where n = end - start

@@ -1,5 +1,5 @@
-from algorithms.search import binary_search
-from algorithms.search.binary_search import lower_bound, upper_bound
+from dsa.search import binary_search
+from dsa.search.binary_search import lower_bound, upper_bound
 
 
 class TestBinarySearch:

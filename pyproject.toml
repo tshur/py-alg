@@ -3,9 +3,9 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "algorithms"
+name = "dsa"
 version = "0.0.1"
-description = "Common algorithms written in Python for learning"
+description = "Common data structures and algorithms written in Python for learning"
 readme = "README.md"
 authors = [{ name = "Tim Shur" }]
 license = "MIT"

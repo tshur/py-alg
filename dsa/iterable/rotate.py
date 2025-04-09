@@ -1,12 +1,13 @@
 from typing import MutableSequence
 
-from algorithms.iterable.reverse import reverse
+from dsa.iterable.reverse import reverse
 
 
 def rotate[T](array: MutableSequence[T], k: int) -> MutableSequence[T]:
     """Rotates the given sequence in-place by k steps.
 
-    Uses three reverses as the algorithm to rotate in-place.
+    Uses three reverses as the algorithm to rotate in-place. Similar / related
+    algorithms: deque.rotate.
 
     Sample:
         [1, 2, 3, 4, 5, 6, 7], k=-2, len=7 -> k=5, len=7

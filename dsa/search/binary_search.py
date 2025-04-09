@@ -1,13 +1,14 @@
 from typing import Optional, Sequence
 
-from algorithms.typing.comparison import Comparable
+from dsa.typing.comparison import Comparable
 
 
 def binary_search[CT: Comparable](array: Sequence[CT], target: CT) -> Optional[int]:
     """Uses binary search to find the target value in a sorted sequence.
 
     The array type and target type must be a Comparable type which supports at least the
-    __lt__ (<) operator.
+    __lt__ (<) operator. Similar / related algorithms: bisect, lower_bound, upper_bound,
+    insort, binary search tree.
 
     Sample:
         [1, 2, 3, 4, 5, 6, 7], target=5

@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from algorithms.typing.comparison import Comparable
+from dsa.typing.comparison import Comparable
 
 
 def selection_sort[CT: Comparable](iterable: Iterable[CT]) -> list[CT]:
