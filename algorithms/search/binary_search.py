@@ -10,10 +10,10 @@ def binary_search[CT: Comparable](array: Sequence[CT], target: CT) -> Optional[i
     __lt__ (<) operator.
 
     Sample:
-    [1, 2, 3, 4, 5, 6, 7], target=5
-     L        M           H (mid is too low)
-                 L  M     H (mid is too high)
-                 LM H       (mid == target; found!)
+        [1, 2, 3, 4, 5, 6, 7], target=5
+         L        M           H (mid is too low)
+                     L  M     H (mid is too high)
+                     LM H       (mid == target; found!)
 
     Complexity:
         Time: O(logn)
@@ -28,6 +28,12 @@ def binary_search[CT: Comparable](array: Sequence[CT], target: CT) -> Optional[i
         Optional[int]: The index where the target was found in the input array. If the
           target has multiple occurrences, one index will be returned. If the target is
           not found, returns None.
+
+    Examples:
+        >>> binary_search([1, 2, 4, 5], 4)
+        2
+        >>> binary_search([1, 2, 4, 5], 3)
+        >>> binary_search([1, 2, 4, 5], 7)
     """
     # Search space is [0, len(array)), with an exclusive end to match slicing.
     low = 0
@@ -55,11 +61,11 @@ def lower_bound[CT: Comparable](array: Sequence[CT], target: CT) -> int:
     index.
 
     Sample: (L=low, M=mid, H=high)
-    [1, 3, 3, 3, 5, 6, 7], target=3
-     L        M           H (mid is not too low)
-     L  M     H             (mid is not too low)
-     LM H                   (mid is too low)
-       LMH                  (break loop; return L index)
+        [1, 3, 3, 3, 5, 6, 7], target=3
+         L        M           H (mid is not too low)
+         L  M     H             (mid is not too low)
+         LM H                   (mid is too low)
+           LMH                  (break loop; return L index)
 
     Complexity:
         Time: O(logn)
@@ -74,6 +80,14 @@ def lower_bound[CT: Comparable](array: Sequence[CT], target: CT) -> int:
         int: The lowest index where the target could be inserted into the input sequence
           while maintaining sorted order. If the target is present in the array, this is
           equal to the leftmost index of the target.
+
+    Examples:
+        >>> lower_bound([1, 2, 4, 5], 4)
+        2
+        >>> lower_bound([1, 2, 4, 5], 3)
+        2
+        >>> lower_bound([1, 2, 4, 5], 7)
+        4
     """
     # Search space is [0, len(array)), with an exclusive end to match slicing.
     low = 0
@@ -97,12 +111,12 @@ def upper_bound[CT: Comparable](array: Sequence[CT], target: CT) -> int:
     order.
 
     Sample: (L=low, M=mid, H=high)
-    [1, 3, 3, 3, 5, 6, 7], target=3
-     L        M           H (mid is not too high)
-              L     M     H (mid is too high)
-              L  M  H       (mid is too high)
-              LM H          (mid is not too high)
-                LMH         (break loop; return L index)
+        [1, 3, 3, 3, 5, 6, 7], target=3
+         L        M           H (mid is not too high)
+                  L     M     H (mid is too high)
+                  L  M  H       (mid is too high)
+                  LM H          (mid is not too high)
+                    LMH         (break loop; return L index)
 
     Complexity:
         Time: O(logn)
@@ -117,6 +131,14 @@ def upper_bound[CT: Comparable](array: Sequence[CT], target: CT) -> int:
         int: The highest index where the target could be inserted into the input
           sequence while maintaining sorted order. If the target is present in the
           array, this is equal to one after the rightmost index of the target.
+
+    Examples:
+        >>> upper_bound([1, 2, 4, 5], 4)
+        3
+        >>> upper_bound([1, 2, 4, 5], 3)
+        2
+        >>> upper_bound([1, 2, 4, 5], 7)
+        4
     """
     # Search space is [0, len(array)), with an exclusive end to match slicing.
     low = 0
