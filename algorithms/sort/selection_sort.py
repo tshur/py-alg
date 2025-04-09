@@ -1,6 +1,6 @@
 from typing import Iterable, TypeVar
 
-from algorithms.sort.comparable import Comparable
+from algorithms.typing.comparison import Comparable
 
 CT = TypeVar("CT", bound=Comparable)
 
