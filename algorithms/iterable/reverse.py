@@ -17,8 +17,8 @@ def reverse[T](
         array (MutableSequence[T]): Input sequence to reverse. The input array will be
           modified (reversed in-place).
         start (int): The (inclusive) start of the range to reverse. Defaults to 0.
-        end (Optional[int]): The (inclusive) end of the range to reverse. If not set,
-          or beyond the end of the array, then the last element will be used. Defaults
+        end (Optional[int]): The (exclusive) end of the range to reverse. If not set,
+          or beyond the end of the array, then the array length will be used. Defaults
           to None.
 
     Returns:
@@ -30,16 +30,14 @@ def reverse[T](
         [5, 4, 3, 2, 1]
         >>> reverse([1, 2, 3, 4, 5], start=1)
         [1, 5, 4, 3, 2]
-        >>> reverse([1, 2, 3, 4, 5], start=1, end=3)
+        >>> reverse([1, 2, 3, 4, 5], start=1, end=4)
         [1, 4, 3, 2, 5]
         >>> reverse([])
         []
     """
-    if end is None or end >= len(array):
-        end = len(array) - 1
+    if end is None or end > len(array):
+        end = len(array)
 
-    while start <= end:
-        array[start], array[end] = array[end], array[start]
-        start += 1
-        end -= 1
+    for i in range((end - start) // 2):
+        array[start + i], array[end - i - 1] = array[end - i - 1], array[start + i]
     return array

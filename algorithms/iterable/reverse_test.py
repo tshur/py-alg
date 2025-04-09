@@ -27,7 +27,7 @@ class TestReverse:
         assert reverse([1, 2, 3, 4, 5], start=5) == [1, 2, 3, 4, 5]
 
     def test_reverse_with_end(self):
-        assert reverse([1, 2, 3, 4, 5], end=2) == [3, 2, 1, 4, 5]
-        assert reverse([1, 2, 3, 4, 5], start=1, end=3) == [1, 4, 3, 2, 5]
+        assert reverse([1, 2, 3, 4, 5], end=3) == [3, 2, 1, 4, 5]
+        assert reverse([1, 2, 3, 4, 5], start=1, end=4) == [1, 4, 3, 2, 5]
         assert reverse([1, 2, 3, 4, 5], start=1, end=10) == [1, 5, 4, 3, 2]
-        assert reverse([1, 2, 3, 4, 5], start=3, end=3) == [1, 2, 3, 4, 5]
+        assert reverse([1, 2, 3, 4, 5], start=3, end=4) == [1, 2, 3, 4, 5]
