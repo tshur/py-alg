@@ -82,4 +82,4 @@ class TestLinkedList:
         assert str(linked_list2) == "None->None"
 
         linked_list3 = LinkedList.from_iterable([[1, 2], ["a", "b"]])
-        assert str(linked_list3) == '[1, 2]->["a", "b"]->None'
+        assert str(linked_list3) == "[1, 2]->['a', 'b']->None"
