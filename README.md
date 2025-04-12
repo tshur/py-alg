@@ -51,14 +51,14 @@ To run pytest for all files, including doctests on modules, and collect test
 coverage reports:
 
 ```bash
-pytest --doctest-modules --cov=dsa
+pytest --doctest-modules --cov=dsa --cov-report xml:coverage.xml
 ```
 
 To test code in "watch" mode, try the following command (re-runs only affected
 tests):
 
 ```bash
-ptw . --clear --doctest-modules --testmon
+ptw . --clear --doctest-modules --testmon --cov=dsa --cov-report xml:coverage.xml
 ```
 
 ## Packaging
