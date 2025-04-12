@@ -112,6 +112,11 @@ class LinkedList[T]:
     def remove_back(self) -> None:
         """Remove a node from the back/tail of the linked list (if one exists).
 
+        Raises:
+            ValueError: If self.tail does not exist in the linked list. This is an
+              invariant, so should not happen unless private variables are manipulated
+              outside the object methods.
+
         Examples:
             >>> linked_list = LinkedList.from_iterable([1, 2, 3])
             >>> linked_list.remove_back()
@@ -124,13 +129,12 @@ class LinkedList[T]:
             self.head = self.tail = None
             return
 
-        current = self.head
-        while current.next != self.tail:
-            if current.next is None:
-                return  # Should not happen unless self.tail is not found!
+        current: Optional[Node[T]] = self.head
+        while current and current.next != self.tail:
             current = current.next
 
-        current.next = None
+        if current is not None:
+            current.next = None
         self.tail = current
 
     def __contains__(self, value: T) -> bool:
