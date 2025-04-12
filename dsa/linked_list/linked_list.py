@@ -3,9 +3,9 @@ from typing import Iterable, Optional
 
 
 @dataclass
-class Node[T]:
+class _Node[T]:
     data: T
-    next: Optional["Node[T]"] = None
+    next: Optional["_Node[T]"] = None
 
 
 class LinkedList[T]:
@@ -18,16 +18,18 @@ class LinkedList[T]:
       - remove_front, O(1)
       - remove_back, O(n)
       - __contains__, O(n)
-      - __len__, O(n) (computed)
+      - __len__, O(1) (pre-computed)
       - __str__, O(n)
     """
 
-    head: Optional[Node[T]]
-    tail: Optional[Node[T]]
+    _head: Optional[_Node[T]]
+    _tail: Optional[_Node[T]]
+    _size: int
 
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self._head = None
+        self._tail = None
+        self._size = 0
 
     @staticmethod
     def from_iterable[U](iterable: Iterable[U]) -> "LinkedList[U]":
@@ -67,12 +69,13 @@ class LinkedList[T]:
             >>> print(linked_list)
             2->1->None
         """
-        node = Node(value)
-        if self.head is None:
-            self.head = self.tail = node
+        node = _Node(value)
+        if self._head is None:
+            self._head = self._tail = node
         else:
-            node.next = self.head
-            self.head = node
+            node.next = self._head
+            self._head = node
+        self._size += 1
 
     def push_back(self, value: T) -> None:
         """Insert a new Node(value) into the back/tail of the linked list.
@@ -89,12 +92,13 @@ class LinkedList[T]:
             >>> print(linked_list)
             1->2->None
         """
-        node = Node(value)
-        if self.tail is None:
-            self.head = self.tail = node
+        node = _Node(value)
+        if self._tail is None:
+            self._head = self._tail = node
         else:
-            self.tail.next = node
-            self.tail = node
+            self._tail.next = node
+            self._tail = node
+        self._size += 1
 
     def remove_front(self) -> None:
         """Remove a node from the front/head of the linked list (if one exists).
@@ -105,9 +109,10 @@ class LinkedList[T]:
             >>> print(linked_list)
             2->3->None
         """
-        if self.head is None:
+        if self._head is None:
             return
-        self.head = self.head.next
+        self._head = self._head.next
+        self._size -= 1
 
     def remove_back(self) -> None:
         """Remove a node from the back/tail of the linked list (if one exists).
@@ -123,19 +128,21 @@ class LinkedList[T]:
             >>> print(linked_list)
             1->2->None
         """
-        if self.head is None:
+        if self._head is None:
             return
-        if self.head == self.tail:
-            self.head = self.tail = None
+        if self._head == self._tail:
+            self._head = self._tail = None
+            self._size -= 1
             return
 
-        current: Optional[Node[T]] = self.head
-        while current and current.next != self.tail:
+        current: Optional[_Node[T]] = self._head
+        while current and current.next != self._tail:
             current = current.next
 
         if current is not None:
             current.next = None
-        self.tail = current
+        self._tail = current
+        self._size -= 1
 
     def __contains__(self, value: T) -> bool:
         """Check if the LinkedList contains a node with given value.
@@ -153,7 +160,7 @@ class LinkedList[T]:
             >>> 4 in linked_list
             False
         """
-        current = self.head
+        current = self._head
         while current:
             if current.data == value:
                 return True
@@ -161,7 +168,7 @@ class LinkedList[T]:
         return False
 
     def __len__(self) -> int:
-        """Returns the number of nodes in the LinkedList (in O(n) time).
+        """Returns the number of nodes in the LinkedList (in O(1) time).
 
         Returns:
             int: The number of nodes.
@@ -171,12 +178,7 @@ class LinkedList[T]:
             >>> len(linked_list)
             3
         """
-        size = 0
-        current = self.head
-        while current:
-            size += 1
-            current = current.next
-        return size
+        return self._size
 
     def __str__(self) -> str:
         """Returns a printable string containing all nodes in one line.
@@ -191,7 +193,7 @@ class LinkedList[T]:
         """
         nodes: list[str] = []
 
-        current = self.head
+        current = self._head
         while current:
             nodes.append(str(current.data))
             current = current.next

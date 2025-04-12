@@ -58,7 +58,7 @@ To test code in "watch" mode, try the following command (re-runs only affected
 tests):
 
 ```bash
-ptw . --clear --doctest-modules --testmon --cov=dsa --cov-report xml:coverage.xml
+ptw . --clear --doctest-modules --testmon
 ```
 
 ## Packaging
