@@ -4,7 +4,7 @@ from typing import MutableSequence, Optional
 def reverse[T](
     array: MutableSequence[T], start: int = 0, end: Optional[int] = None
 ) -> MutableSequence[T]:
-    """Reverses an array in the inclusive window [start, end].
+    """Reverses an array in the window [start, end).
 
     If no start and/or end are given, the default behavior is to reverse the entire
     input array. This function mutates the input argument, and returns it as well.

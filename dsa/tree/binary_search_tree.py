@@ -59,18 +59,7 @@ class BinarySearchTree[CT: Comparable]:
     def __len__(self) -> int:
         return self.size
 
-    def __str__(self) -> str:
-        """_summary_
-
-        Raises:
-            NotImplementedError: _description_
-
-        Returns:
-            str: _description_
-        """
-        raise NotImplementedError
-
-    def insert(self, value: CT) -> Node[CT]:
+    def insert(self, value: CT) -> None:
         """Insert a new node containing the given value into the tree.
 
         The new node will be inserted in an available space at the bottom (leaf) of the
@@ -85,76 +74,59 @@ class BinarySearchTree[CT: Comparable]:
             value (CT): The value to be added into a new Node and inserted into the
               tree.
         """
-        parent = self._find_new_parent(value)
-        return self._insert_under_parent(parent, value)
+        node = Node(value)
+        self.size += 1
+        if self.root is None:
+            self.root = node
+            return
 
-    def _find_new_parent(self, value: CT) -> Optional[Node[CT]]:
-        """Returns a parent node such that there is an empty child slot for value.
+        current = self.root
+        while current:  # Loop should not terminate via this condition.
+            if value < current.value:
+                if current.left is None:
+                    current.left = node
+                    return
+                current = current.left
+            else:
+                if current.right is None:
+                    current.right = node
+                    return
+                current = current.right
+
+    def remove(self, target: CT):
+        """Remove one occurrence of the value in the tree (if it exists).
+
+        Complexity:
+            Time: O(logn), to find the node and the new parent to replace it.
 
         Args:
-            value (CT): The value to find an empty space for. This method will find a
-              parent such that the parent has an empty child slot in the direction to
-              insert a new Node(value) into.
-
-        Returns:
-            Optional[Node[CT]]: The parent node with an empty slot to insert a new
-              Node(value). Returns None if the tree is empty (insert at root).
+            target (CT): The target to find and remove. Only the first / one instance of
+              the node will be removed.
         """
-        previous = None
+        # Traverse such that current is the node to delete (or None).
         current = self.root
         while current:
-            previous = current
-            if value > current.value:
-                current = current.right
-            else:
+            if target == current.value:
+                break
+            if target < current.value:
                 current = current.left
-        return previous
+            else:
+                current = current.right
+        if current is None:
+            return
 
-    def _insert_under_parent(self, parent: Optional[Node[CT]], value: CT) -> Node[CT]:
-        """Insert a new Node(value) as a direct child of parent.
-
-        Assumes that there is an empty slot under the parent for the Node(value) to be
-        inserted into.
-
-        Raises:
-            ValueError: If the parent does not have an empty (None) child slot to insert
-              the new Node(value) into.
-
-        Args:
-            parent (Optional[Node[CT]]): The parent, with an empty child slot, for the
-              target value to be inserted into.
-            value (CT): The value to insert, which will be added into a new Node(value).
-
-        Returns:
-            Node[CT]: The new node that was inserted.
-        """
-        node = Node(value)
-        if parent is None:
-            self.root = node
-        elif value > parent.value:
-            if parent.right is not None:
-                raise ValueError("insert: trying to overwrite existing node")
-            parent.right = node
+        successor = None
+        if current.right is None:
+            successor = current.left
+        elif current.left is None:
+            successor = current.right
         else:
-            if parent.left is not None:
-                raise ValueError("insert: trying to overwrite existing node")
-            parent.left = node
-        self.size += 1
+            successor = self._extract_successor_node(current)
+            successor.left = current.left
+            successor.right = current.right
+
+    def _extract_successor_node(self, node: Node[CT]) -> Node[CT]:
         return node
-
-    def remove(self, value: CT) -> Optional[Node[CT]]:
-        """Remove (and return) one occurrence of the value in the tree.
-
-        Args:
-            value (CT): _description_
-
-        Raises:
-            NotImplementedError: _description_
-
-        Returns:
-            Optional[Node[CT]]: _description_
-        """
-        raise NotImplementedError
 
     def search(self, target: CT) -> Optional[Node[CT]]:
         """Find the given target in the binary search tree.
@@ -183,3 +155,14 @@ class BinarySearchTree[CT: Comparable]:
             else:
                 current = current.right
         return None
+
+    def __str__(self) -> str:
+        """_summary_
+
+        Raises:
+            NotImplementedError: _description_
+
+        Returns:
+            str: _description_
+        """
+        raise NotImplementedError
