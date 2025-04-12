@@ -6,7 +6,7 @@ from dsa.typing.comparison import Comparable
 
 @dataclass
 class Node[CT: Comparable]:
-    value: CT
+    data: CT
     left: Optional["Node[CT]"] = None
     right: Optional["Node[CT]"] = None
 
@@ -26,11 +26,9 @@ class BinarySearchTree[CT: Comparable]:
     """
 
     root: Optional[Node[CT]]
-    size: int
 
     def __init__(self):
         self.root = None
-        self.size = 0
 
     @staticmethod
     def from_iterable(iterable: Iterable[CT]) -> "BinarySearchTree[CT]":
@@ -56,9 +54,6 @@ class BinarySearchTree[CT: Comparable]:
             bst.insert(value)
         return bst
 
-    def __len__(self) -> int:
-        return self.size
-
     def insert(self, value: CT) -> None:
         """Insert a new node containing the given value into the tree.
 
@@ -75,14 +70,13 @@ class BinarySearchTree[CT: Comparable]:
               tree.
         """
         node = Node(value)
-        self.size += 1
         if self.root is None:
             self.root = node
             return
 
         current = self.root
         while current:  # Loop should not terminate via this condition.
-            if value < current.value:
+            if value < current.data:
                 if current.left is None:
                     current.left = node
                     return
@@ -106,9 +100,9 @@ class BinarySearchTree[CT: Comparable]:
         # Traverse such that current is the node to delete (or None).
         current = self.root
         while current:
-            if target == current.value:
+            if target == current.data:
                 break
-            if target < current.value:
+            if target < current.data:
                 current = current.left
             else:
                 current = current.right
@@ -148,9 +142,9 @@ class BinarySearchTree[CT: Comparable]:
         """
         current = self.root
         while current:
-            if target == current.value:
+            if target == current.data:
                 return current
-            elif target < current.value:
+            elif target < current.data:
                 current = current.left
             else:
                 current = current.right
