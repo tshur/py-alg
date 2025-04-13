@@ -12,6 +12,9 @@ class Deque[T]:
     exceeded. The doubling requires copying to a new (larger) container, but leads to
     amortized time complexity.
 
+    Warning: Due to implementation details, the given T value type must not be None! If
+    a value is pushed or inserted with a None type, an exception will be raised.
+
     Common operations:
       - push_front, amortized O(1)
       - push_back, amortized O(1)
@@ -22,12 +25,14 @@ class Deque[T]:
       - is_empty, O(1)
     """
 
-    _ring_buffer: list[T]
+    _ring_buffer: list[Optional[T]]
     _head: int  # Index representing the head / start of the ring buffer.
     _capacity: int
 
-    def __init__(self):
-        raise NotImplementedError
+    def __init__(self, capacity: int = 16):
+        self._ring_buffer = [None] * capacity
+        self._head = 0
+        self._capacity = capacity
 
     @classmethod
     def from_iterable[U](cls, iterable: Iterable[U]) -> "Deque[U]":
@@ -52,6 +57,9 @@ class Deque[T]:
         raise NotImplementedError
 
     def is_empty(self) -> bool:
+        raise NotImplementedError
+
+    def capacity(self) -> int:
         raise NotImplementedError
 
     def __contains__(self, value: T) -> bool:

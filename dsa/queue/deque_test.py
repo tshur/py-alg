@@ -1,3 +1,5 @@
+import pytest
+
 from dsa.queue.deque import Deque
 
 
@@ -91,3 +93,34 @@ class TestDeque:
         empty_deque: Deque[int | None] = Deque()
         assert 1 not in empty_deque
         assert None not in empty_deque
+
+    def test_capacity_doubles(self) -> None:
+        deque: Deque[int] = Deque(capacity=1)
+        assert deque.capacity() == 1
+
+        deque.push_back(1)
+        assert len(deque) == 1
+        assert deque.capacity() == 1
+
+        deque.push_back(2)
+        assert len(deque) == 2
+        assert deque.capacity() == 2
+
+        deque.push_back(3)
+        assert len(deque) == 3
+        assert deque.capacity() == 4
+
+        deque.push_back(4)
+        deque.push_back(5)
+        assert len(deque) == 5
+        assert deque.capacity() == 8
+
+    def test_none_type(self) -> None:
+        deque: Deque[int | None] = Deque()
+
+        with pytest.raises(TypeError):
+            deque.push_back(None)
+        with pytest.raises(TypeError):
+            deque.push_front(None)
+        with pytest.raises(TypeError):
+            deque = Deque.from_iterable([1, None, 3])
