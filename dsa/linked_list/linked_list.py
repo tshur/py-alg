@@ -31,15 +31,15 @@ class LinkedList[T]:
         self._tail = None
         self._size = 0
 
-    @staticmethod
-    def from_iterable[U](iterable: Iterable[U]) -> "LinkedList[U]":
+    @classmethod
+    def from_iterable(cls, iterable: Iterable[T]) -> "LinkedList[T]":
         """Builds a LinkedList given an Iterable of values.
 
         Args:
-            iterable (Iterable[U]): Values to insert into a linked list.
+            iterable (Iterable[T]): Values to insert into a linked list.
 
         Returns:
-            LinkedList[U]: The built linked list from the iterable. Values will be added
+            LinkedList[T]: The built linked list from the iterable. Values will be added
               such that linked_list.head.data == iterable[0], and len(linked_list) ==
               len(iterable).
 
@@ -49,10 +49,10 @@ class LinkedList[T]:
             >>> print(linked_list)
             1->2->3->None
         """
-        ll: LinkedList[U] = LinkedList()
+        linked_list = cls()
         for value in iterable:
-            ll.push_back(value)
-        return ll
+            linked_list.push_back(value)
+        return linked_list
 
     def push_front(self, value: T) -> None:
         """Insert a new Node(value) into the front/head of the linked list.
