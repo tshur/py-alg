@@ -1,5 +1,7 @@
 from typing import Iterable, Optional
 
+from dsa.iterable import rotate
+
 
 class Deque[T]:
     """Doubly-ended queue supporting fast push/pop from both ends.
@@ -12,9 +14,6 @@ class Deque[T]:
     exceeded. The doubling requires copying to a new (larger) container, but leads to
     amortized time complexity.
 
-    Warning: Due to implementation details, the given T value type must not be None! If
-    a value is pushed or inserted with a None type, an exception will be raised.
-
     Common operations:
       - push_front, amortized O(1)
       - push_back, amortized O(1)
@@ -26,47 +25,84 @@ class Deque[T]:
     """
 
     _ring_buffer: list[Optional[T]]
-    _head: int  # Index representing the head / start of the ring buffer.
-    _capacity: int
+    _start: int  # Index representing the head / start of the ring buffer.
+    _size: int
 
-    def __init__(self, capacity: int = 16):
+    def __init__(self, *, capacity: int = 16):
         self._ring_buffer = [None] * capacity
-        self._head = 0
-        self._capacity = capacity
+        self._start = 0
+        self._size = 0
 
     @classmethod
     def from_iterable[U](cls, iterable: Iterable[U]) -> "Deque[U]":
-        raise NotImplementedError
+        deque: Deque[U] = Deque()
+        for value in iterable:
+            deque.push_back(value)
+        return deque
 
     def push_front(self, value: T) -> None:
-        raise NotImplementedError
+        if self._size >= self.capacity():
+            self._grow()
+        self._start = self._index(-1)
+        self._ring_buffer[self._start] = value
+        self._size += 1
 
     def push_back(self, value: T) -> None:
-        raise NotImplementedError
+        if self._size >= self.capacity():
+            self._grow()
+        self._ring_buffer[self._index(self._size)] = value
+        self._size += 1
 
     def pop_front(self) -> Optional[T]:
-        raise NotImplementedError
+        if len(self) == 0:
+            return None
+        value = self._ring_buffer[self._start]
+        self._start = self._index(1)
+        self._size -= 1
+        return value
 
     def pop_back(self) -> Optional[T]:
-        raise NotImplementedError
+        if len(self) == 0:
+            return None
+        self._size -= 1
+        value = self._ring_buffer[self._index(self._size)]
+        return value
 
     def front(self) -> Optional[T]:
-        raise NotImplementedError
+        if len(self) == 0:
+            return None
+        return self._ring_buffer[self._start]
 
     def back(self) -> Optional[T]:
-        raise NotImplementedError
+        if len(self) == 0:
+            return None
+        return self._ring_buffer[self._index(self._size - 1)]
 
     def is_empty(self) -> bool:
-        raise NotImplementedError
+        return self._size == 0
+
+    def _index(self, offset: int) -> int:
+        return (self._start + offset) % self.capacity()
+
+    def _normalize(self) -> None:
+        rotate(self._ring_buffer, -self._start)
+
+    def _grow(self) -> None:
+        self._normalize()
+        self._ring_buffer = self._ring_buffer + [None] * self.capacity()
 
     def capacity(self) -> int:
-        raise NotImplementedError
+        return len(self._ring_buffer)
 
     def __contains__(self, value: T) -> bool:
-        raise NotImplementedError
+        for i in range(self._size):
+            if self._ring_buffer[self._index(i)] == value:
+                return True
+        return False
 
     def __len__(self) -> int:
-        raise NotImplementedError
+        return self._size
 
     def __str__(self) -> str:
-        raise NotImplementedError
+        elements = [self._ring_buffer[self._index(i)] for i in range(self._size)]
+        return str(elements)

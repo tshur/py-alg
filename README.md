@@ -47,6 +47,13 @@ iniitalize future terminal sessions in the venv.
 
 ### pytest
 
+To test code in "watch" mode, try the following command (re-runs only affected
+tests):
+
+```bash
+ptw . --clear --doctest-modules --testmon
+```
+
 To run pytest for all files, including doctests on modules, and collect test
 coverage reports:
 
@@ -54,11 +61,20 @@ coverage reports:
 pytest --doctest-modules --cov=dsa --cov-report xml:coverage.xml
 ```
 
-To test code in "watch" mode, try the following command (re-runs only affected
-tests):
+To run pytest with the python debugger for debugging failed tests, run the
+following (optionally set breakpoints to debug non-failures):
 
 ```bash
-ptw . --clear --doctest-modules --testmon
+pytest --doctest-modules --pdb
+```
+
+In the python debugger, there are many useful commands to inspect the stack,
+variables, and such. Some starter commands (more at [pdb reference](https://docs.python.org/3/library/pdb.html#debugger-commands)):
+
+```
+l  # List the code around the current line (e.g., breakpoint).
+p my_variable  # Print the given variable with its value at the current line.
+q  # Quit.
 ```
 
 ## Packaging
