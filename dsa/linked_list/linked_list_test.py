@@ -1,4 +1,4 @@
-from dsa.linked_list.linked_list import LinkedList
+from dsa.linked_list import LinkedList
 
 
 class TestLinkedList:
