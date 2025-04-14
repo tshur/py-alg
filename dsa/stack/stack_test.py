@@ -1,4 +1,4 @@
-from dsa.stack import Stack
+from .stack import Stack
 
 
 class TestStack:

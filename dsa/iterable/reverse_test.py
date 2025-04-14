@@ -1,4 +1,4 @@
-from dsa.iterable import reverse
+from .reverse import reverse
 
 
 class TestReverse:

@@ -1,4 +1,4 @@
-from dsa.linked_list import SinglyLinkedList
+from .singly_linked_list import SinglyLinkedList
 
 
 class TestSinglyLinkedList:

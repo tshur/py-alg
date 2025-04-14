@@ -1,4 +1,4 @@
-from dsa.iterable import rotate
+from .rotate import rotate
 
 
 class TestRotate:
