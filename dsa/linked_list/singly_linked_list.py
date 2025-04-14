@@ -8,11 +8,11 @@ class _Node[T]:
     next: Optional["_Node[T]"] = None
 
 
-class LinkedList[T]:
+class SinglyLinkedList[T]:
     """Singly linked list data structure with head and tail pointer.
 
     Basic operations:
-      - LinkedList.from_iterable, O(n) (static method)
+      - SinglyLinkedList.from_iterable, O(n) (static method)
       - push_head, O(1)
       - push_tail, O(1)
       - remove_head, O(1)
@@ -32,24 +32,24 @@ class LinkedList[T]:
         self._size = 0
 
     @classmethod
-    def from_iterable[U](cls, iterable: Iterable[U]) -> "LinkedList[U]":
-        """Builds a LinkedList given an Iterable of values.
+    def from_iterable[U](cls, iterable: Iterable[U]) -> "SinglyLinkedList[U]":
+        """Builds a SinglyLinkedList given an Iterable of values.
 
         Args:
             iterable (Iterable[U]): Values to insert into a linked list.
 
         Returns:
-            LinkedList[U]: The built linked list from the iterable. Values will be added
+            SinglyLinkedList[U]: The built linked list from the iterable. Values will be added
               such that linked_list.head.data == iterable[0], and len(linked_list) ==
               len(iterable).
 
 
         Examples:
-            >>> linked_list = LinkedList.from_iterable([1, 2, 3])
+            >>> linked_list = SinglyLinkedList.from_iterable([1, 2, 3])
             >>> print(linked_list)
             1->2->3->None
         """
-        linked_list: LinkedList[U] = LinkedList()
+        linked_list: SinglyLinkedList[U] = SinglyLinkedList()
         for value in iterable:
             linked_list.push_tail(value)
         return linked_list
@@ -61,7 +61,7 @@ class LinkedList[T]:
             value (T): The value to be inserted.
 
         Examples:
-            >>> linked_list = LinkedList()
+            >>> linked_list = SinglyLinkedList()
             >>> linked_list.push_head(1)
             >>> print(linked_list)
             1->None
@@ -84,7 +84,7 @@ class LinkedList[T]:
             value (T): The value to be inserted.
 
         Examples:
-            >>> linked_list = LinkedList()
+            >>> linked_list = SinglyLinkedList()
             >>> linked_list.push_tail(1)
             >>> print(linked_list)
             1->None
@@ -104,7 +104,7 @@ class LinkedList[T]:
         """Remove a node from the front/head of the linked list (if one exists).
 
         Examples:
-            >>> linked_list = LinkedList.from_iterable([1, 2, 3])
+            >>> linked_list = SinglyLinkedList.from_iterable([1, 2, 3])
             >>> linked_list.remove_head()
             >>> print(linked_list)
             2->3->None
@@ -123,7 +123,7 @@ class LinkedList[T]:
               outside the object methods.
 
         Examples:
-            >>> linked_list = LinkedList.from_iterable([1, 2, 3])
+            >>> linked_list = SinglyLinkedList.from_iterable([1, 2, 3])
             >>> linked_list.remove_tail()
             >>> print(linked_list)
             1->2->None
@@ -145,7 +145,7 @@ class LinkedList[T]:
         self._size -= 1
 
     def __contains__(self, value: T) -> bool:
-        """Check if the LinkedList contains a node with given value.
+        """Check if the SinglyLinkedList contains a node with given value.
 
         Args:
             value (T): The value to search for.
@@ -154,7 +154,7 @@ class LinkedList[T]:
             bool: True if the value is found. Otherwise, returns False.
 
         Examples:
-            >>> linked_list = LinkedList.from_iterable([1, 2, 3])
+            >>> linked_list = SinglyLinkedList.from_iterable([1, 2, 3])
             >>> 2 in linked_list
             True
             >>> 4 in linked_list
@@ -168,13 +168,13 @@ class LinkedList[T]:
         return False
 
     def __len__(self) -> int:
-        """Returns the number of nodes in the LinkedList (in O(1) time).
+        """Returns the number of nodes in the SinglyLinkedList (in O(1) time).
 
         Returns:
             int: The number of nodes.
 
         Examples:
-            >>> linked_list = LinkedList.from_iterable([1, 2, 3])
+            >>> linked_list = SinglyLinkedList.from_iterable([1, 2, 3])
             >>> len(linked_list)
             3
         """
@@ -187,7 +187,7 @@ class LinkedList[T]:
             str: A visual representation of the linked list.
 
         Examples:
-            >>> linked_list = LinkedList.from_iterable([1, 2, 3])
+            >>> linked_list = SinglyLinkedList.from_iterable([1, 2, 3])
             >>> str(linked_list)
             '1->2->3->None'
         """

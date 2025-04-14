@@ -1,3 +1,5 @@
-from .linked_list import LinkedList
+from .singly_linked_list import SinglyLinkedList
 
-__all__ = ["LinkedList"]
+LinkedList = SinglyLinkedList
+
+__all__ = ["SinglyLinkedList", "LinkedList"]
