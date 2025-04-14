@@ -16,52 +16,52 @@ class TestLinkedList:
         assert len(linked_list2) == 0
         assert str(linked_list2) == "None"
 
-    def test_push_front(self) -> None:
+    def test_push_head(self) -> None:
         linked_list: LinkedList[int] = LinkedList()
 
-        linked_list.push_front(3)
-        linked_list.push_front(2)
-        linked_list.push_front(1)
+        linked_list.push_head(3)
+        linked_list.push_head(2)
+        linked_list.push_head(1)
         assert len(linked_list) == 3
         assert str(linked_list) == "1->2->3->None"
 
-    def test_push_back(self) -> None:
+    def test_push_tail(self) -> None:
         linked_list: LinkedList[int] = LinkedList()
 
-        linked_list.push_back(1)
-        linked_list.push_back(2)
-        linked_list.push_back(3)
+        linked_list.push_tail(1)
+        linked_list.push_tail(2)
+        linked_list.push_tail(3)
         assert len(linked_list) == 3
         assert str(linked_list) == "1->2->3->None"
 
-    def test_remove_front(self) -> None:
+    def test_remove_head(self) -> None:
         linked_list = LinkedList.from_iterable([1, 2, 3])
 
-        linked_list.remove_front()
+        linked_list.remove_head()
         assert str(linked_list) == "2->3->None"
 
-        linked_list.remove_front()
+        linked_list.remove_head()
         assert str(linked_list) == "3->None"
 
-        linked_list.remove_front()
+        linked_list.remove_head()
         assert str(linked_list) == "None"
 
-        linked_list.remove_front()
+        linked_list.remove_head()
         assert str(linked_list) == "None"
 
-    def test_remove_back(self) -> None:
+    def test_remove_tail(self) -> None:
         linked_list = LinkedList.from_iterable([1, 2, 3])
 
-        linked_list.remove_back()
+        linked_list.remove_tail()
         assert str(linked_list) == "1->2->None"
 
-        linked_list.remove_back()
+        linked_list.remove_tail()
         assert str(linked_list) == "1->None"
 
-        linked_list.remove_back()
+        linked_list.remove_tail()
         assert str(linked_list) == "None"
 
-        linked_list.remove_back()
+        linked_list.remove_tail()
         assert len(linked_list) == 0
         assert str(linked_list) == "None"
 

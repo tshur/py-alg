@@ -13,10 +13,10 @@ class LinkedList[T]:
 
     Basic operations:
       - LinkedList.from_iterable, O(n) (static method)
-      - push_front, O(1)
-      - push_back, O(1)
-      - remove_front, O(1)
-      - remove_back, O(n)
+      - push_head, O(1)
+      - push_tail, O(1)
+      - remove_head, O(1)
+      - remove_tail, O(n) due to singly-linked list
       - __contains__, O(n)
       - __len__, O(1) (pre-computed)
       - __str__, O(n)
@@ -49,12 +49,12 @@ class LinkedList[T]:
             >>> print(linked_list)
             1->2->3->None
         """
-        ll: LinkedList[U] = LinkedList()
+        linked_list: LinkedList[U] = LinkedList()
         for value in iterable:
-            ll.push_back(value)
-        return ll
+            linked_list.push_tail(value)
+        return linked_list
 
-    def push_front(self, value: T) -> None:
+    def push_head(self, value: T) -> None:
         """Insert a new Node(value) into the front/head of the linked list.
 
         Args:
@@ -62,10 +62,10 @@ class LinkedList[T]:
 
         Examples:
             >>> linked_list = LinkedList()
-            >>> linked_list.push_front(1)
+            >>> linked_list.push_head(1)
             >>> print(linked_list)
             1->None
-            >>> linked_list.push_front(2)
+            >>> linked_list.push_head(2)
             >>> print(linked_list)
             2->1->None
         """
@@ -77,7 +77,7 @@ class LinkedList[T]:
             self._head = node
         self._size += 1
 
-    def push_back(self, value: T) -> None:
+    def push_tail(self, value: T) -> None:
         """Insert a new Node(value) into the back/tail of the linked list.
 
         Args:
@@ -85,10 +85,10 @@ class LinkedList[T]:
 
         Examples:
             >>> linked_list = LinkedList()
-            >>> linked_list.push_back(1)
+            >>> linked_list.push_tail(1)
             >>> print(linked_list)
             1->None
-            >>> linked_list.push_back(2)
+            >>> linked_list.push_tail(2)
             >>> print(linked_list)
             1->2->None
         """
@@ -100,12 +100,12 @@ class LinkedList[T]:
             self._tail = node
         self._size += 1
 
-    def remove_front(self) -> None:
+    def remove_head(self) -> None:
         """Remove a node from the front/head of the linked list (if one exists).
 
         Examples:
             >>> linked_list = LinkedList.from_iterable([1, 2, 3])
-            >>> linked_list.remove_front()
+            >>> linked_list.remove_head()
             >>> print(linked_list)
             2->3->None
         """
@@ -114,7 +114,7 @@ class LinkedList[T]:
         self._head = self._head.next
         self._size -= 1
 
-    def remove_back(self) -> None:
+    def remove_tail(self) -> None:
         """Remove a node from the back/tail of the linked list (if one exists).
 
         Raises:
@@ -124,7 +124,7 @@ class LinkedList[T]:
 
         Examples:
             >>> linked_list = LinkedList.from_iterable([1, 2, 3])
-            >>> linked_list.remove_back()
+            >>> linked_list.remove_tail()
             >>> print(linked_list)
             1->2->None
         """
