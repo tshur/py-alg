@@ -6,11 +6,13 @@ class TestStack:
         stack = Stack[int]()
         assert len(stack) == 0
         assert str(stack) == "[]"
+        assert not stack
 
     def test_from_iterable(self) -> None:
         stack = Stack[int].from_iterable([1, 2, 3])
         assert len(stack) == 3
         assert str(stack) == "[1, 2, 3]"
+        assert stack
 
     def test_push(self) -> None:
         stack = Stack[int]()

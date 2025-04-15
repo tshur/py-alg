@@ -109,6 +109,21 @@ class Stack[T]:
         """
         return value in self._buffer
 
+    def __bool__(self) -> bool:
+        """Return if the stack is truthy (i.e., non-empty).
+
+        Returns:
+            bool: If there is at least one element in the stack.
+
+        Examples:
+            >>> stack = Stack.from_iterable([1])
+            >>> bool(stack)
+            True
+            >>> bool(Stack())
+            False
+        """
+        return len(self._buffer) != 0
+
     def __len__(self) -> int:
         """Return the length of the stack (stored, O(1) time).
 
