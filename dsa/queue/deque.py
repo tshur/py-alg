@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Self
 
 from dsa.iterable import rotate
 
@@ -42,7 +40,7 @@ class Deque[T]:
         self._size = 0
 
     @classmethod
-    def from_iterable[U](cls, iterable: Iterable[U]) -> Deque[U]:
+    def from_iterable(cls, iterable: Iterable[T]) -> Self:
         """Build a new deque to contain the elements from the given iterable.
 
         Elements will be inserted from the iterable by repeatedly calling push_back for
@@ -50,17 +48,17 @@ class Deque[T]:
         front of the deque, and the last value will become the back of the deque.
 
         Args:
-            iterable (Iterable[U]): The values to insert into a new deque.
+            iterable (Iterable[T]): The values to insert into a new deque.
 
         Returns:
-            Deque[U]: The newly constructed deque.
+            Self: The newly constructed deque.
 
         Examples:
             >>> deque = Deque.from_iterable([1, 2, 3])
             >>> print(deque)
             [1, 2, 3]
         """
-        deque: Deque[U] = Deque()
+        deque = cls()
         for value in iterable:
             deque.push_back(value)
         return deque

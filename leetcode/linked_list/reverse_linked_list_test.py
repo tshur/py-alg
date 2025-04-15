@@ -5,7 +5,7 @@ import pytest
 from leetcode.linked_list.reverse_linked_list import ReverseLinkedList
 
 pytestmark = pytest.mark.parametrize(
-    "algorithm",
+    "reverse_algorithm",
     [
         ReverseLinkedList.reverse_iterative,
         ReverseLinkedList.reverse_recursive,
@@ -15,5 +15,8 @@ pytestmark = pytest.mark.parametrize(
 
 class TestReverseLinkedList:
     def test_empty_list(
-        self, algorithm: Callable[[ReverseLinkedList], None]
-    ) -> None: ...
+        self, reverse_algorithm: Callable[[ReverseLinkedList], None]
+    ) -> None:
+        stack = ReverseLinkedList.from_iterable([1, 2, 3])
+
+        reverse_algorithm(stack)

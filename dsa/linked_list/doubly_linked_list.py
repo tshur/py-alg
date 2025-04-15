@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Self
 
 
 @dataclass
@@ -35,14 +35,14 @@ class DoublyLinkedList[T]:
         self._size = 0
 
     @classmethod
-    def from_iterable[U](cls, iterable: Iterable[U]) -> DoublyLinkedList[U]:
+    def from_iterable(cls, iterable: Iterable[T]) -> Self:
         """Builds a DoublyLinkedList given an Iterable of values.
 
         Args:
-            iterable (Iterable[U]): Values to insert into a linked list.
+            iterable (Iterable[T]): Values to insert into a linked list.
 
         Returns:
-            DoublyLinkedList[U]: The built linked list from the iterable. Values will be added
+            Self: The built linked list from the iterable. Values will be added
               such that linked_list.head.data == iterable[0], and len(linked_list) ==
               len(iterable).
 
@@ -52,7 +52,7 @@ class DoublyLinkedList[T]:
             >>> print(linked_list)
             1->2->3->None
         """
-        linked_list = DoublyLinkedList[U]()
+        linked_list = cls()
         for value in iterable:
             linked_list.push_tail(value)
         return linked_list

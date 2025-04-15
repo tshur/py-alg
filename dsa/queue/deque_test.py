@@ -9,7 +9,7 @@ class TestDeque:
         assert str(deque) == "[]"
 
     def test_from_iterable(self) -> None:
-        deque = Deque.from_iterable([1, 2, 3])
+        deque = Deque[int].from_iterable([1, 2, 3])
         assert not deque.is_empty()
         assert len(deque) == 3
         assert str(deque) == "[1, 2, 3]"
@@ -46,7 +46,7 @@ class TestDeque:
         assert str(deque) == "[1, 2, 3]"
 
     def test_pop_front(self) -> None:
-        deque = Deque.from_iterable([1, 2, 3])
+        deque = Deque[int].from_iterable([1, 2, 3])
 
         assert deque.pop_front() == 1
         assert str(deque) == "[2, 3]"
@@ -60,7 +60,7 @@ class TestDeque:
         assert str(deque) == "[]"
 
     def test_pop_back(self) -> None:
-        deque = Deque.from_iterable([1, 2, 3])
+        deque = Deque[int].from_iterable([1, 2, 3])
 
         assert deque.pop_back() == 3
         assert str(deque) == "[1, 2]"
@@ -74,7 +74,7 @@ class TestDeque:
         assert str(deque) == "[]"
 
     def test_front(self) -> None:
-        deque = Deque.from_iterable([1, 2, 3])
+        deque = Deque[int].from_iterable([1, 2, 3])
         assert deque.front() == 1
         assert deque.front() == 1
 
@@ -82,7 +82,7 @@ class TestDeque:
         assert empty_deque.front() is None
 
     def test_back(self) -> None:
-        deque = Deque.from_iterable([1, 2, 3])
+        deque = Deque[int].from_iterable([1, 2, 3])
         assert deque.back() == 3
         assert deque.back() == 3
 
@@ -90,7 +90,7 @@ class TestDeque:
         assert empty_deque.back() is None
 
     def test_contains(self) -> None:
-        deque = Deque.from_iterable([1, 2, 3])
+        deque = Deque[int].from_iterable([1, 2, 3])
         assert 1 in deque
         assert 2 in deque
         assert 3 in deque

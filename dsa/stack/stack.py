@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Self
 
 
 class Stack[T]:
@@ -20,22 +18,22 @@ class Stack[T]:
         self._size = 0
 
     @classmethod
-    def from_iterable[U](cls, iterable: Iterable[U]) -> Stack[U]:
+    def from_iterable(cls, iterable: Iterable[T]) -> Self:
         """Create a new stack from an iterable of values.
 
         Args:
-            iterable (Iterable[U]): An iterable of values to add into the stack. The
+            iterable (Iterable[T]): An iterable of values to add into the stack. The
               values will be pushed onto the stack in the order that they are given.
 
         Returns:
-            Stack[U]: The newly constructed stack.
+            Self: The newly constructed stack.
 
         Examples:
             >>> stack = Stack.from_iterable([1, 2, 3])
             >>> print(stack)
             [1, 2, 3]
         """
-        stack = Stack[U]()
+        stack = cls()
         for value in iterable:
             stack.push(value)
         return stack

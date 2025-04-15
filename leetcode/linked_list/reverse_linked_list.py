@@ -1,7 +1,7 @@
-from dsa.linked_list import SinglyLinkedList
+from dsa.linked_list import DoublyLinkedList
 
 
-class ReverseLinkedList(SinglyLinkedList[int]):
+class ReverseLinkedList(DoublyLinkedList[int]):
     def reverse_iterative(self): ...
 
     def reverse_recursive(self): ...

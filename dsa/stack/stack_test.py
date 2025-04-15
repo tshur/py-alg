@@ -8,7 +8,7 @@ class TestStack:
         assert str(stack) == "[]"
 
     def test_from_iterable(self) -> None:
-        stack = Stack.from_iterable([1, 2, 3])
+        stack = Stack[int].from_iterable([1, 2, 3])
         assert len(stack) == 3
         assert str(stack) == "[1, 2, 3]"
 
@@ -26,7 +26,7 @@ class TestStack:
         assert str(stack) == "[1, 2, 3]"
 
     def test_pop(self) -> None:
-        stack = Stack.from_iterable([1, 2, 3])
+        stack = Stack[int].from_iterable([1, 2, 3])
 
         assert stack.pop() == 3
         assert stack.pop() == 2
@@ -35,7 +35,7 @@ class TestStack:
         assert stack.pop() is None
 
     def test_peek(self) -> None:
-        stack = Stack.from_iterable([1, 2, 3])
+        stack = Stack[int].from_iterable([1, 2, 3])
 
         assert stack.peek() == 3
         assert stack.peek() == 3
@@ -45,7 +45,7 @@ class TestStack:
         assert stack2.peek() is None
 
     def test_contains(self) -> None:
-        stack = Stack.from_iterable([1, 2, 3])
+        stack = Stack[int].from_iterable([1, 2, 3])
 
         assert 1 in stack
         assert 2 in stack
