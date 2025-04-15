@@ -3,7 +3,7 @@ from .deque import Deque
 
 class TestDeque:
     def test_empty_deque(self) -> None:
-        deque: Deque[int] = Deque()
+        deque = Deque[int]()
         assert deque.is_empty()
         assert len(deque) == 0
         assert str(deque) == "[]"
@@ -15,7 +15,7 @@ class TestDeque:
         assert str(deque) == "[1, 2, 3]"
 
     def test_push_front(self) -> None:
-        deque: Deque[int] = Deque()
+        deque = Deque[int]()
 
         deque.push_front(1)
         assert len(deque) == 1
@@ -30,7 +30,7 @@ class TestDeque:
         assert str(deque) == "[3, 2, 1]"
 
     def test_push_back(self) -> None:
-        deque: Deque[int] = Deque()
+        deque = Deque[int]()
         assert str(deque) == "[]"
 
         deque.push_back(1)
@@ -78,7 +78,7 @@ class TestDeque:
         assert deque.front() == 1
         assert deque.front() == 1
 
-        empty_deque: Deque[int] = Deque()
+        empty_deque = Deque[int]()
         assert empty_deque.front() is None
 
     def test_back(self) -> None:
@@ -86,7 +86,7 @@ class TestDeque:
         assert deque.back() == 3
         assert deque.back() == 3
 
-        empty_deque: Deque[int] = Deque()
+        empty_deque = Deque[int]()
         assert empty_deque.back() is None
 
     def test_contains(self) -> None:
@@ -97,7 +97,7 @@ class TestDeque:
         assert 4 not in deque
         assert 0 not in deque
 
-        empty_deque: Deque[int | None] = Deque()
+        empty_deque = Deque[int | None]()
         assert 1 not in empty_deque
         assert None not in empty_deque
 
@@ -123,7 +123,7 @@ class TestDeque:
         assert deque.capacity() == 8
 
     def test_reinserts(self) -> None:
-        deque: Deque[int | None] = Deque(capacity=3)
+        deque = Deque[int | None](capacity=3)
         for value in [1, 2, 3]:
             deque.push_back(value)
         assert len(deque) == 3

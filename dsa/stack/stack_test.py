@@ -3,7 +3,7 @@ from .stack import Stack
 
 class TestStack:
     def test_empty_stack(self) -> None:
-        stack: Stack[int] = Stack()
+        stack = Stack[int]()
         assert len(stack) == 0
         assert str(stack) == "[]"
 
@@ -13,7 +13,7 @@ class TestStack:
         assert str(stack) == "[1, 2, 3]"
 
     def test_push(self) -> None:
-        stack: Stack[int] = Stack()
+        stack = Stack[int]()
 
         stack.push(1)
         assert len(stack) == 1
@@ -41,7 +41,7 @@ class TestStack:
         assert stack.peek() == 3
         assert str(stack) == "[1, 2, 3]"
 
-        stack2: Stack[int] = Stack()
+        stack2 = Stack[int]()
         assert stack2.peek() is None
 
     def test_contains(self) -> None:

@@ -3,7 +3,7 @@ from .doubly_linked_list import DoublyLinkedList
 
 class TestDoublyLinkedList:
     def test_empty_list(self) -> None:
-        linked_list: DoublyLinkedList[int] = DoublyLinkedList()
+        linked_list = DoublyLinkedList[int]()
         assert len(linked_list) == 0
         assert str(linked_list) == "None"
 
@@ -17,7 +17,7 @@ class TestDoublyLinkedList:
         assert str(linked_list2) == "None"
 
     def test_push_head(self) -> None:
-        linked_list: DoublyLinkedList[int] = DoublyLinkedList()
+        linked_list = DoublyLinkedList[int]()
 
         linked_list.push_head(3)
         linked_list.push_head(2)
@@ -26,7 +26,7 @@ class TestDoublyLinkedList:
         assert str(linked_list) == "1->2->3->None"
 
     def test_push_tail(self) -> None:
-        linked_list: DoublyLinkedList[int] = DoublyLinkedList()
+        linked_list = DoublyLinkedList[int]()
 
         linked_list.push_tail(1)
         linked_list.push_tail(2)

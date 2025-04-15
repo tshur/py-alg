@@ -3,12 +3,12 @@ from .singly_linked_list import SinglyLinkedList
 
 class TestSinglyLinkedList:
     def test_empty_list(self) -> None:
-        linked_list: SinglyLinkedList[int] = SinglyLinkedList()
+        linked_list = SinglyLinkedList[int]()
         assert len(linked_list) == 0
         assert str(linked_list) == "None"
 
     def test_from_iterable(self) -> None:
-        linked_list1 = SinglyLinkedList.from_iterable([1, 2, 3])
+        linked_list1 = SinglyLinkedList[int].from_iterable([1, 2, 3])
         assert len(linked_list1) == 3
         assert str(linked_list1) == "1->2->3->None"
 
@@ -17,7 +17,7 @@ class TestSinglyLinkedList:
         assert str(linked_list2) == "None"
 
     def test_push_head(self) -> None:
-        linked_list: SinglyLinkedList[int] = SinglyLinkedList()
+        linked_list = SinglyLinkedList[int]()
 
         linked_list.push_head(3)
         linked_list.push_head(2)
@@ -26,7 +26,7 @@ class TestSinglyLinkedList:
         assert str(linked_list) == "1->2->3->None"
 
     def test_push_tail(self) -> None:
-        linked_list: SinglyLinkedList[int] = SinglyLinkedList()
+        linked_list = SinglyLinkedList[int]()
 
         linked_list.push_tail(1)
         linked_list.push_tail(2)
