@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Iterable, Optional
 
@@ -5,7 +7,7 @@ from typing import Iterable, Optional
 @dataclass
 class _Node[T]:
     data: T
-    next: Optional["_Node[T]"] = None
+    next: Optional[_Node[T]] = None
 
 
 class SinglyLinkedList[T]:
@@ -32,7 +34,7 @@ class SinglyLinkedList[T]:
         self._size = 0
 
     @classmethod
-    def from_iterable[U](cls, iterable: Iterable[U]) -> "SinglyLinkedList[U]":
+    def from_iterable[U](cls, iterable: Iterable[U]) -> SinglyLinkedList[U]:
         """Builds a SinglyLinkedList given an Iterable of values.
 
         Args:
@@ -49,7 +51,7 @@ class SinglyLinkedList[T]:
             >>> print(linked_list)
             1->2->3->None
         """
-        linked_list: SinglyLinkedList[U] = SinglyLinkedList()
+        linked_list = SinglyLinkedList[U]()
         for value in iterable:
             linked_list.push_tail(value)
         return linked_list

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Iterable, Optional
 
@@ -5,8 +7,8 @@ from typing import Iterable, Optional
 @dataclass
 class _Node[T]:
     data: T
-    prev: Optional["_Node[T]"] = None
-    next: Optional["_Node[T]"] = None
+    prev: Optional[_Node[T]] = None
+    next: Optional[_Node[T]] = None
 
 
 class DoublyLinkedList[T]:
@@ -33,7 +35,7 @@ class DoublyLinkedList[T]:
         self._size = 0
 
     @classmethod
-    def from_iterable[U](cls, iterable: Iterable[U]) -> "DoublyLinkedList[U]":
+    def from_iterable[U](cls, iterable: Iterable[U]) -> DoublyLinkedList[U]:
         """Builds a DoublyLinkedList given an Iterable of values.
 
         Args:
@@ -50,7 +52,7 @@ class DoublyLinkedList[T]:
             >>> print(linked_list)
             1->2->3->None
         """
-        linked_list: DoublyLinkedList[U] = DoublyLinkedList()
+        linked_list = DoublyLinkedList[U]()
         for value in iterable:
             linked_list.push_tail(value)
         return linked_list
