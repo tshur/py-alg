@@ -4,12 +4,6 @@ from dataclasses import dataclass
 from typing import Iterable, Optional, Self
 
 
-@dataclass
-class _Node[T]:
-    data: T
-    next: Optional[_Node[T]] = None
-
-
 class SinglyLinkedList[T]:
     """Singly linked list data structure with head and tail pointer.
 
@@ -23,6 +17,11 @@ class SinglyLinkedList[T]:
       - __len__, O(1) (pre-computed)
       - __str__, O(n)
     """
+
+    @dataclass
+    class _Node[U]:
+        data: U
+        next: Optional[SinglyLinkedList._Node[U]] = None
 
     _head: Optional[_Node[T]]
     _tail: Optional[_Node[T]]
@@ -71,7 +70,7 @@ class SinglyLinkedList[T]:
             >>> print(linked_list)
             2->1->None
         """
-        node = _Node(value)
+        node = SinglyLinkedList._Node(value)
         if self._head is None:
             self._head = self._tail = node
         else:
@@ -94,7 +93,7 @@ class SinglyLinkedList[T]:
             >>> print(linked_list)
             1->2->None
         """
-        node = _Node(value)
+        node = SinglyLinkedList._Node(value)
         if self._tail is None:
             self._head = self._tail = node
         else:
@@ -136,7 +135,7 @@ class SinglyLinkedList[T]:
             self._size -= 1
             return
 
-        current: Optional[_Node[T]] = self._head
+        current: Optional[SinglyLinkedList._Node[T]] = self._head
         while current and current.next != self._tail:
             current = current.next
 
