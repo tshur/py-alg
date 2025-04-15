@@ -11,11 +11,9 @@ class Stack[T]:
     """
 
     _buffer: list[T]
-    _size: int
 
     def __init__(self):
         self._buffer = []
-        self._size = 0
 
     @classmethod
     def from_iterable(cls, iterable: Iterable[T]) -> Self:
@@ -54,7 +52,6 @@ class Stack[T]:
             [1, 2]
         """
         self._buffer.append(value)
-        self._size += 1
 
     def pop(self) -> Optional[T]:
         """Pop a value (remove and return) off of the top of the stack.
@@ -72,7 +69,6 @@ class Stack[T]:
         """
         if len(self) == 0:
             return None
-        self._size -= 1
         return self._buffer.pop()
 
     def peek(self) -> Optional[T]:
@@ -124,7 +120,7 @@ class Stack[T]:
             >>> len(stack)
             3
         """
-        return self._size
+        return len(self._buffer)
 
     def __str__(self) -> str:
         """Return a printable representation of the stack.
