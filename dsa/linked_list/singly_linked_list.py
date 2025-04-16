@@ -135,14 +135,13 @@ class SinglyLinkedList[T]:
             self._size -= 1
             return
 
-        current: Optional[SinglyLinkedList._Node[T]] = self._head
-        while current and current.next != self._tail:
-            current = current.next
-
-        if current is not None:
-            current.next = None
-        self._tail = current
-        self._size -= 1
+        for previous, current in self.pairwise_iterator():
+            if current == self._tail:
+                if previous is not None:
+                    previous.next = None
+                self._tail = previous
+                self._size -= 1
+                return
 
     def __contains__(self, value: T) -> bool:
         """Check if the SinglyLinkedList contains a node with given value.
