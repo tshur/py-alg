@@ -46,6 +46,15 @@ class TestStack:
         stack2 = Stack[int]()
         assert stack2.peek() is None
 
+    def test_iter(self) -> None:
+        stack = Stack[int].from_iterable([1, 2, 3])
+
+        assert list(stack) == [3, 2, 1]
+        assert len(stack) == 3
+
+        empty_stack = Stack[int]()
+        assert list(empty_stack) == []
+
     def test_contains(self) -> None:
         stack = Stack[int].from_iterable([1, 2, 3])
 

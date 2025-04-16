@@ -1,4 +1,4 @@
-from typing import Iterable, Optional, Self
+from typing import Iterable, Iterator, Optional, Self
 
 
 class Stack[T]:
@@ -88,6 +88,16 @@ class Stack[T]:
         if len(self) == 0:
             return None
         return self._buffer[-1]
+
+    def __iter__(self) -> Iterator[T]:
+        """Returns a generator of values from the stack (in pop / LIFO order).
+
+        The stack remains unchanged from this method.
+
+        Yields:
+            Iterator[T]: Values from the stack.
+        """
+        yield from reversed(self._buffer)
 
     def __contains__(self, value: T) -> bool:
         """Check whether a value is contained in the stack.

@@ -89,6 +89,15 @@ class TestDeque:
         empty_deque = Deque[int]()
         assert empty_deque.back() is None
 
+    def test_iter(self) -> None:
+        deque = Deque[int].from_iterable([1, 2, 3])
+
+        assert list(deque) == [1, 2, 3]
+        assert len(deque) == 3
+
+        empty_deque = Deque[int]()
+        assert list(empty_deque) == []
+
     def test_contains(self) -> None:
         deque = Deque[int].from_iterable([1, 2, 3])
         assert 1 in deque
@@ -138,6 +147,7 @@ class TestDeque:
         assert len(deque) == 3
         assert deque.capacity() == 3
         assert str(deque) == "[1, 2, 3]"
+        assert list(deque) == [1, 2, 3]
 
         # Test rotating right.
         for _ in range(8):

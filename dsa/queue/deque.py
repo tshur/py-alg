@@ -1,4 +1,4 @@
-from typing import Iterable, Optional, Self
+from typing import Iterable, Iterator, Optional, Self
 
 from dsa.iterable import rotate
 
@@ -301,6 +301,20 @@ class Deque[T]:
         """
         return len(self._ring_buffer)
 
+    def __iter__(self) -> Iterator[T]:
+        """Returns a generator of values from the deque (in remove / FIFO order).
+
+        The deque remains unchanged from this method.
+
+        Yields:
+            Iterator[T]: Values from the deque.
+        """
+        for i in range(self._size):
+            # It is *possible* to encounter None via type system, but due to class
+            # invariant, we should never encounter non-T data in the valid index range.
+            if value := self._ring_buffer[self._index(i)]:
+                yield value
+
     def __contains__(self, value: T) -> bool:
         """Whether a value is present in the deque.
 
@@ -319,10 +333,7 @@ class Deque[T]:
             >>> 5 in deque
             False
         """
-        for i in range(self._size):
-            if self._ring_buffer[self._index(i)] == value:
-                return True
-        return False
+        return value in iter(self)
 
     def __len__(self) -> int:
         """Returns the number of elements in the deque.
@@ -351,5 +362,4 @@ class Deque[T]:
             >>> str(deque)
             '[1, 2, 3]'
         """
-        elements = [self._ring_buffer[self._index(i)] for i in range(self._size)]
-        return str(elements)
+        return str(list(self))
