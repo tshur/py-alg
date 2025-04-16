@@ -36,8 +36,7 @@ dependencies, and the set of test dependencies to enable testing commands.
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e .
-pip install -e .[test]
+pip install .[test]
 ```
 
 After initial setup, VSCode should automatically pick up the environment and
