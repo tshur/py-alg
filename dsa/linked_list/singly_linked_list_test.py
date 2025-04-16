@@ -100,3 +100,19 @@ class TestSinglyLinkedList:
         assert str(linked_list) == "None"
         linked_list.push_head(1)
         assert str(linked_list) == "1->None"
+
+    def test_iter(self) -> None:
+        linked_list = SinglyLinkedList[int].from_iterable([1, 2, 3])
+        empty_list = SinglyLinkedList[int]()
+
+        assert list(linked_list) == [1, 2, 3]
+        assert list(empty_list) == []
+
+        assert [node.data for node in linked_list.node_iterator()] == [1, 2, 3]
+        assert list(empty_list.node_iterator()) == []
+
+        assert [
+            (previous.data if previous else None, current.data)
+            for previous, current in linked_list.pairwise_iterator()
+        ] == [(None, 1), (1, 2), (2, 3)]
+        assert list(empty_list.pairwise_iterator()) == []

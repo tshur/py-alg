@@ -100,3 +100,13 @@ class TestDoublyLinkedList:
         assert str(linked_list) == "None"
         linked_list.push_head(1)
         assert str(linked_list) == "1->None"
+
+    def test_iter(self) -> None:
+        linked_list = DoublyLinkedList[int].from_iterable([1, 2, 3])
+        empty_list = DoublyLinkedList[int]()
+
+        assert list(linked_list) == [1, 2, 3]
+        assert list(empty_list) == []
+
+        assert [node.data for node in linked_list.node_iterator()] == [1, 2, 3]
+        assert list(empty_list.node_iterator()) == []

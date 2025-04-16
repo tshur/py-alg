@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable, Optional, Self
+from typing import Iterable, Iterator, Optional, Self
 
 
 @dataclass
@@ -163,12 +163,7 @@ class DoublyLinkedList[T]:
             >>> 4 in linked_list
             False
         """
-        current = self._head
-        while current:
-            if current.data == value:
-                return True
-            current = current.next
-        return False
+        return value in iter(self)
 
     def __len__(self) -> int:
         """Returns the number of nodes in the DoublyLinkedList (in O(1) time).
@@ -194,12 +189,27 @@ class DoublyLinkedList[T]:
             >>> str(linked_list)
             '1->2->3->None'
         """
-        nodes: list[str] = []
-
-        current = self._head
-        while current:
-            nodes.append(str(current.data))
-            current = current.next
+        nodes = [str(value) for value in self]
         nodes.append("None")
 
         return "->".join(nodes)
+
+    def __iter__(self) -> Iterator[T]:
+        """Iterator that yields values in order from the head to the tail.
+
+        Yields:
+            Iterator[T]: Values of nodes in the linked list.
+        """
+        for node in self.node_iterator():
+            yield node.data
+
+    def node_iterator(self) -> Iterator[_Node[T]]:
+        """Iterator that yields Nodes in order from the head to the tail.
+
+        Yields:
+            Iterator[_Node[T]]: Nodes in the linked list.
+        """
+        current = self._head
+        while current:
+            yield current
+            current = current.next
