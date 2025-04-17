@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterable, Iterator, Optional
 
+from dsa.stack import Stack
 from dsa.typing.comparison import Comparable
 
 
@@ -147,10 +148,64 @@ class BinarySearchTree[CT: Comparable]:
     def __iter__(self) -> Iterator[CT]:
         """In-order traversal of the binary search tree.
 
+        Traversal should yield left subtree, then root node, then right subtree. The
+        order should be such that values are yielded in sorted order (due to BST
+        ordering).
+
         Yields:
             Iterator[CT]: Values in-order from the tree.
         """
-        raise NotImplementedError
+        yield from self.inorder_recursive()
+
+    def inorder_recursive(self) -> Iterator[CT]:
+        """Recursive implementation of in-order traversal from the tree.
+
+        Yields:
+            Iterator[CT]: Values in-order from the tree.
+        """
+
+        def helper(root: Optional[_Node[CT]]) -> Iterator[CT]:
+            if not root:
+                return
+
+            yield from helper(root.left)
+            yield root.data
+            yield from helper(root.right)
+
+        yield from helper(self._root)
+
+    def inorder_iterative(self) -> Iterator[CT]:
+        """Iterative implementation of in-order traversal from the tree.
+
+        The iterative implementation is trickier than recursion. We maintain a stack,
+        which represents roots of subtrees for traversal. When have a current node, we
+        visit its left subtree always. When we have no current node, take one from the
+        stack. Its left subtree should already be visited, so move right one node.
+        Repeat this process.
+
+        Yields:
+            Iterator[CT]: Values in-order from the tree.
+        """
+        if self._root is None:
+            return
+
+        stack = Stack[_Node[CT]]()
+        current: Optional[_Node[CT]] = self._root
+        while True:
+            if current:
+                # Whenever we have a current node, traverse down its left subtree. Add
+                # all nodes to the stack for later traversing their right subtrees.
+                stack.push(current)
+                current = current.left
+            else:
+                # If we do not have a current node, take one from the stack. Its left
+                # subtree should already be visited. Yield the root, then move on to
+                # its right subtree.
+                current = stack.pop()
+                if not current:
+                    return  # Stack is empty, done with traversal.
+                yield current.data
+                current = current.right
 
     def __contains__(self, value: CT) -> bool:
         """Return true if the value exists in the binary search tree.
@@ -192,4 +247,6 @@ class BinarySearchTree[CT: Comparable]:
         Returns:
             str: String displaying the tree structure and data.
         """
+        if not self:
+            return ""
         raise NotImplementedError
