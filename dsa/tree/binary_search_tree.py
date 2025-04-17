@@ -1,14 +1,16 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Iterable, Optional
+from typing import Iterable, Iterator, Optional
 
 from dsa.typing.comparison import Comparable
 
 
 @dataclass
-class Node[CT: Comparable]:
+class _Node[CT: Comparable]:
     data: CT
-    left: Optional["Node[CT]"] = None
-    right: Optional["Node[CT]"] = None
+    left: Optional[_Node[CT]] = None
+    right: Optional[_Node[CT]] = None
 
 
 class BinarySearchTree[CT: Comparable]:
@@ -25,13 +27,15 @@ class BinarySearchTree[CT: Comparable]:
       - search
     """
 
-    root: Optional[Node[CT]]
+    _root: Optional[_Node[CT]]
+    _size: int
 
     def __init__(self):
-        self.root = None
+        self._root = None
+        self._size = 0
 
     @staticmethod
-    def from_iterable(iterable: Iterable[CT]) -> "BinarySearchTree[CT]":
+    def from_iterable(iterable: Iterable[CT]) -> BinarySearchTree[CT]:
         """Builds and returns a BinarySearchTree from the given iterable.
 
         Complexity:
@@ -49,7 +53,7 @@ class BinarySearchTree[CT: Comparable]:
             BinarySearchTree[CT]: The resulting binary search tree after inserting the
               given values from the iterable.
         """
-        bst: BinarySearchTree[CT] = BinarySearchTree()
+        bst = BinarySearchTree[CT]()
         for value in iterable:
             bst.insert(value)
         return bst
@@ -69,25 +73,27 @@ class BinarySearchTree[CT: Comparable]:
             value (CT): The value to be added into a new Node and inserted into the
               tree.
         """
-        node = Node(value)
-        if self.root is None:
-            self.root = node
+        node = _Node(value)
+        if self._root is None:
+            self._root = node
+            self._size += 1
             return
 
-        current = self.root
+        current = self._root
         while current:  # Loop should not terminate via this condition.
             if value < current.data:
                 if current.left is None:
                     current.left = node
-                    return
+                    break
                 current = current.left
             else:
                 if current.right is None:
                     current.right = node
-                    return
+                    break
                 current = current.right
+        self._size += 1
 
-    def remove(self, target: CT):
+    def remove(self, value: CT) -> None:
         """Remove one occurrence of the value in the tree (if it exists).
 
         Complexity:
@@ -98,32 +104,56 @@ class BinarySearchTree[CT: Comparable]:
               the node will be removed.
         """
         # Traverse such that current is the node to delete (or None).
-        current = self.root
-        while current:
-            if target == current.data:
-                break
-            if target < current.data:
-                current = current.left
-            else:
-                current = current.right
-        if current is None:
+        to_delete = self._search(value)
+        if to_delete is None:
             return
 
         successor = None
-        if current.right is None:
-            successor = current.left
-        elif current.left is None:
-            successor = current.right
+        if to_delete.right is None:
+            successor = to_delete.left
+        elif to_delete.left is None:
+            successor = to_delete.right
         else:
-            successor = self._extract_successor_node(current)
-            successor.left = current.left
-            successor.right = current.right
+            successor = self._extract_successor_node(to_delete)
+            successor.left = to_delete.left
+            successor.right = to_delete.right
+        self._size -= 1
 
-    def _extract_successor_node(self, node: Node[CT]) -> Node[CT]:
+    def _extract_successor_node(self, node: _Node[CT]) -> _Node[CT]:
         return node
 
-    def search(self, target: CT) -> Optional[Node[CT]]:
-        """Find the given target in the binary search tree.
+    def _search(self, value: CT) -> Optional[_Node[CT]]:
+        """Find a node with target value in the BST (or None if not found).
+
+        Runs in O(logn) time. Worst-case, O(n) time if the tree is severely unbalanced.
+
+        Args:
+            value (CT): Target value to search for.
+
+        Returns:
+            Optional[_Node[CT]]: The first node containing the target value. If no such
+              node exists, return None.
+        """
+        current = self._root
+        while current:
+            if value == current.data:
+                return current
+            elif value < current.data:
+                current = current.left
+            else:
+                current = current.right
+        return None
+
+    def __iter__(self) -> Iterator[CT]:
+        """In-order traversal of the binary search tree.
+
+        Yields:
+            Iterator[CT]: Values in-order from the tree.
+        """
+        raise NotImplementedError
+
+    def __contains__(self, value: CT) -> bool:
+        """Return true if the value exists in the binary search tree.
 
         To find a node, we simply traverse the tree downward. At each node, if the
         target is not found, we traverse left or right (depending on comparison).
@@ -133,30 +163,33 @@ class BinarySearchTree[CT: Comparable]:
               case, this is O(n) if the tree is fully unbalanced.
 
         Args:
-            target (CT): The value to search for in the tree. This method looks for the
-              first (highest) Node with a value equal to the target.
+            value (CT): The value to search for in the tree.
 
         Returns:
-            Optional[Node[CT]]: Returns the found node if the target is in the binary
-              search tree. If not found, returns None.
+            bool: Whether the value is in the binary search tree.
         """
-        current = self.root
-        while current:
-            if target == current.data:
-                return current
-            elif target < current.data:
-                current = current.left
-            else:
-                current = current.right
-        return None
+        return self._search(value) is not None
+
+    def __bool__(self) -> bool:
+        """Get the truthy-ness of the tree (whether non-empty).
+
+        Returns:
+            bool: True if the tree at least one element/node. Otherwise, returns false.
+        """
+        return len(self) != 0
+
+    def __len__(self) -> int:
+        """Returns the number of nodes in the tree.
+
+        Returns:
+            int: The number of nodes in the tree.
+        """
+        return self._size
 
     def __str__(self) -> str:
-        """_summary_
-
-        Raises:
-            NotImplementedError: _description_
+        """Get a printable representation of the binary search tree.
 
         Returns:
-            str: _description_
+            str: String displaying the tree structure and data.
         """
         raise NotImplementedError
