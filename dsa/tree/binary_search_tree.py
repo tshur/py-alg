@@ -244,9 +244,64 @@ class BinarySearchTree[CT: Comparable]:
     def __str__(self) -> str:
         """Get a printable representation of the binary search tree.
 
+        Prints a binary tree horizontally, so there is enough space to print a full node
+        string for each node. Prints reverse-in-order, aka right subtree first.
+
+        This is a recursive function which prints the right subtree, then the root, then
+        the left subtree. We carry around a final prefix for printing, and a short
+        prefix segment to handle branching left/right.
+
+        Each time we descend down the recursive stack, we extend our prefix. Whenever we
+        switch directions, we add a bar (|) to the prefix string. We keep track of the
+        additive segments (and invert them), based on which direction we are going.
+
+        From https://stackoverflow.com/questions/64660540/how-can-i-print-a-binary-tree.
+
         Returns:
             str: String displaying the tree structure and data.
         """
-        if not self:
-            return ""
-        raise NotImplementedError
+
+        def helper(
+            root: Optional[_Node[CT]],
+            prefix: str,
+            right_prefix: str,
+            left_prefix: str,
+        ) -> list[str]:
+            """Recursive helper function for printing the binary tree.
+
+            Args:
+                root (Optional[_Node[CT]]): The root of the current (recursive) subtree.
+                prefix (str): The current prefix to prepend any root printing at this
+                  level.
+                right_prefix (str): The prefix segment to append if we branch to the
+                  right. Note: right comes before left in arguments order to mimic the
+                  reverse-in-order nature of the printing.
+                left_prefix (str): The prefix segment to append if we branch to the
+                  left.
+
+            Returns:
+                list[str]: A list of built strings / nodes that can be joined later.
+            """
+            if not root:
+                return []
+
+            root_str = f"{prefix}+———{root.data}"
+            return (
+                helper(
+                    root.right,
+                    prefix + right_prefix,
+                    right_prefix="    ",
+                    left_prefix="|   ",
+                )
+                + [root_str]
+                + helper(
+                    root.left,
+                    prefix + left_prefix,
+                    right_prefix="|   ",
+                    left_prefix="    ",
+                )
+            )
+
+        # At the top-level, we don't need to add | bars to either direction. We will
+        # start this process for subtrees.
+        return "\n".join(helper(self._root, "", "    ", "    "))

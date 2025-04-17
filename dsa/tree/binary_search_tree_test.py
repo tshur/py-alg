@@ -9,6 +9,8 @@ class TestBinarySearchTree:
         assert len(bst) == 0
         assert str(bst) == ""
         assert list(bst) == []
+        assert list(bst.inorder_iterative()) == []
+        assert list(bst.inorder_recursive()) == []
 
     def test_empty_tree(self) -> None:
         bst = BinarySearchTree[int]()
@@ -103,42 +105,78 @@ class TestBinarySearchTree:
 
     def test_str(self) -> None:
         singleton_bst = BinarySearchTree[int].from_iterable([10])
-        assert str(singleton_bst) == "+—10"
+        assert str(singleton_bst) == "+———10"
 
         bst = BinarySearchTree[int].from_iterable([5, 10, 8, 12, 11])
         assert (
             str(bst)
-            == """
-                +—12
-                | +—11
-              +—10
-              | +—8
-            +—5
-            """
+            == """\
+        +———12
+        |   +———11
+    +———10
+    |   +———8
++———5\
+"""
         )
 
         balanced_bst = BinarySearchTree[int].from_iterable([5, 2, 1, 3, 8, 7, 9])
         assert (
             str(balanced_bst)
-            == """
-    +—9
-  +—8
-  | +—7
-+—5
-  | +—3
-  +—2
-    +—1
+            == """\
+        +———9
+    +———8
+    |   +———7
++———5
+    |   +———3
+    +———2
+        +———1\
 """
         )
 
-        unbalanced_bst = BinarySearchTree[int].from_iterable([1, 2, 3, 4, 5])
+        right_bst = BinarySearchTree[int].from_iterable([1, 2, 3, 4, 5])
         assert (
-            str(unbalanced_bst)
-            == """
-        +—5
-      +—4
-    +—3
-  +—2
-+—1
+            str(right_bst)
+            == """\
+                +———5
+            +———4
+        +———3
+    +———2
++———1\
+"""
+        )
+
+        left = BinarySearchTree[int].from_iterable([5, 4, 3, 2, 1])
+        assert (
+            str(left)
+            == """\
++———5
+    +———4
+        +———3
+            +———2
+                +———1\
+"""
+        )
+
+        complicated_bst = BinarySearchTree[int].from_iterable(
+            [10, 4, 5, 6, 8, 7, 9, 14, 11, 13, 12, 10, 14, 14, 14]
+        )
+        assert (
+            str(complicated_bst)
+            == """\
+                +———14
+            +———14
+        +———14
+    +———14
+    |   |   +———13
+    |   |   |   +———12
+    |   +———11
+    |       +———10
++———10
+    |               +———9
+    |           +———8
+    |           |   +———7
+    |       +———6
+    |   +———5
+    +———4\
 """
         )
