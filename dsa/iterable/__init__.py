@@ -3,6 +3,7 @@ from .reduce import reduce
 from .reverse import reverse
 from .rotate import rotate
 from .scan import scan
+from .skip import skip
 
 __all__ = [
     "adjacent_transform",
@@ -11,4 +12,5 @@ __all__ = [
     "reverse",
     "rotate",
     "scan",
+    "skip",
 ]

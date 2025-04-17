@@ -1,3 +1,4 @@
+from dsa.iterable import skip
 from dsa.linked_list import SinglyLinkedList
 
 
@@ -6,10 +7,7 @@ class DetectCycle(SinglyLinkedList[int]):
         if index >= len(self) or not self._tail:
             raise IndexError("index out of bounds")
 
-        # TODO: Replace this with a skip(iterator, n) algorithm.
-        iterator = self.node_iterator()
-        for _ in range(index):
-            next(iterator)
+        iterator = skip(self.node_iterator(), index)
         self._tail.next = next(iterator)
 
     def hash_set(self) -> bool:
