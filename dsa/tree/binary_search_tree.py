@@ -20,12 +20,14 @@ class BinarySearchTree[CT: Comparable]:
     The primary property of a binary search tree is that for each node, all nodes in the
     left subtree are <= the node's value. All nodes in the right subtree are > the
     node's value. Requires the < comparison operator to be available on the value type.
-    Nodes are inserted into the first viable location. The tree is not rebalanced for efficiency.
+    Nodes are inserted into the first viable location. The tree is not rebalanced for
+    efficiency.
 
     Basic operations:
-      - insert
-      - remove
-      - search
+      - insert, O(logn) average case, O(n) worst case (unbalanced tree).
+      - remove, O(logn) average case, O(n) worst case (unbalanced tree).
+      - __contains__, O(logn) average case, O(n) worst case (unbalanced tree).
+      - __iter__, in-order traversal of the tree in O(n) time and O(h) space.
     """
 
     _root: Optional[_Node[CT]]
@@ -53,6 +55,15 @@ class BinarySearchTree[CT: Comparable]:
         Returns:
             BinarySearchTree[CT]: The resulting binary search tree after inserting the
               given values from the iterable.
+
+        Examples:
+            >>> bst = BinarySearchTree.from_iterable([5, 10, 8, 12, 11])
+            >>> print(bst)
+                    +———12
+                    |   +———11
+                +———10
+                |   +———8
+            +———5
         """
         bst = BinarySearchTree[CT]()
         for value in iterable:
@@ -67,42 +78,105 @@ class BinarySearchTree[CT: Comparable]:
         value can be inserted into the tree (possibly at non-adjacent locations).
 
         Complexity:
-            Time: O(logn), to traverse to the empty leaf and insert.
+            Time: O(logn), to traverse to the empty leaf and insert. Assumes the tree is
+              reasonably balanced, otherwise will take worst-case O(n) time complexity.
             Space: O(1)
 
         Args:
             value (CT): The value to be added into a new Node and inserted into the
               tree.
-        """
-        node = _Node(value)
-        if self._root is None:
-            self._root = node
-            self._size += 1
-            return
 
+        Examples:
+            >>> bst = BinarySearchTree()
+            >>> bst.insert(5)
+            >>> bst.insert(3)
+            >>> bst.insert(5)
+            >>> print(bst)
+                +———5
+            +———5
+                +———3
+        """
+        parent = None
         current = self._root
-        while current:  # Loop should not terminate via this condition.
+        while current:
+            parent = current
             if value < current.data:
-                if current.left is None:
-                    current.left = node
-                    break
                 current = current.left
             else:
-                if current.right is None:
-                    current.right = node
-                    break
                 current = current.right
+
+        node = _Node(value)
+        if parent is None:
+            self._root = node
+        elif value < parent.data:
+            parent.left = node
+        else:
+            parent.right = node
         self._size += 1
 
     def remove(self, value: CT) -> None:
         """Remove one occurrence of the value in the tree (if it exists).
 
+        The method to delete a node can be reduced to a few cases.
+
+        Node to delete has zero or one children:
+            To delete this node, we can simply replace it with its non-None child. If
+            both children are None, we can just remove the node.
+                  +———10
+                  |   +———8
+              +———5
+                  ^ to_delete
+            becomes
+              +———10
+                  +———8
+
+        Node to delete has two children (harder case):
+            To delete this node, we will replace (swap) it with its in-order successor.
+            The successor is the next-largest node (i.e., the smallest node in the right
+            subtree). This is to preserve the "sorted" structure of the BST.
+                  +———10     <- successor_parent
+                  |   +———8  <- successor
+              +———5          <- to_delete
+                  +———3
+            becomes
+                  +———10
+                  |   +———X  <- new to_delete
+              +———8
+                  +———3
+            After swapping, we still need to delete the old successor node. By
+            definition, this should have at most one child. We can delete this using the
+            same removal algorithm (but this time the simple case).
+                  +———10
+              +———8
+                  +———3
+
         Complexity:
-            Time: O(logn), to find the node and the new parent to replace it.
+            Time: O(logn), to find the node and the new parent to replace it. If the
+              tree is severely unbalanced, this is worst-case O(n) time.
 
         Args:
-            target (CT): The target to find and remove. Only the first / one instance of
+            value (CT): The target to find and remove. Only the first / one instance of
               the node will be removed.
+
+        Examples:
+            >>> bst = BinarySearchTree.from_iterable([5, 10, 8, 3])
+            >>> print(bst)
+                +———10
+                |   +———8
+            +———5
+                +———3
+            >>> bst.remove(5)
+            >>> print(bst)
+                +———10
+            +———8
+                +———3
+            >>> bst.remove(10)
+            >>> print(bst)
+            +———8
+                +———3
+            >>> bst.remove(8)
+            >>> print(bst)
+            +———3
         """
         to_delete_parent, to_delete = self._find_parent(value)
         if to_delete is None:
@@ -118,6 +192,16 @@ class BinarySearchTree[CT: Comparable]:
         self._size -= 1
 
     def _delete_near_leaf(self, parent: Optional[_Node[CT]], node: _Node[CT]):
+        """Delete the only child of parent (if one exists).
+
+        Assumes that given node does not have two children (i.e., near-leaf node).
+        Otherwise, this function has undefined behavior.
+
+        Args:
+            parent (Optional[_Node[CT]]): The parent of the node to delete. None
+              represents that the node is the root of the tree.
+            node (_Node[CT]): The node to delete. This node must have at most one child.
+        """
         if node.left is None:
             new_node = node.right
         else:
@@ -131,6 +215,26 @@ class BinarySearchTree[CT: Comparable]:
             parent.right = new_node
 
     def _find_successor(self, node: _Node[CT]) -> tuple[_Node[CT], Optional[_Node[CT]]]:
+        """Find the in-order successor for node and its parent.
+
+        Runs in O(logn) time. Worst-case, O(n) time if the tree is severely unbalanced.
+
+        Sample: (using simplified tree section)
+                    v parent of in-order successor of node
+                +———10
+                |   +———8
+            +———5       ^ in-order successor of node
+                ^ node
+
+        Args:
+            node (_Node[CT]): Target node to find the successor of.
+
+        Returns:
+            tuple[_Node[CT], Optional[_Node[CT]]]: A (previous, current) pair such that
+              current is the next in-order successor to node. That is, current is the
+              smallest node in the right subtree of node. By definition, this means that
+              the successor does not have two children. Also, return its parent.
+        """
         previous = node
         current = node.right
         while current and current.left:
@@ -189,6 +293,11 @@ class BinarySearchTree[CT: Comparable]:
 
         Yields:
             Iterator[CT]: Values in-order from the tree.
+
+        Examples:
+            >>> bst = BinarySearchTree.from_iterable([5, 10, 8, 12, 11])
+            >>> list(bst)
+            [5, 8, 10, 11, 12]
         """
         yield from self.inorder_recursive()
 
@@ -197,6 +306,11 @@ class BinarySearchTree[CT: Comparable]:
 
         Yields:
             Iterator[CT]: Values in-order from the tree.
+
+        Examples:
+            >>> bst = BinarySearchTree.from_iterable([5, 10, 8, 12, 11])
+            >>> list(bst.inorder_recursive())
+            [5, 8, 10, 11, 12]
         """
 
         def helper(root: Optional[_Node[CT]]) -> Iterator[CT]:
@@ -220,6 +334,11 @@ class BinarySearchTree[CT: Comparable]:
 
         Yields:
             Iterator[CT]: Values in-order from the tree.
+
+        Examples:
+            >>> bst = BinarySearchTree.from_iterable([5, 10, 8, 12, 11])
+            >>> list(bst.inorder_iterative())
+            [5, 8, 10, 11, 12]
         """
         if self._root is None:
             return
@@ -257,6 +376,13 @@ class BinarySearchTree[CT: Comparable]:
 
         Returns:
             bool: Whether the value is in the binary search tree.
+
+        Examples:
+            >>> bst = BinarySearchTree.from_iterable([5, 10, 8, 12, 11])
+            >>> 8 in bst
+            True
+            >>> 9 in bst
+            False
         """
         return self._find(value) is not None
 
@@ -265,6 +391,12 @@ class BinarySearchTree[CT: Comparable]:
 
         Returns:
             bool: True if the tree at least one element/node. Otherwise, returns false.
+
+        Examples:
+            >>> bool(BinarySearchTree.from_iterable([5, 10, 8]))
+            True
+            >>> bool(BinarySearchTree())
+            False
         """
         return len(self) != 0
 
@@ -273,6 +405,12 @@ class BinarySearchTree[CT: Comparable]:
 
         Returns:
             int: The number of nodes in the tree.
+
+        Examples:
+            >>> len(BinarySearchTree.from_iterable([5, 10, 8]))
+            3
+            >>> len(BinarySearchTree())
+            0
         """
         return self._size
 
@@ -294,6 +432,32 @@ class BinarySearchTree[CT: Comparable]:
 
         Returns:
             str: String displaying the tree structure and data.
+
+        Examples:
+            >>> bst = BinarySearchTree[int].from_iterable([5, 10, 8])
+            >>> print(bst)
+                +———10
+                |   +———8
+            +———5
+            >>> bst = BinarySearchTree[int].from_iterable(
+            ...     [10, 4, 5, 6, 8, 7, 9, 14, 11, 13, 12, 10, 14, 14, 14]
+            ... )
+            >>> print(bst)
+                            +———14
+                        +———14
+                    +———14
+                +———14
+                |   |   +———13
+                |   |   |   +———12
+                |   +———11
+                |       +———10
+            +———10
+                |               +———9
+                |           +———8
+                |           |   +———7
+                |       +———6
+                |   +———5
+                +———4
         """
 
         def helper(
