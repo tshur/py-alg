@@ -13,15 +13,6 @@ class _Node[CT: Comparable]:
     left: Optional[_Node[CT]] = None
     right: Optional[_Node[CT]] = None
 
-    def __str__(self) -> str:
-        out = f"Node({self.data}"
-        if self.left:
-            out += f", left={self.left}"
-        if self.right:
-            out += f", right={self.right}"
-        out += ")"
-        return out
-
 
 class BinarySearchTree[CT: Comparable]:
     """Binary search tree data structure. Data is sorted order in the tree.
@@ -114,34 +105,37 @@ class BinarySearchTree[CT: Comparable]:
               the node will be removed.
         """
         to_delete_parent, to_delete = self._find_parent(value)
-        print(to_delete_parent, to_delete)
         if to_delete is None:
             return
 
-        if to_delete.left is None:
-            new_node = to_delete.right
-            if to_delete_parent is None:
-                self._root = new_node
-            elif to_delete_parent.left == to_delete:
-                to_delete_parent.left = new_node
-            else:
-                to_delete_parent.right = new_node
-        elif to_delete.right is None:
-            new_node = to_delete.left
-            if to_delete_parent is None:
-                self._root = new_node
-            elif to_delete_parent.left == to_delete:
-                to_delete_parent.left = new_node
-            else:
-                to_delete_parent.right = new_node
+        if to_delete.left is None or to_delete.right is None:
+            self._delete_near_leaf(to_delete_parent, to_delete)
         else:
-            pass  # Replace with successor node.
+            successor_parent, successor = self._find_successor(to_delete)
+            if successor:
+                to_delete.data = successor.data
+                self._delete_near_leaf(successor_parent, successor)
         self._size -= 1
 
-    def _find_successor(
-        self, node: _Node[CT]
-    ) -> tuple[Optional[_Node[CT]], Optional[_Node[CT]]]:
-        raise NotImplementedError
+    def _delete_near_leaf(self, parent: Optional[_Node[CT]], node: _Node[CT]):
+        if node.left is None:
+            new_node = node.right
+        else:
+            new_node = node.left
+
+        if parent is None:
+            self._root = new_node
+        elif parent.left == node:
+            parent.left = new_node
+        else:
+            parent.right = new_node
+
+    def _find_successor(self, node: _Node[CT]) -> tuple[_Node[CT], Optional[_Node[CT]]]:
+        previous = node
+        current = node.right
+        while current and current.left:
+            previous, current = current, current.left
+        return previous, current
 
     def _find_parent(
         self, value: CT
