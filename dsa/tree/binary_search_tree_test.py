@@ -50,23 +50,66 @@ class TestBinarySearchTree:
         assert len(bst) == 9
         assert list(bst) == [3, 3, 3, 5, 8, 8, 9, 9, 10]
 
-    def test_basic_remove(self) -> None:
-        bst = BinarySearchTree[int].from_iterable([5, 10, 8, 12, 11, 11])
+    def test_near_leaf_remove(self) -> None:
+        bst = BinarySearchTree[int].from_iterable([5, 10, 8, 12, 11, 4, 3])
 
-        assert list(bst) == [5, 8, 10, 11, 11, 12]
-        bst.remove(11)
+        # Remove nodes that do not exist.
+        bst.remove(2)
+        bst.remove(13)
+        bst.remove(9)
+        assert list(bst) == [3, 4, 5, 8, 10, 11, 12]
+        assert len(bst) == 7
+
+        bst.remove(4)  # Internal with only left child.
+        assert list(bst) == [3, 5, 8, 10, 11, 12]
+        bst.remove(3)  # Left leaf node.
         assert list(bst) == [5, 8, 10, 11, 12]
-        bst.remove(11)
-        assert list(bst) == [5, 8, 10, 12]
-        bst.remove(5)
-        assert list(bst) == [8, 10, 12]
-        bst.remove(10)
-        assert list(bst) == [8, 12]
-        bst.remove(12)
+
+        bst.remove(5)  # Root with only right subtree.
+        assert list(bst) == [8, 10, 11, 12]
+
+        bst.remove(12)  # Internal with only left subtree.
+        assert list(bst) == [8, 10, 11]
+
+        bst.remove(11)  # Leaf node.
+        assert list(bst) == [8, 10]
+        bst.remove(10)  # Root with only left subtree.
         assert list(bst) == [8]
-        bst.remove(8)
-        assert len(bst) == 0
+        bst.remove(8)  # Root is leaf node.
         assert list(bst) == []
+        assert len(bst) == 0
+
+        bst.remove(8)  # Remove from empty tree.
+        assert len(bst) == 0
+
+    def test_full_node_remove(self) -> None:
+        bst = BinarySearchTree[int].from_iterable(
+            [10, 4, 5, 6, 8, 7, 9, 14, 11, 13, 12, 10, 14, 14, 14]
+        )
+        assert list(bst) == [4, 5, 6, 7, 8, 9, 10, 10, 11, 12, 13, 14, 14, 14, 14]
+        assert len(bst) == 15
+
+        bst.remove(8)  # Full node with two leaf children.
+        assert list(bst) == [4, 5, 6, 7, 9, 10, 10, 11, 12, 13, 14, 14, 14, 14]
+        assert len(bst) == 14
+
+        bst.remove(11)  # Full node with deeper successor.
+        assert list(bst) == [4, 5, 6, 7, 9, 10, 10, 12, 13, 14, 14, 14, 14]
+        assert len(bst) == 13
+
+        bst.remove(10)  # Root node with full subtrees.
+        assert list(bst) == [4, 5, 6, 7, 9, 10, 12, 13, 14, 14, 14, 14]
+        assert len(bst) == 12
+
+        bst.remove(14)  # Full node with right chain.
+        assert list(bst) == [4, 5, 6, 7, 9, 10, 12, 13, 14, 14, 14]
+        assert len(bst) == 11
+
+        # Remove everything else.
+        for value in list(bst):
+            bst.remove(value)
+        assert list(bst) == []
+        assert len(bst) == 0
 
     def test_inorder_iter(self) -> None:
         balanced_bst = BinarySearchTree[int].from_iterable([5, 2, 1, 3, 8, 7, 9])

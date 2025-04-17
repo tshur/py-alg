@@ -13,6 +13,15 @@ class _Node[CT: Comparable]:
     left: Optional[_Node[CT]] = None
     right: Optional[_Node[CT]] = None
 
+    def __str__(self) -> str:
+        out = f"Node({self.data}"
+        if self.left:
+            out += f", left={self.left}"
+        if self.right:
+            out += f", right={self.right}"
+        out += ")"
+        return out
+
 
 class BinarySearchTree[CT: Comparable]:
     """Binary search tree data structure. Data is sorted order in the tree.
@@ -104,26 +113,65 @@ class BinarySearchTree[CT: Comparable]:
             target (CT): The target to find and remove. Only the first / one instance of
               the node will be removed.
         """
-        # Traverse such that current is the node to delete (or None).
-        to_delete = self._search(value)
+        to_delete_parent, to_delete = self._find_parent(value)
+        print(to_delete_parent, to_delete)
         if to_delete is None:
             return
 
-        successor = None
-        if to_delete.right is None:
-            successor = to_delete.left
-        elif to_delete.left is None:
-            successor = to_delete.right
+        if to_delete.left is None:
+            new_node = to_delete.right
+            if to_delete_parent is None:
+                self._root = new_node
+            elif to_delete_parent.left == to_delete:
+                to_delete_parent.left = new_node
+            else:
+                to_delete_parent.right = new_node
+        elif to_delete.right is None:
+            new_node = to_delete.left
+            if to_delete_parent is None:
+                self._root = new_node
+            elif to_delete_parent.left == to_delete:
+                to_delete_parent.left = new_node
+            else:
+                to_delete_parent.right = new_node
         else:
-            successor = self._extract_successor_node(to_delete)
-            successor.left = to_delete.left
-            successor.right = to_delete.right
+            pass  # Replace with successor node.
         self._size -= 1
 
-    def _extract_successor_node(self, node: _Node[CT]) -> _Node[CT]:
-        return node
+    def _find_successor(
+        self, node: _Node[CT]
+    ) -> tuple[Optional[_Node[CT]], Optional[_Node[CT]]]:
+        raise NotImplementedError
 
-    def _search(self, value: CT) -> Optional[_Node[CT]]:
+    def _find_parent(
+        self, value: CT
+    ) -> tuple[Optional[_Node[CT]], Optional[_Node[CT]]]:
+        """Find (previous, current) such that current has the target value (or None).
+
+        Runs in O(logn) time. Worst-case, O(n) time if the tree is severely unbalanced.
+
+        Args:
+            value (CT): Target value to search for.
+
+        Returns:
+            tuple[Optional[_Node[CT]], Optional[_Node[CT]]]: A (previous, current) pair
+              where current.data == value (or current is None, if value not found). The
+              previous node is the parent of current (or None, if the root / no parent).
+        """
+        previous = None
+        current = self._root
+        while current:
+            if value == current.data:
+                return previous, current
+
+            previous = current
+            if value < current.data:
+                current = current.left
+            else:
+                current = current.right
+        return previous, current
+
+    def _find(self, value: CT) -> Optional[_Node[CT]]:
         """Find a node with target value in the BST (or None if not found).
 
         Runs in O(logn) time. Worst-case, O(n) time if the tree is severely unbalanced.
@@ -135,15 +183,8 @@ class BinarySearchTree[CT: Comparable]:
             Optional[_Node[CT]]: The first node containing the target value. If no such
               node exists, return None.
         """
-        current = self._root
-        while current:
-            if value == current.data:
-                return current
-            elif value < current.data:
-                current = current.left
-            else:
-                current = current.right
-        return None
+        _, current = self._find_parent(value)
+        return current
 
     def __iter__(self) -> Iterator[CT]:
         """In-order traversal of the binary search tree.
@@ -223,7 +264,7 @@ class BinarySearchTree[CT: Comparable]:
         Returns:
             bool: Whether the value is in the binary search tree.
         """
-        return self._search(value) is not None
+        return self._find(value) is not None
 
     def __bool__(self) -> bool:
         """Get the truthy-ness of the tree (whether non-empty).
