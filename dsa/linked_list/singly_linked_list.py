@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Iterable, Iterator, Optional, Self
 
 
@@ -18,10 +17,12 @@ class SinglyLinkedList[T]:
       - __str__, O(n)
     """
 
-    @dataclass
     class _Node[U]:
         data: U
         next: Optional[SinglyLinkedList._Node[U]] = None
+
+        def __init__(self, data: U):
+            self.data = data
 
     _head: Optional[_Node[T]]
     _tail: Optional[_Node[T]]
