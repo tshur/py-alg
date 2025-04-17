@@ -12,7 +12,7 @@ class DetectCycle(SinglyLinkedList[int]):
             next(iterator)
         self._tail.next = next(iterator)
 
-    def brute_force(self) -> bool:
+    def hash_set(self) -> bool:
         seen = set[SinglyLinkedList._Node[int]]()
         for node in self.node_iterator():
             if node in seen:

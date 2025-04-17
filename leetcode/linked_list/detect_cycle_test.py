@@ -7,7 +7,7 @@ from leetcode.linked_list.detect_cycle import DetectCycle
 pytestmark = pytest.mark.parametrize(
     "has_cycle_algorithm",
     [
-        DetectCycle.brute_force,
+        DetectCycle.hash_set,
         DetectCycle.fast_slow,
     ],
 )
