@@ -2,6 +2,8 @@ import operator
 from itertools import tee
 from typing import Callable, Iterable, Iterator, Tuple
 
+from dsa.iterable.skip import skip
+
 
 def adjacent_transform[T, U](
     iterable: Iterable[T],
@@ -48,8 +50,7 @@ def adjacent_transform[T, U](
     try:
         # Offset the iterators according to their index to create the window.
         for i, iterator in enumerate(iterators):
-            for _ in range(i):
-                next(iterator)
+            skip(iterator, i)
     except StopIteration:
         return  # Not enough elements to access pairwise.
 
