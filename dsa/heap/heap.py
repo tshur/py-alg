@@ -36,10 +36,7 @@ class Heap[CT: Comparable]:
 
         removed = self._heap[0]
         self._heap[0] = self._heap.pop()
-        print(self)
         self._sift_down(0)
-        print(self)
-        print()
         return removed
 
     def peek(self) -> Optional[CT]:
