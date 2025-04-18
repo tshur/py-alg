@@ -20,7 +20,7 @@ pytestmark = pytest.mark.parametrize(
 )
 
 
-class TestSelectionSort:
+class TestSortAlgorithms:
     def test_simple_array(
         self, sort_algorithm: Callable[[Iterable[Comparable]], list[Comparable]]
     ) -> None:
