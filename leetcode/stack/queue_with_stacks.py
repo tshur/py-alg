@@ -81,8 +81,10 @@ class QueueWithStacks:
 
         Should never be called with elements in the out_stack.
         """
-        while value := self._in_stack.pop():
-            self._out_stack.push(value)
+        while self._in_stack:
+            value = self._in_stack.pop()
+            if value is not None:
+                self._out_stack.push(value)
 
     def __len__(self) -> int:
         return len(self._in_stack) + len(self._out_stack)

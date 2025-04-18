@@ -312,7 +312,8 @@ class Deque[T]:
         for i in range(self._size):
             # It is *possible* to encounter None via type system, but due to class
             # invariant, we should never encounter non-T data in the valid index range.
-            if value := self._ring_buffer[self._index(i)]:
+            value = self._ring_buffer[self._index(i)]
+            if value is not None:
                 yield value
 
     def __contains__(self, value: T) -> bool:
