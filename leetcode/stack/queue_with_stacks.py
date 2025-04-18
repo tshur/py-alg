@@ -24,10 +24,10 @@ class QueueWithStacks:
     def from_iterable(cls, iterable: Iterable[int]) -> Self:
         queue = cls()
         for value in iterable:
-            queue.add(value)
+            queue.enqueue(value)
         return queue
 
-    def add(self, value: int) -> None:
+    def enqueue(self, value: int) -> None:
         """Add value to the back of the queue.
 
         Implementation details:
@@ -38,7 +38,7 @@ class QueueWithStacks:
         """
         self._in_stack.push(value)
 
-    def remove(self) -> int:
+    def dequeue(self) -> int:
         """Remove (and return) value from the front of the queue.
 
         Implementation details:

@@ -12,7 +12,7 @@ class TestQueueWithStacks:
         with pytest.raises(IndexError, match="peek called on empty queue"):
             queue.peek()
         with pytest.raises(IndexError, match="remove called on empty queue"):
-            queue.remove()
+            queue.dequeue()
 
     def test_from_iterable(self) -> None:
         queue = QueueWithStacks.from_iterable([1, 2, 3, 4, 5])
@@ -25,15 +25,15 @@ class TestQueueWithStacks:
     def test_add(self) -> None:
         queue = QueueWithStacks()
 
-        queue.add(1)
+        queue.enqueue(1)
         assert len(queue) == 1
         assert queue.peek() == 1
 
-        queue.add(2)
+        queue.enqueue(2)
         assert len(queue) == 2
         assert queue.peek() == 1
 
-        queue.add(30)
+        queue.enqueue(30)
         assert len(queue) == 3
         assert queue.peek() == 1
 
@@ -42,15 +42,15 @@ class TestQueueWithStacks:
 
         assert len(queue) == 3
         assert queue.peek() == 10
-        assert queue.remove() == 10
+        assert queue.dequeue() == 10
 
         assert len(queue) == 2
         assert queue.peek() == 20
-        assert queue.remove() == 20
+        assert queue.dequeue() == 20
 
         assert len(queue) == 1
         assert queue.peek() == 30
-        assert queue.remove() == 30
+        assert queue.dequeue() == 30
 
     def test_peek(self) -> None:
         queue = QueueWithStacks.from_iterable([1])
@@ -63,18 +63,18 @@ class TestQueueWithStacks:
     def test_alternate_add_remove(self) -> None:
         queue = QueueWithStacks.from_iterable([1, 2, 3])
 
-        assert queue.remove() == 1
+        assert queue.dequeue() == 1
 
-        queue.add(4)
-        queue.add(5)
-        assert queue.remove() == 2
+        queue.enqueue(4)
+        queue.enqueue(5)
+        assert queue.dequeue() == 2
         assert queue.peek() == 3
 
-        queue.add(6)
+        queue.enqueue(6)
         assert len(queue) == 4
 
-        assert queue.remove() == 3
-        assert queue.remove() == 4
-        assert queue.remove() == 5
-        assert queue.remove() == 6
+        assert queue.dequeue() == 3
+        assert queue.dequeue() == 4
+        assert queue.dequeue() == 5
+        assert queue.dequeue() == 6
         assert len(queue) == 0
