@@ -4,12 +4,14 @@ import pytest
 
 from dsa.typing.comparison import Comparable
 
+from .insertion_sort import insertion_sort
 from .selection_sort import selection_sort
 from .tree_sort import tree_sort
 
 pytestmark = pytest.mark.parametrize(
     "sort_algorithm",
     [
+        insertion_sort,
         selection_sort,
         tree_sort,
     ],
