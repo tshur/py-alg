@@ -225,7 +225,7 @@ class Heap[CT: Comparable]:
         while i > 0:
             parent = Heap._parent(i)
             if self._heap[parent] < self._heap[i]:
-                return  # Satisfies heap ordering.
+                return
 
             self._swap(i, parent)
             i = parent
@@ -246,7 +246,7 @@ class Heap[CT: Comparable]:
         while i < len(self):
             child = self._smaller_child(i)
             if not child or self._heap[i] < self._heap[child]:
-                return  # Satisfies heap ordering.
+                return
 
             self._swap(i, child)
             i = child
