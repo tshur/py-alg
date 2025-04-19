@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from dsa.heap import Heap
+from dsa.heap import MinHeap
 from dsa.typing.comparison import Comparable
 
 
@@ -32,5 +32,5 @@ def heap_sort[CT: Comparable](iterable: Iterable[CT]) -> list[CT]:
         []
     """
 
-    heap = Heap[CT].from_iterable(iterable)
+    heap = MinHeap[CT].from_iterable(iterable)
     return list(heap.consume_all())

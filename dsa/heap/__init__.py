@@ -1,3 +1,3 @@
-from .heap import Heap
+from .heap import MaxHeap, MinHeap
 
-__all__ = ["Heap"]
+__all__ = ["MaxHeap", "MinHeap"]

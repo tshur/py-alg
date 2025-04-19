@@ -1,20 +1,23 @@
+from abc import ABC, abstractmethod
 from typing import Iterable, Iterator, Optional, Self
 
 from dsa.typing.comparison import Comparable
 
 
-class Heap[CT: Comparable]:
-    """Min-heap data structure implementation using a list.
+class _Heap[CT: Comparable](ABC):
+    """Abstract heap data structure implementation using a list with custom comparator.
 
-    The heap is organized such that the smallest element is always at the front / root
-    of the heap (index 0). After push/pop operations, we need to re-heapify (sift_up or
-    sift_down) to maintain the heap invariant.
+    The heap is organized such that the highest priority element is always at the
+    front / root of the heap (index 0). After push/pop operations, we need to re-heapify
+    (sift_up or sift_down) to maintain the heap invariant.
 
     We use a list because the heap will always be a complete binary tree. We can
     traverse to parent/child "nodes" via index manipulation. Left and right children are
     at 2i+1 and 2i+2, respectively. The parent node is at (i-2)//2.
 
-    Values must support a Comparable type (at least support __lt__ operation).
+    Values must support a Comparable type (at least support __lt__ operation). For
+    MinHeap, the highest priority element is the "smallest"; for MaxHeap it is the
+    "largest".
 
     Supports the following core algorithms:
      - from_iterable in O(n) time
@@ -51,7 +54,7 @@ class Heap[CT: Comparable]:
             Self: The newly constructed heap.
 
         Examples:
-            >>> heap = Heap.from_iterable([5, 1, 3, 2, 4])
+            >>> heap = MinHeap.from_iterable([5, 1, 3, 2, 4])
             >>> list(heap.consume_all())
             [1, 2, 3, 4, 5]
         """
@@ -73,7 +76,7 @@ class Heap[CT: Comparable]:
             value (CT): The value to add into the heap.
 
         Examples:
-            >>> heap = Heap()
+            >>> heap = MinHeap()
             >>> heap.push(3)
             >>> heap.push(1)
             >>> heap.push(2)
@@ -84,7 +87,7 @@ class Heap[CT: Comparable]:
         self._sift_up(len(self) - 1)
 
     def pop(self) -> Optional[CT]:
-        """Pop (and return) the smallest item from the top of the heap.
+        """Pop (and return) the highest priority item from the top of the heap.
 
         Popping the element could occur in O(1) time (like the peek operation). However,
         we need to maintain the heap invariant by swapping with the last value and then
@@ -97,7 +100,7 @@ class Heap[CT: Comparable]:
             Optional[CT]: The popped / removed value. If the heap is empty, return None.
 
         Examples:
-            >>> heap = Heap.from_iterable([3, 1, 2])
+            >>> heap = MinHeap.from_iterable([3, 1, 2])
             >>> heap.pop()
             1
             >>> heap.pop()
@@ -117,20 +120,20 @@ class Heap[CT: Comparable]:
         return value
 
     def peek(self) -> Optional[CT]:
-        """Return the smallest value in the heap (the front).
+        """Return the highest priority value in the heap (the front).
 
         Complexity:
             Time: O(1)
 
         Returns:
-            Optional[CT]: The smallest value / root of the heap. If the heap is empty,
-              returns None.
+            Optional[CT]: The highest priority value / root of the heap. If the heap is
+              empty, returns None.
 
         Examples:
-            >>> heap = Heap.from_iterable([3, 1, 2])
+            >>> heap = MinHeap.from_iterable([3, 1, 2])
             >>> heap.peek()
             1
-            >>> heap = Heap()
+            >>> heap = MinHeap()
             >>> heap.peek()
         """
         return self._heap[0] if not self.is_empty() else None
@@ -142,10 +145,10 @@ class Heap[CT: Comparable]:
             bool: True if the heap is empty. Otherwise, returns False.
 
         Examples:
-            >>> heap = Heap.from_iterable([3, 1, 2])
+            >>> heap = MinHeap.from_iterable([3, 1, 2])
             >>> heap.is_empty()
             False
-            >>> heap = Heap()
+            >>> heap = MinHeap()
             >>> heap.is_empty()
             True
         """
@@ -154,9 +157,9 @@ class Heap[CT: Comparable]:
     def consume_all(self) -> Iterator[CT]:
         """Pop (and yield) values from the heap until the heap is empty.
 
-        Repeatedly calls pop to get the smallest value from the heap until the heap is
-        empty. After this, the heap will be empty and is mutated by this function. The
-        returned values will be in sorted order due to the heap invariant.
+        Repeatedly calls pop to get the highest priority value from the heap until the
+        heap is empty. After this, the heap will be empty and is mutated by this
+        function. The returned values will be in sorted order due to the heap invariant.
 
         Caution: If this iterator is not consumed, then the heap will still have values
         that could later be removed via the pop()s of this iterator.
@@ -168,7 +171,7 @@ class Heap[CT: Comparable]:
             Iterator[CT]: An iterator over values in the heap.
 
         Examples:
-            >>> heap = Heap.from_iterable([5, 1, 3, 2, 4])
+            >>> heap = MinHeap.from_iterable([5, 1, 3, 2, 4])
             >>> list(heap.consume_all())
             [1, 2, 3, 4, 5]
         """
@@ -182,30 +185,33 @@ class Heap[CT: Comparable]:
             int: The number of elements present in the heap.
 
         Examples:
-            >>> heap = Heap.from_iterable([5, 1, 3, 2, 4])
+            >>> heap = MinHeap.from_iterable([5, 1, 3, 2, 4])
             >>> len(heap)
             5
         """
         return len(self._heap)
 
-    def _smaller_child(self, i: int) -> Optional[int]:
-        """Returns the index of the smaller of two children for the given node index.
+    @abstractmethod
+    def _compare(self, value1: CT, value2: CT) -> bool: ...
+
+    def _priority_child(self, i: int) -> Optional[int]:
+        """Returns the index of the (highest) priority child for the given node index.
 
         Args:
-            i (int): The current node to find the smaller child of.
+            i (int): The current node to find the (higher) priority child of.
 
         Returns:
-            Optional[int]: The index of the child node with smaller value. There is no
-              guarantee that the returned child has a smaller value than the current
+            Optional[int]: The index of the child node with higher priority. There is no
+              guarantee that the returned child has a higher priority than the current
               node. If no such child exists (e.g., leaf node), then None is returned.
         """
-        left, right = Heap._left_child(i), Heap._right_child(i)
+        left, right = _Heap._left_child(i), _Heap._right_child(i)
         if left >= len(self):
             return None
         elif right >= len(self):
             return left
 
-        if self._heap[left] < self._heap[right]:
+        if self._compare(self._heap[left], self._heap[right]):
             return left
         return right
 
@@ -213,8 +219,8 @@ class Heap[CT: Comparable]:
         """Sift/heapify nodes upwards until the heap invariant is restored.
 
         Only checks the heap invariant for the current node (i.e., stops when a node is
-        encountered with lower value). Sifting means swapping the node with its parent
-        until the parent is smaller.
+        encountered with higher priority). Sifting means swapping the node with its
+        parent until the parent is higher priority.
 
         Complexity:
             Time: O(logn) due to repeated swaps possibly the height of the heap.
@@ -223,8 +229,8 @@ class Heap[CT: Comparable]:
             i (int): The current index of the node to sift upwards.
         """
         while i > 0:
-            parent = Heap._parent(i)
-            if self._heap[parent] < self._heap[i]:
+            parent = _Heap._parent(i)
+            if self._compare(self._heap[parent], self._heap[i]):
                 return
 
             self._swap(i, parent)
@@ -234,8 +240,9 @@ class Heap[CT: Comparable]:
         """Sift/heapify nodes downwards until the heap invariant is restored.
 
         Only checks the heap invariant for the current node (i.e., stops when a node is
-        encountered with higher value). Sifting means swapping the node with the smaller
-        of its two children (if that value is smaller than current).
+        encountered with lower priority). Sifting means swapping the node with the
+        higher priority of its two children (if that value is higher priority than
+        current).
 
         Complexity:
             Time: O(logn) due to repeated swaps possibly the height of the heap.
@@ -244,8 +251,8 @@ class Heap[CT: Comparable]:
             i (int): The current index of the node to sift downwards.
         """
         while i < len(self):
-            child = self._smaller_child(i)
-            if not child or self._heap[i] < self._heap[child]:
+            child = self._priority_child(i)
+            if not child or self._compare(self._heap[i], self._heap[child]):
                 return
 
             self._swap(i, child)
@@ -288,11 +295,11 @@ class Heap[CT: Comparable]:
               then an index of -1 will be returned (representing no parent).
 
         Examples:
-            >>> Heap._parent(5)
+            >>> _Heap._parent(5)
             2
-            >>> Heap._parent(2)
+            >>> _Heap._parent(2)
             0
-            >>> Heap._parent(0)
+            >>> _Heap._parent(0)
             -1
         """
         return (i - 1) // 2
@@ -313,11 +320,11 @@ class Heap[CT: Comparable]:
               exist (e.g., leaf node).
 
         Examples:
-            >>> Heap._left_child(0)
+            >>> _Heap._left_child(0)
             1
-            >>> Heap._left_child(1)
+            >>> _Heap._left_child(1)
             3
-            >>> Heap._left_child(2)
+            >>> _Heap._left_child(2)
             5
         """
         return i * 2 + 1
@@ -338,11 +345,43 @@ class Heap[CT: Comparable]:
               exist (e.g., leaf node).
 
         Examples:
-            >>> Heap._right_child(0)
+            >>> _Heap._right_child(0)
             2
-            >>> Heap._right_child(1)
+            >>> _Heap._right_child(1)
             4
-            >>> Heap._right_child(2)
+            >>> _Heap._right_child(2)
             6
         """
         return i * 2 + 2
+
+
+class MinHeap[CT: Comparable](_Heap[CT]):
+    """MinHeap, where the smallest item is always at the front.
+
+    Examples:
+        >>> min_heap = MinHeap[int].from_iterable([5, 1, 4, 3, 2])
+        >>> min_heap.peek()
+        1
+        >>> list(min_heap.consume_all())
+        [1, 2, 3, 4, 5]
+    """
+
+    def _compare(self, value1: CT, value2: CT) -> bool:
+        """Use __lt__ ordering to construct a min-heap."""
+        return value1 < value2
+
+
+class MaxHeap[CT: Comparable](_Heap[CT]):
+    """MaxHeap, where the largest item is always at the front.
+
+    Examples:
+        >>> max_heap = MaxHeap[int].from_iterable([5, 1, 4, 3, 2])
+        >>> max_heap.peek()
+        5
+        >>> list(max_heap.consume_all())
+        [5, 4, 3, 2, 1]
+    """
+
+    def _compare(self, value1: CT, value2: CT) -> bool:
+        """Use __gt__ ordering to construct a min-heap."""
+        return value1 > value2
