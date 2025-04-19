@@ -6,14 +6,6 @@ from dsa.typing.comparison import Comparable
 class Heap[CT: Comparable]:
     _heap: list[CT]
 
-    class _Node[T]:
-        index: int
-        value: T
-
-        def __init__(self, index: int, value: T):
-            self.index = index
-            self.value = value
-
     def __init__(self):
         self._heap = []
 
@@ -34,76 +26,65 @@ class Heap[CT: Comparable]:
         if len(self) == 1:
             return self._heap.pop()
 
-        removed = self._heap[0]
+        value = self._heap[0]
         self._heap[0] = self._heap.pop()
         self._sift_down(0)
-        return removed
+        return value
 
     def peek(self) -> Optional[CT]:
-        if self.is_empty():
-            return None
-        return self._heap[0]
+        return self._heap[0] if not self.is_empty() else None
 
     def is_empty(self) -> bool:
-        return len(self) == 0
+        return not self._heap
 
     def consume_all(self) -> Iterator[CT]:
-        while True:
-            value = self.pop()
-            if value is None:
-                break
+        while (value := self.pop()) is not None:
             yield value
 
     def __len__(self) -> int:
         return len(self._heap)
 
-    def _parent(self, index: int) -> Optional[_Node[CT]]:
-        parent_index = (index - 1) // 2
-        if parent_index < 0:
-            return None
-        return Heap._Node(parent_index, self._heap[parent_index])
+    def _parent(self, i: int) -> int:
+        return (i - 1) // 2
 
-    def _left_child(self, index: int) -> Optional[_Node[CT]]:
-        child_index = index * 2 + 1
-        if child_index >= len(self):
-            return None
-        return Heap._Node(child_index, self._heap[child_index])
+    def _left_child(self, i: int) -> int:
+        return i * 2 + 1
 
-    def _right_child(self, index: int) -> Optional[_Node[CT]]:
-        child_index = index * 2 + 2
-        if child_index >= len(self):
-            return None
-        return Heap._Node(child_index, self._heap[child_index])
+    def _right_child(self, i: int) -> int:
+        return i * 2 + 2
 
-    def _smaller_child(self, index: int) -> Optional[_Node[CT]]:
-        left, right = self._left_child(index), self._right_child(index)
-        if not left or not right:
+    def _smaller_child(self, i: int) -> Optional[int]:
+        left, right = self._left_child(i), self._right_child(i)
+        if left >= len(self):
+            return None
+        elif right >= len(self):
             return left
 
-        if left.value < right.value:
+        if self._heap[left] < self._heap[right]:
             return left
         return right
 
-    def _sift_up(self, index: int) -> None:
-        while index >= 0:
-            current = self._heap[index]
-            parent = self._parent(index)
-            if not parent or parent.value < current:
+    def _sift_up(self, i: int) -> None:
+        while i > 0:
+            parent = self._parent(i)
+            if self._heap[parent] < self._heap[i]:
                 return  # Satisfies heap ordering.
 
-            self._heap[parent.index], self._heap[index] = current, parent.value
-            index = parent.index
+            self._swap(i, parent)
+            i = parent
 
-    def _sift_down(self, index: int) -> None:
-        while index < len(self):
-            current = self._heap[index]
-            child = self._smaller_child(index)
-            if not child or current < child.value:
+    def _sift_down(self, i: int) -> None:
+        while i < len(self):
+            child = self._smaller_child(i)
+            if not child or self._heap[i] < self._heap[child]:
                 return  # Satisfies heap ordering.
 
-            self._heap[index], self._heap[child.index] = child.value, current
-            index = child.index
+            self._swap(i, child)
+            i = child
 
     def _heapify(self) -> None:
         for i in range(len(self) - 1, -1, -1):
             self._sift_down(i)
+
+    def _swap(self, i: int, j: int) -> None:
+        self._heap[i], self._heap[j] = self._heap[j], self._heap[i]
