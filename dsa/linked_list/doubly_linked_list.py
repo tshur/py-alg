@@ -1,17 +1,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable, Iterator, Optional, Self
+from typing import Iterator, Optional
+
+from dsa.linked_list.linked_list import LinkedListBase, NodeBase
 
 
 @dataclass
-class _Node[T]:
+class _Node[T]((NodeBase[T])):
     data: T
     prev: Optional[_Node[T]] = None
     next: Optional[_Node[T]] = None
 
 
-class DoublyLinkedList[T]:
+class DoublyLinkedList[T](LinkedListBase[T]):
     """Doubly linked list data structure with head and tail pointer.
 
     Basic operations:
@@ -33,29 +35,6 @@ class DoublyLinkedList[T]:
         self._head = None
         self._tail = None
         self._size = 0
-
-    @classmethod
-    def from_iterable(cls, iterable: Iterable[T]) -> Self:
-        """Builds a DoublyLinkedList given an Iterable of values.
-
-        Args:
-            iterable (Iterable[T]): Values to insert into a linked list.
-
-        Returns:
-            Self: The built linked list from the iterable. Values will be added
-              such that linked_list.head.data == iterable[0], and len(linked_list) ==
-              len(iterable).
-
-
-        Examples:
-            >>> linked_list = DoublyLinkedList.from_iterable([1, 2, 3])
-            >>> print(linked_list)
-            1->2->3->None
-        """
-        linked_list = cls()
-        for value in iterable:
-            linked_list.push_tail(value)
-        return linked_list
 
     def push_head(self, value: T) -> None:
         """Insert a new Node(value) into the front/head of the linked list.
@@ -147,62 +126,6 @@ class DoublyLinkedList[T]:
             self._tail.next = None
         self._size -= 1
 
-    def __contains__(self, value: T) -> bool:
-        """Check if the DoublyLinkedList contains a node with given value.
-
-        Args:
-            value (T): The value to search for.
-
-        Returns:
-            bool: True if the value is found. Otherwise, returns False.
-
-        Examples:
-            >>> linked_list = DoublyLinkedList.from_iterable([1, 2, 3])
-            >>> 2 in linked_list
-            True
-            >>> 4 in linked_list
-            False
-        """
-        return value in iter(self)
-
-    def __len__(self) -> int:
-        """Returns the number of nodes in the DoublyLinkedList (in O(1) time).
-
-        Returns:
-            int: The number of nodes.
-
-        Examples:
-            >>> linked_list = DoublyLinkedList.from_iterable([1, 2, 3])
-            >>> len(linked_list)
-            3
-        """
-        return self._size
-
-    def __str__(self) -> str:
-        """Returns a printable string containing all nodes in one line.
-
-        Returns:
-            str: A visual representation of the linked list.
-
-        Examples:
-            >>> linked_list = DoublyLinkedList.from_iterable([1, 2, 3])
-            >>> str(linked_list)
-            '1->2->3->None'
-        """
-        nodes = [str(value) for value in self]
-        nodes.append("None")
-
-        return "->".join(nodes)
-
-    def __iter__(self) -> Iterator[T]:
-        """Iterator that yields values in order from the head to the tail.
-
-        Yields:
-            Iterator[T]: Values of nodes in the linked list.
-        """
-        for node in self.node_iterator():
-            yield node.data
-
     def node_iterator(self) -> Iterator[_Node[T]]:
         """Iterator that yields Nodes in order from the head to the tail.
 
@@ -213,3 +136,20 @@ class DoublyLinkedList[T]:
         while current:
             yield current
             current = current.next
+
+    def pairwise_iterator(self) -> Iterator[tuple[Optional[_Node[T]], _Node[T]]]:
+        """Iterator that yields (previous, current) pairs in the linked list.
+
+        The return values will be such that previous starts at None and current starts
+        at self._head. The pair of returned nodes will remain in lock-step, a single
+        node index apart.
+
+        Yields:
+            Iterator[tuple[Optional[_Node[T]], _Node[T]]: (previous, current) pairs of
+              nodes in the linked list.
+        """
+        previous = None
+        current = self._head
+        while current:
+            yield previous, current
+            previous, current = current, current.next

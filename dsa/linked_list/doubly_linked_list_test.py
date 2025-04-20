@@ -110,3 +110,9 @@ class TestDoublyLinkedList:
 
         assert [node.data for node in linked_list.node_iterator()] == [1, 2, 3]
         assert list(empty_list.node_iterator()) == []
+
+        assert [
+            (previous.data if previous else None, current.data)
+            for previous, current in linked_list.pairwise_iterator()
+        ] == [(None, 1), (1, 2), (2, 3)]
+        assert list(empty_list.pairwise_iterator()) == []
