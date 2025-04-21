@@ -7,14 +7,20 @@ class GraphBase[T](ABC):
     def from_edges(cls, edges: list[tuple[T, T]]) -> Self:
         graph = cls()
         for edge in edges:
-            graph.insert(edge)
+            graph.add_edge(edge)
         return graph
 
     @abstractmethod
-    def insert(self, edge: tuple[T, T]) -> None: ...
+    def add(self, node: T) -> None: ...
 
     @abstractmethod
-    def remove(self, edge: tuple[T, T]) -> None: ...
+    def remove(self, node: T) -> None: ...
+
+    @abstractmethod
+    def add_edge(self, edge: tuple[T, T]) -> None: ...
+
+    @abstractmethod
+    def remove_edge(self, edge: tuple[T, T]) -> None: ...
 
     @abstractmethod
     def has_edge(self, edge: tuple[T, T]) -> bool: ...

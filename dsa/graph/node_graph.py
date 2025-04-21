@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import Iterator
 
 from dsa.graph.graph import GraphBase
@@ -13,22 +11,29 @@ class NodeGraph[T](GraphBase[T]):
     def __init__(self):
         self._nodes = {}
 
-    def insert(self, edge: tuple[T, T]) -> None:
-        if edge[0] not in self._nodes:
-            self._nodes[edge[0]] = []
-        if edge[1] not in self._nodes:
-            self._nodes[edge[1]] = []
+    def add(self, node: T) -> None:
+        if node not in self._nodes:
+            self._nodes[node] = []
+
+    def remove(self, node: T) -> None:
+        if node not in self._nodes:
+            return
+        for other in self:
+            self.remove_edge((other, node))
+        del self._nodes[node]
+
+    def add_edge(self, edge: tuple[T, T]) -> None:
+        self.add(edge[0])
+        self.add(edge[1])
         self._nodes[edge[0]].append(edge[1])
 
-    def remove(self, edge: tuple[T, T]) -> None:
+    def remove_edge(self, edge: tuple[T, T]) -> None:
         if edge[0] not in self._nodes:
             return
-
-        self._nodes[edge[0]].remove(edge[1])
-        if not self._nodes[edge[0]]:
-            del self._nodes[edge[0]]
-        if not self._nodes[edge[1]]:
-            del self._nodes[edge[1]]
+        try:
+            self._nodes[edge[0]].remove(edge[1])
+        except ValueError:
+            pass  # Edge not found, this is OK.
 
     def has_edge(self, edge: tuple[T, T]) -> bool:
         return edge[0] in self._nodes and edge[1] in self._nodes[edge[0]]
