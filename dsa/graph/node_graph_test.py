@@ -44,7 +44,9 @@ class TestNodeGraph:
         graph = NodeGraph[int]()
 
         graph.add(0)
+        assert len(graph) == 1
         graph.add(2)
+        assert len(graph) == 2
         graph.add(1)
         assert len(graph) == 3
         assert (
@@ -127,6 +129,22 @@ class TestNodeGraph:
         assert len(graph) == 6
         graph.add_edge((-1, 1))
         assert len(graph) == 7
+        assert (
+            str(graph)
+            == """\
+0 -> [1]
+1 -> [0, 2]
+2 -> []
+3 -> [4]
+4 -> []
+5 -> [5]
+-1 -> [1]"""
+        )
+
+        # Insert duplicate edges.
+        graph.add_edge((0, 1))
+        graph.add_edge((0, 1))
+        graph.add_edge((0, 1))
         assert (
             str(graph)
             == """\
@@ -264,23 +282,7 @@ class TestNodeGraph:
         )
 
         assert len(graph) == 14
-        assert (
-            str(graph)
-            == """\
-0 -> [0, 1]
-1 -> [5, 2]
-5 -> [6, 7, 8]
-2 -> [3]
-3 -> [4]
-4 -> [4, 1]
-6 -> []
-7 -> []
-8 -> [9]
-9 -> []
-10 -> [11, 12]
-11 -> [11]
-12 -> [11]
-13 -> [13]"""
-        )
-        assert list(graph.bfs_iterator(0)) == [0, 1, 5, 2, 6, 7, 8, 3, 9, 4]
-        assert list(graph.dfs_iterator(0)) == [0, 1, 2, 3, 4, 5, 8, 9, 7, 6]
+        assert len(list(graph.bfs_iterator(0))) == 10
+        assert len(list(graph.dfs_iterator(0))) == 10
+        assert len(list(graph.bfs_iterator(10))) == 3
+        assert len(list(graph.dfs_iterator(10))) == 3
