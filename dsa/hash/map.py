@@ -13,7 +13,7 @@ class Map[K, V]:
 
     Basic operations:
      - __setitem__, in ~O(1), but really O(k) where k is the length of collided values.
-       Worst case, this is O(n) due to rehashing, but this is amortized.
+         Worst case, this is O(n) due to rehashing, but this is amortized.
      - __getitem__, in ~O(1), but really O(k) where k is the length of collided values.
      - pop, in ~O(1), but really O(k) where k is the length of collided values.
      - __iter__ (and variants), in ~O(n).
