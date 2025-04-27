@@ -1,3 +1,6 @@
-from .map import Map
+from .map_list import MapList
+from .set import Set
 
-__all__ = ["Map"]
+Map = MapList
+
+__all__ = ["Map", "MapList", "Set"]

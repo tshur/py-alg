@@ -1,7 +1,6 @@
 from typing import Iterator
 
-from dsa.hash.map import Map
-from dsa.hash.set import Set
+from dsa.hash import Map, Set
 from dsa.queue.queue import Queue
 from dsa.stack.stack import Stack
 

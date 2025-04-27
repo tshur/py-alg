@@ -7,7 +7,7 @@ from dsa.linked_list.linked_list import LinkedListBase, NodeBase
 
 
 @dataclass
-class _Node[T]((NodeBase[T])):
+class _Node[T](NodeBase[T]):
     data: T
     prev: Optional[_Node[T]] = None
     next: Optional[_Node[T]] = None
