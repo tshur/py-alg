@@ -8,6 +8,7 @@ class Map[K, V]:
     # We handle hash collisions simply by extending the list at the colliding key.
     _map: list[list[tuple[K, V]]]
     _size: int
+    _load_factor = 0.75  # Ratio of size:capacity before we grow the map's capacity.
 
     def __init__(self, /, capacity: int = 31):
         self._map = [[] for _ in range(capacity)]
@@ -36,6 +37,8 @@ class Map[K, V]:
         if index is None:
             hashes.append((key, value))
             self._size += 1
+            if self._size >= Map._load_factor * self._capacity():
+                self._grow()
         else:
             hashes[index] = (key, value)
 
@@ -76,7 +79,12 @@ class Map[K, V]:
         return hashes, index
 
     def _grow(self) -> None:
-        raise NotImplementedError
+        items = list(self.items())
+        self._map = [[] for _ in range(self._capacity() * 2 + 1)]
+        self._size = 0
+
+        for key, value in items:
+            self[key] = value
 
     def __contains__(self, key: K) -> bool:
         """Return if a given key exists in the map.
@@ -103,3 +111,6 @@ class Map[K, V]:
             bool: True if the map has at least one entry. False, otherwise.
         """
         return len(self) > 0
+
+    def __str__(self) -> str:
+        return str(self._map)

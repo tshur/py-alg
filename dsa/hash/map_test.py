@@ -87,3 +87,14 @@ class TestMap:
         assert "c" in hm
         assert "d" not in hm
         assert "1" not in hm
+
+    def test_grow(self) -> None:
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        hm = Map[str, int](capacity=1)
+
+        for i, ch in enumerate(alphabet):
+            hm[ch] = i
+
+        assert len(hm) == 26
+        assert list(sorted(hm)) == list(alphabet)
+        assert list(sorted(hm.items())) == [(ch, i) for i, ch in enumerate(alphabet)]
