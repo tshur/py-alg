@@ -1,9 +1,17 @@
+from operator import itemgetter
 from typing import Iterable, Iterator, Self
+
+from dsa.search import linear_search
 
 
 class Map[K, V]:
-    def __init__(self):
-        raise NotImplementedError
+    # We handle hash collisions simply by extending the list at the colliding key.
+    _map: list[list[tuple[K, V]]]
+    _size: int
+
+    def __init__(self, /, capacity: int = 31):
+        self._map = [[] for _ in range(capacity)]
+        self._size = 0
 
     @classmethod
     def from_items(cls, items: Iterable[tuple[K, V]]) -> Self:
@@ -13,42 +21,80 @@ class Map[K, V]:
         return hm
 
     def pop(self, key: K) -> V:
-        raise NotImplementedError
+        value = self[key]
+        del self[key]
+        return value
 
     def __getitem__(self, key: K) -> V:
-        raise NotImplementedError
+        hashes, index = self._get(key)
+        return hashes[index][1]
 
     def __setitem__(self, key: K, value: V) -> None:
-        raise NotImplementedError
+        hashes = self._map[self._index(key)]
+        index = linear_search(hashes, key, key=itemgetter(0))
+
+        if index is None:
+            hashes.append((key, value))
+            self._size += 1
+        else:
+            hashes[index] = (key, value)
 
     def __delitem__(self, key: K) -> None:
-        raise NotImplementedError
+        hashes, index = self._get(key)
+        hashes.pop(index)
+        self._size -= 1
 
     def __iter__(self) -> Iterator[K]:
-        raise NotImplementedError
+        yield from self.keys()
 
     def keys(self) -> Iterator[K]:
-        raise NotImplementedError
+        for hashes in self._map:
+            for key, _ in hashes:
+                yield key
 
     def values(self) -> Iterator[V]:
-        raise NotImplementedError
+        for hashes in self._map:
+            for _, value in hashes:
+                yield value
 
     def items(self) -> Iterator[tuple[K, V]]:
+        for hashes in self._map:
+            for item in hashes:
+                yield item
+
+    def _capacity(self) -> int:
+        return len(self._map)
+
+    def _index(self, key: K) -> int:
+        return hash(key) % self._capacity()
+
+    def _get(self, key: K) -> tuple[list[tuple[K, V]], int]:
+        hashes = self._map[self._index(key)]
+        index = linear_search(hashes, key, key=itemgetter(0))
+        if index is None:
+            raise KeyError("key not found in map")
+        return hashes, index
+
+    def _grow(self) -> None:
         raise NotImplementedError
 
     def __contains__(self, key: K) -> bool:
         """Return if a given key exists in the map.
 
         Args:
-            key (T): The key to search for in the map.
+            key (K): The key to search for in the map.
 
         Returns:
             bool: True if the key is in the map. False, otherwise.
         """
-        raise NotImplementedError
+        try:
+            self._get(key)
+        except KeyError:
+            return False
+        return True
 
     def __len__(self) -> int:
-        raise NotImplementedError
+        return self._size
 
     def __bool__(self) -> bool:
         """Returns true if the map has at least one entry.

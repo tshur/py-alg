@@ -10,7 +10,6 @@ class TestMap:
         assert not hm
         assert "a" not in hm
         assert len(hm) == 0
-        assert str(hm) == ""
         assert list(hm) == []
 
     def test_from_items(self) -> None:

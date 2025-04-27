@@ -1,7 +1,9 @@
-from typing import Iterable, Optional
+from typing import Callable, Iterable, Optional
 
 
-def linear_search[T](iterable: Iterable[T], target: T) -> Optional[int]:
+def linear_search[T, U](
+    iterable: Iterable[T], target: U, /, key: Optional[Callable[[T], U]] = None
+) -> Optional[int]:
     """Uses linear search to find the target value in an iterable.
 
     Complexity:
@@ -24,7 +26,12 @@ def linear_search[T](iterable: Iterable[T], target: T) -> Optional[int]:
         >>> linear_search([5, 2, 1, 4], 7)
     """
 
-    for i, value in enumerate(iterable):
-        if value == target:
-            return i
+    if key is None:
+        for i, value in enumerate(iterable):
+            if value == target:
+                return i
+    else:
+        for i, value in enumerate(iterable):
+            if key(value) == target:
+                return i
     return None
