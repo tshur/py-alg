@@ -1,10 +1,10 @@
 from typing import Iterable
 
 from dsa.tree import BinarySearchTree
-from dsa.typing.comparison import Comparable
+from dsa.typing import SupportsRichComparison
 
 
-def tree_sort[CT: Comparable](iterable: Iterable[CT]) -> list[CT]:
+def tree_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
     """Returns a sorted copy of the input iterable using binary search tree sort method.
 
     Complexity:

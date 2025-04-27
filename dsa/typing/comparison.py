@@ -1,7 +1,7 @@
 from typing import Any, Protocol
 
 
-class Comparable(Protocol):
-    """An abstract class supporting < comparison for typing usage."""
+class SupportsRichComparison(Protocol):
+    """An abstract type interface supporting < (__lt__) comparison."""
 
     def __lt__(self, other: Any, /) -> bool: ...

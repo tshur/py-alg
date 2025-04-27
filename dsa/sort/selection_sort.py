@@ -1,9 +1,9 @@
 from typing import Iterable
 
-from dsa.typing.comparison import Comparable
+from dsa.typing import SupportsRichComparison
 
 
-def selection_sort[CT: Comparable](iterable: Iterable[CT]) -> list[CT]:
+def selection_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
     """Returns a sorted copy of the input iterable using selection sort method.
 
     Selection sort uses a partition to separate the sorted area (left of the partition)

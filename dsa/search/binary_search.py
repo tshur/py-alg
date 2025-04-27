@@ -1,9 +1,11 @@
 from typing import Optional, Sequence
 
-from dsa.typing.comparison import Comparable
+from dsa.typing import SupportsRichComparison
 
 
-def binary_search[CT: Comparable](array: Sequence[CT], target: CT) -> Optional[int]:
+def binary_search[CT: SupportsRichComparison](
+    array: Sequence[CT], target: CT
+) -> Optional[int]:
     """Uses binary search to find the target value in a sorted sequence.
 
     The array type and target type must be a Comparable type which supports at least the
@@ -52,7 +54,7 @@ def binary_search[CT: Comparable](array: Sequence[CT], target: CT) -> Optional[i
     return None
 
 
-def lower_bound[CT: Comparable](array: Sequence[CT], target: CT) -> int:
+def lower_bound[CT: SupportsRichComparison](array: Sequence[CT], target: CT) -> int:
     """Uses binary search to find the smallest index where target could be inserted.
 
     This function has the difference with the core binary_search function in two ways.
@@ -103,7 +105,7 @@ def lower_bound[CT: Comparable](array: Sequence[CT], target: CT) -> int:
     return low
 
 
-def upper_bound[CT: Comparable](array: Sequence[CT], target: CT) -> int:
+def upper_bound[CT: SupportsRichComparison](array: Sequence[CT], target: CT) -> int:
     """Uses binary search to find the largest index where target could be inserted.
 
     This returns the first index in the array with a value greater than the target. If

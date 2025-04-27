@@ -1,10 +1,10 @@
 from typing import Iterable
 
 from dsa.heap import MinHeap
-from dsa.typing.comparison import Comparable
+from dsa.typing import SupportsRichComparison
 
 
-def heap_sort[CT: Comparable](iterable: Iterable[CT]) -> list[CT]:
+def heap_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
     """Returns a sorted copy of the input iterable using heap sort method.
 
     Uses the ordering property of a heap to sort an iterable. First, we construct a heap

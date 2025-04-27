@@ -4,17 +4,17 @@ from dataclasses import dataclass
 from typing import Iterable, Iterator, Optional
 
 from dsa.stack import Stack
-from dsa.typing.comparison import Comparable
+from dsa.typing import SupportsRichComparison
 
 
 @dataclass
-class _Node[CT: Comparable]:
+class _Node[CT: SupportsRichComparison]:
     data: CT
     left: Optional[_Node[CT]] = None
     right: Optional[_Node[CT]] = None
 
 
-class BinarySearchTree[CT: Comparable]:
+class BinarySearchTree[CT: SupportsRichComparison]:
     """Binary search tree data structure. Data is sorted order in the tree.
 
     The primary property of a binary search tree is that for each node, all nodes in the

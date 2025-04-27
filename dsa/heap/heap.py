@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Iterable, Iterator, Optional, Self
 
-from dsa.typing.comparison import Comparable
+from dsa.typing import SupportsRichComparison
 
 
-class _Heap[CT: Comparable](ABC):
+class _Heap[CT: SupportsRichComparison](ABC):
     """Abstract heap data structure implementation using a list with custom comparator.
 
     The heap is organized such that the highest priority element is always at the
@@ -355,7 +355,7 @@ class _Heap[CT: Comparable](ABC):
         return i * 2 + 2
 
 
-class MinHeap[CT: Comparable](_Heap[CT]):
+class MinHeap[CT: SupportsRichComparison](_Heap[CT]):
     """MinHeap, where the smallest item is always at the front.
 
     Examples:
@@ -371,7 +371,7 @@ class MinHeap[CT: Comparable](_Heap[CT]):
         return value1 < value2
 
 
-class MaxHeap[CT: Comparable](_Heap[CT]):
+class MaxHeap[CT: SupportsRichComparison](_Heap[CT]):
     """MaxHeap, where the largest item is always at the front.
 
     Examples:
