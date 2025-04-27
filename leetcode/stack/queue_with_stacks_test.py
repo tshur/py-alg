@@ -1,6 +1,6 @@
 import pytest
 
-from leetcode.stack.queue_with_stacks import QueueWithStacks
+from .queue_with_stacks import QueueWithStacks
 
 
 class TestQueueWithStacks:

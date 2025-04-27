@@ -2,7 +2,7 @@ from typing import Callable
 
 import pytest
 
-from leetcode.linked_list.reverse_linked_list import ReverseLinkedList
+from .reverse_linked_list import ReverseLinkedList
 
 pytestmark = pytest.mark.parametrize(
     "reverse_algorithm",

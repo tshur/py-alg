@@ -1,6 +1,6 @@
 from typing import MutableSequence
 
-from dsa.iterable.reverse import reverse
+from .reverse import reverse
 
 
 def rotate[T](array: MutableSequence[T], k: int) -> MutableSequence[T]:

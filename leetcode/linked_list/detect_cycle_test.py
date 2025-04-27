@@ -2,7 +2,7 @@ from typing import Callable
 
 import pytest
 
-from leetcode.linked_list.detect_cycle import DetectCycle
+from .detect_cycle import DetectCycle
 
 pytestmark = pytest.mark.parametrize(
     "has_cycle_algorithm",

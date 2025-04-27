@@ -1,8 +1,8 @@
 from typing import Iterator
 
 from dsa.hash import Map, Set
-from dsa.queue.queue import Queue
-from dsa.stack.stack import Stack
+from dsa.queue import Queue
+from dsa.stack import Stack
 
 from .graph import GraphBase
 

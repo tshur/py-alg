@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from dsa.tree.binary_search_tree import BinarySearchTree
+from dsa.tree import BinarySearchTree
 from dsa.typing.comparison import Comparable
 
 

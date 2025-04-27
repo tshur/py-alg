@@ -1,4 +1,4 @@
-from dsa.hash.set import Set
+from dsa.hash import Set
 from dsa.iterable import skip
 from dsa.linked_list import SinglyLinkedList
 

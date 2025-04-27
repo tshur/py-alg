@@ -1,10 +1,12 @@
 from typing import Iterable, Iterator, Self
 
-from dsa.hash.map_list import MapList
+from .map_list import MapList
+
+Map = MapList
 
 
 class Set[T]:
-    """HashSet data structure implemented using a MapList[T, None].
+    """HashSet data structure implemented using a Map[T, None].
 
     Basic operations:
      - add, in ~O(1), but really O(k) where k is the length of collided values. Worst
@@ -14,11 +16,11 @@ class Set[T]:
      - __iter__, in ~O(n).
     """
 
-    _hm: MapList[T, None]
+    _hm: Map[T, None]
 
     def __init__(self):
         """Create a new (empty) set."""
-        self._hm = MapList()
+        self._hm = Map()
 
     @classmethod
     def from_iterable(cls, iterable: Iterable[T]) -> Self:

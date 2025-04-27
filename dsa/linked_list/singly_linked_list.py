@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Iterator, Optional
 
-from dsa.linked_list.linked_list import LinkedListBase, NodeBase
+from .linked_list import LinkedListBase, NodeBase
 
 
 class SinglyLinkedList[T](LinkedListBase[T]):

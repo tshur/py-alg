@@ -2,7 +2,7 @@ import operator
 from itertools import tee
 from typing import Callable, Iterable, Iterator, Tuple
 
-from dsa.iterable.skip import skip
+from .skip import skip
 
 
 def adjacent_transform[T, U](

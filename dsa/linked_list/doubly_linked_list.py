@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterator, Optional
 
-from dsa.linked_list.linked_list import LinkedListBase, NodeBase
+from .linked_list import LinkedListBase, NodeBase
 
 
 @dataclass

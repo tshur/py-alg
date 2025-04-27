@@ -1,6 +1,6 @@
 from typing import Iterable, Iterator, Optional, Self
 
-from dsa.queue.deque import Deque
+from .deque import Deque
 
 
 class Queue[T]:
