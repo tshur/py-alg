@@ -1,6 +1,7 @@
 from typing import Iterator
 
 from dsa.hash.map import Map
+from dsa.hash.set import Set
 from dsa.queue.queue import Queue
 from dsa.stack.stack import Stack
 
@@ -8,7 +9,7 @@ from .graph import GraphBase
 
 
 class NodeGraph[T](GraphBase[T]):
-    """Graph data structure implemented using an adjacency list of {node: set[node]}.
+    """Graph data structure implemented using an adjacency list of {node: Set[node]}.
 
     We directly hash the value T as a node, and do not add any extra class / object
     overhead. Therefore, the value T type must be hashable. We aggregate edges into a
@@ -26,7 +27,7 @@ class NodeGraph[T](GraphBase[T]):
       - dfs_iterator, O(V + E)
     """
 
-    _nodes: Map[T, set[T]]
+    _nodes: Map[T, Set[T]]
 
     def __init__(self):
         self._nodes = Map()
@@ -47,7 +48,7 @@ class NodeGraph[T](GraphBase[T]):
             2
         """
         if node not in self._nodes:
-            self._nodes[node] = set()
+            self._nodes[node] = Set()
 
     def remove(self, node: T) -> None:
         """Remove a node (and all edges to/from it) from the graph.
@@ -186,7 +187,7 @@ class NodeGraph[T](GraphBase[T]):
         if start not in self._nodes:
             return
 
-        seen = set[T]()
+        seen = Set[T]()
         queue = Queue[T].from_iterable([start])
         while queue:
             node = queue.dequeue()
@@ -228,7 +229,7 @@ class NodeGraph[T](GraphBase[T]):
         if start not in self._nodes:
             return
 
-        seen = set[T]()
+        seen = Set[T]()
         stack = Stack[T].from_iterable([start])
         while stack:
             node = stack.pop()

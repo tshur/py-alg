@@ -1,3 +1,4 @@
+from dsa.hash.set import Set
 from dsa.iterable import skip
 from dsa.linked_list import SinglyLinkedList
 
@@ -11,7 +12,7 @@ class DetectCycle(SinglyLinkedList[int]):
         self._tail.next = next(iterator)
 
     def hash_set(self) -> bool:
-        seen = set[SinglyLinkedList._Node[int]]()
+        seen = Set[SinglyLinkedList._Node[int]]()
         for node in self.node_iterator():
             if node in seen:
                 return True

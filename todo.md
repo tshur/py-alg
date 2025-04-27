@@ -1,8 +1,7 @@
 # TODO List
 
 - Adjacency matrix graph implementation
-- Set
-- Hash map
+- Hash map (probing; linked list; binary tree)
 - Priority queue
 - Merge
 - Mergesort
