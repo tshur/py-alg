@@ -53,8 +53,8 @@ class TestNodeGraph:
             str(graph)
             == """\
 0 -> []
-2 -> []
-1 -> []"""
+1 -> []
+2 -> []"""
         )
 
         # Already exists in graph.
@@ -65,8 +65,8 @@ class TestNodeGraph:
             str(graph)
             == """\
 0 -> []
-2 -> []
-1 -> []"""
+1 -> []
+2 -> []"""
         )
 
     def test_remove(self) -> None:
@@ -132,13 +132,13 @@ class TestNodeGraph:
         assert (
             str(graph)
             == """\
+-1 -> [1]
 0 -> [1]
 1 -> [0, 2]
 2 -> []
 3 -> [4]
 4 -> []
-5 -> [5]
--1 -> [1]"""
+5 -> [5]"""
         )
 
         # Insert duplicate edges.
@@ -148,13 +148,13 @@ class TestNodeGraph:
         assert (
             str(graph)
             == """\
+-1 -> [1]
 0 -> [1]
 1 -> [0, 2]
 2 -> []
 3 -> [4]
 4 -> []
-5 -> [5]
--1 -> [1]"""
+5 -> [5]"""
         )
 
     def test_remove_edge(self) -> None:

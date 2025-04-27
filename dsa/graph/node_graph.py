@@ -1,8 +1,10 @@
 from typing import Iterator
 
-from dsa.graph.graph import GraphBase
+from dsa.hash.map import Map
 from dsa.queue.queue import Queue
 from dsa.stack.stack import Stack
+
+from .graph import GraphBase
 
 
 class NodeGraph[T](GraphBase[T]):
@@ -24,10 +26,10 @@ class NodeGraph[T](GraphBase[T]):
       - dfs_iterator, O(V + E)
     """
 
-    _nodes: dict[T, set[T]]
+    _nodes: Map[T, set[T]]
 
     def __init__(self):
-        self._nodes = {}
+        self._nodes = Map()
 
     def add(self, node: T) -> None:
         """Add a new (empty) node into the graph. Does not create any edges.
@@ -271,4 +273,4 @@ class NodeGraph[T](GraphBase[T]):
         out: list[str] = []
         for node in iter(self):
             out.append(f"{node} -> {list(self._nodes[node])}")
-        return "\n".join(out)
+        return "\n".join(sorted(out))
