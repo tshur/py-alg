@@ -13,6 +13,8 @@ def linear_search[T, U](
     Args:
         iterable (Iterable[T]): The input sequence to be searched.
         target (T): The target value to find.
+        key (Optional[Callable[[T], U]], optional): A key function to transform values
+          in the iterable before testing. Defaults to None.
 
     Returns:
         Optional[int]: The index where the target was found in the input iterable. If
