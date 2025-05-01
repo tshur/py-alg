@@ -1,7 +1,7 @@
 # TODO List
 
 - Adjacency matrix graph implementation
-- Hash map (probing; linked list; binary tree)
+- Hash map (probing; binary tree)
 - Priority queue
 - Merge
 - Mergesort
@@ -15,3 +15,4 @@
 - More tree data structures
 - More leetcode questions
 - More ctci questions
+- Benchmarking implementations vs. builtins / collections.
