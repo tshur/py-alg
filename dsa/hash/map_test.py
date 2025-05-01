@@ -1,13 +1,12 @@
 import pytest
 
 from .map import MapBase
+from .map_linked_list import MapLinkedList
 from .map_list import MapList
 
 pytestmark = pytest.mark.parametrize(
     "cls",
-    [
-        MapList,
-    ],
+    [MapList, MapLinkedList],
 )
 
 
