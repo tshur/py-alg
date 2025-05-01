@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Iterator, Optional
 
-from .linked_list import LinkedListBase, NodeBase
+from .linked_list import LinkedListBase
 
 
 class SinglyLinkedList[T](LinkedListBase[T]):
@@ -14,12 +14,13 @@ class SinglyLinkedList[T](LinkedListBase[T]):
       - push_tail, O(1)
       - remove_head, O(1)
       - remove_tail, O(n) due to singly-linked list
+      - remove, O(n)
       - __contains__, O(n)
       - __len__, O(1) (pre-computed)
       - __str__, O(n)
     """
 
-    class _Node[U](NodeBase[U]):
+    class _Node[U](LinkedListBase.NodeBase[U]):
         data: U
         next: Optional[SinglyLinkedList._Node[U]] = None
 
@@ -122,6 +123,35 @@ class SinglyLinkedList[T](LinkedListBase[T]):
                 self._tail = previous
                 self._size -= 1
                 return
+
+    def remove(self, value: T) -> None:
+        """Remove the first occurrence of a node with value in the linked list.
+
+        If no node matches the given value, then the linked list will be unchanged.
+
+        Args:
+            value (T): The value to search for in the linked list. If a node contains
+              data equal to this value, the first such node will be removed.
+
+        Examples:
+            >>> linked_list = SinglyLinkedList.from_iterable([1, 2, 1, 3])
+            >>> linked_list.remove(1)
+            >>> print(linked_list)
+            2->1->3->None
+        """
+        for previous, current in self.pairwise_iterator():
+            if current.data != value:
+                continue
+
+            if current == self._head:
+                self.remove_head()
+            elif current == self._tail:
+                self.remove_tail()
+            else:
+                if previous:
+                    previous.next = current.next
+                self._size -= 1
+            return
 
     def node_iterator(self) -> Iterator[_Node[T]]:
         """Iterator that yields Nodes in order from the head to the tail.

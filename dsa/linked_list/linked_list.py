@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Iterable, Iterator, Optional, Self
-
-
-class NodeBase[T]:
-    data: T
+from typing import Callable, Iterable, Iterator, Optional, Self
 
 
 class LinkedListBase[T](ABC):
+    class NodeBase[U]:
+        data: U
+
     _size: int
 
     @classmethod
@@ -39,6 +38,29 @@ class LinkedListBase[T](ABC):
 
     @abstractmethod
     def remove_tail(self) -> None: ...
+
+    @abstractmethod
+    def remove(self, value: T) -> None: ...
+
+    def search[U](self, target: U, /, key: Callable[[T], U]) -> Optional[T]:
+        """Finds a value in the linked list such that key(value) == target.
+
+        This is a search with a custom condition or key function.
+
+        Args:
+            target (U): The target to search for.
+            key (Callable[[T], U]): A key function to transform values in the iterable
+              before comparing with the target. Required (if not desired, then use
+              __contains__).
+
+        Returns:
+            Optional[T]: A value in the linked list, such that key(value) == target. If
+              no such value exists, returns None.
+        """
+        for node in self.node_iterator():
+            if key(node.data) == target:
+                return node.data
+        return None
 
     def __contains__(self, value: T) -> bool:
         """Check if the LinkedList contains a node with given value.

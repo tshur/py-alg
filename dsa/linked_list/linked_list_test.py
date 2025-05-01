@@ -79,6 +79,24 @@ class TestLinkedList:
         assert len(linked_list) == 0
         assert str(linked_list) == "None"
 
+    def test_remove(self, cls: type[LinkedListBase[int]]) -> None:
+        linked_list = cls.from_iterable([1, 2, 1, 3, 1])
+
+        linked_list.remove(1)
+        assert str(linked_list) == "2->1->3->1->None"
+
+        linked_list.remove(1)
+        assert str(linked_list) == "2->3->1->None"
+        assert len(linked_list) == 3
+
+        linked_list.remove(1)
+        assert str(linked_list) == "2->3->None"
+        assert len(linked_list) == 2
+
+        linked_list.remove(1)
+        assert str(linked_list) == "2->3->None"
+        assert len(linked_list) == 2
+
     def test_contains(self, cls: type[LinkedListBase[int]]) -> None:
         linked_list = cls.from_iterable([1, 2, 3])
 
