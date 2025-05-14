@@ -1,17 +1,21 @@
 import pytest
 
 from .graph import GraphBase
+from .matrix_graph import MatrixGraph
 from .node_graph import NodeGraph
 
 pytestmark = pytest.mark.parametrize(
     "cls",
-    [NodeGraph],
+    [
+        MatrixGraph,
+        NodeGraph,
+    ],
 )
 
 
 class TestGraph:
     def test_empty_graph(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int]()
+        graph = cls()
 
         assert not graph
         assert len(graph) == 0
@@ -19,9 +23,7 @@ class TestGraph:
         assert list(graph) == []
 
     def test_from_edges(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (2, 4), (3, 4), (4, 5)]
-        )
+        graph = cls.from_edges([(1, 2), (1, 3), (2, 3), (2, 4), (3, 4), (4, 5)])
 
         assert graph
         assert len(graph) == 5
@@ -35,9 +37,7 @@ class TestGraph:
 5 -> []"""
         )
 
-        with_cycles = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4)]
-        )
+        with_cycles = cls.from_edges([(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4)])
         assert len(with_cycles) == 4
         assert (
             str(with_cycles)
@@ -49,7 +49,7 @@ class TestGraph:
         )
 
     def test_add(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int]()
+        graph = cls()
 
         graph.add(0)
         assert len(graph) == 1
@@ -78,9 +78,7 @@ class TestGraph:
         )
 
     def test_remove(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)]
-        )
+        graph = cls.from_edges([(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)])
 
         graph.remove(3)
         assert len(graph) == 4
@@ -123,7 +121,7 @@ class TestGraph:
         assert str(graph) == ""
 
     def test_add_edge(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int]()
+        graph = cls()
 
         graph.add_edge((0, 1))
         assert len(graph) == 2  # Both nodes are added.
@@ -166,9 +164,7 @@ class TestGraph:
         )
 
     def test_remove_edge(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)]
-        )
+        graph = cls.from_edges([(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)])
 
         graph.remove_edge((1, 3))
         assert not graph.has_edge((1, 3))
@@ -205,9 +201,7 @@ class TestGraph:
         )
 
     def test_has_edge(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)]
-        )
+        graph = cls.from_edges([(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)])
 
         assert graph.has_edge((1, 2))
         assert graph.has_edge((1, 3))
@@ -222,9 +216,7 @@ class TestGraph:
         assert not graph.has_edge((0, 0))
 
     def test_contains(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)]
-        )
+        graph = cls.from_edges([(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)])
 
         assert 1 in graph
         assert 2 in graph
@@ -236,16 +228,12 @@ class TestGraph:
         assert 6 not in graph
 
     def test_iter(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)]
-        )
+        graph = cls.from_edges([(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)])
 
         assert list(graph) == [1, 2, 3, 4, 5]
 
     def test_bfs_iterator(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)]
-        )
+        graph = cls.from_edges([(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)])
 
         assert list(graph.bfs_iterator(1)) == [1, 2, 3]
         assert list(graph.bfs_iterator(2)) == [2, 3, 1]
@@ -255,9 +243,7 @@ class TestGraph:
         assert list(graph.bfs_iterator(6)) == []
 
     def test_dfs_iterator(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
-            [(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)]
-        )
+        graph = cls.from_edges([(1, 2), (1, 3), (2, 3), (3, 1), (3, 3), (4, 4), (4, 5)])
 
         assert list(graph.dfs_iterator(1)) == [1, 3, 2]
         assert list(graph.dfs_iterator(2)) == [2, 3, 1]
@@ -267,7 +253,7 @@ class TestGraph:
         assert list(graph.dfs_iterator(6)) == []
 
     def test_large_graph(self, cls: type[GraphBase[int]]) -> None:
-        graph = NodeGraph[int].from_edges(
+        graph = cls.from_edges(
             [
                 (0, 0),
                 (0, 1),

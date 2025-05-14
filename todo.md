@@ -1,6 +1,5 @@
 # TODO List
 
-- Adjacency matrix graph implementation
 - Hash map (probing; binary tree)
 - Priority queue
 - Merge
