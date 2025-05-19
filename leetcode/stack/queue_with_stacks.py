@@ -8,8 +8,8 @@ class QueueWithStacks:
 
     Primary operations:
      - add (to back) in O(1)
-     - remove (from front) in O(n) to transfer stacks
-     - peek (from front) in O(n) to transfer stacks
+     - remove (from front)
+     - peek (from front)
      - is_empty in O(1)
     """
 
@@ -81,10 +81,8 @@ class QueueWithStacks:
 
         Should never be called with elements in the out_stack.
         """
-        while self._in_stack:
-            value = self._in_stack.pop()
-            if value is not None:
-                self._out_stack.push(value)
+        self._out_stack = self._in_stack
+        self._in_stack = Stack()
 
     def __len__(self) -> int:
         return len(self._in_stack) + len(self._out_stack)
