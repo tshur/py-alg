@@ -80,7 +80,7 @@ class QueueWithStacks:
         """Transfer elements from in_stack to out_stack.
 
         Should never be called with elements in the out_stack. The purpose of this
-        tranfer is to invert the in_stack to subsequently peek/pop elements from the
+        transfer is to invert the in_stack to subsequently peek/pop elements from the
         out_stack in reverse order. See implementation details in
         `QueueWithStacks.dequeue`.
 
