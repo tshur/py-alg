@@ -93,7 +93,7 @@ class QueueWithStacks:
         while self._in_stack:
             element = self._in_stack.pop()
 
-            # this if statement seems redudant but its required to avoid a type checker
+            # this if statement seems redundant but its required to avoid a type checker
             # warning for the push arg
             if element is not None:
                 self._out_stack.push(element)
