@@ -79,10 +79,24 @@ class QueueWithStacks:
     def _transfer_stacks(self) -> None:
         """Transfer elements from in_stack to out_stack.
 
-        Should never be called with elements in the out_stack.
+        Should never be called with elements in the out_stack. The purpose of this
+        transfer is to invert the in_stack to subsequently peek/pop elements from the
+        out_stack in reverse order. See implementation details in
+        `QueueWithStacks.dequeue`.
+
+        Examples:
+            >>> stack = QueueWithStacks.from_iterable([1, 2, 3])
+            >>> stack._transfer_stacks()
+            >>> print(stack._out_stack)
+            [3, 2, 1]
         """
-        self._out_stack = self._in_stack
-        self._in_stack = Stack()
+        while self._in_stack:
+            element = self._in_stack.pop()
+
+            # This if statement is redundant since the popped element should always
+            # exist here. Kept to avoid a type checker warning.
+            if element is not None:
+                self._out_stack.push(element)
 
     def __len__(self) -> int:
         return len(self._in_stack) + len(self._out_stack)
