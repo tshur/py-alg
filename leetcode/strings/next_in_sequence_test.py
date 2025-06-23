@@ -1,30 +1,48 @@
-from .next_in_sequence import next_in_sequence
+from typing import Callable
+
+import pytest
+
+from .next_in_sequence import next_in_sequence_v1, next_in_sequence_v2
+
+pytestmark = pytest.mark.parametrize(
+    "fn",
+    [
+        next_in_sequence_v1,
+        next_in_sequence_v2,
+    ],
+)
 
 
 class TestNextInSequence:
-    def test_one_character(self):
-        assert next_in_sequence('s') == 's'
-        assert next_in_sequence('a') == 'a'
-    
-    def test_two_character(self):
-        assert next_in_sequence('ab') == 'ba'
-        assert next_in_sequence('ba') == 'ab'
-    
-    def test_three_character(self):
-        assert next_in_sequence('abc') == 'acb'
-        assert next_in_sequence('acb') == 'bac'
-        assert next_in_sequence('bac') == 'bca'
-        assert next_in_sequence('bca') == 'cab'
-        assert next_in_sequence('cab') == 'cba'
-        assert next_in_sequence('cba') == 'abc'
-    
-    def test_same_character(self):
-        assert next_in_sequence('aaa') == 'aaa'
+    def test_empty_input(self, fn: Callable[[str], str]):
+        assert fn("") == ""
 
-        assert next_in_sequence('aab') == 'aba'
-        assert next_in_sequence('aba') == 'baa'
-        assert next_in_sequence('baa') == 'aab'
+    def test_one_character(self, fn: Callable[[str], str]):
+        assert fn("s") == "s"
+        assert fn("a") == "a"
 
-    def test_four_character(self):
-        assert next_in_sequence('abcd') == 'abdc'
-        assert next_in_sequence('dcba') == 'abcd'
+    def test_two_character(self, fn: Callable[[str], str]):
+        assert fn("ab") == "ba"
+        assert fn("ba") == "ab"
+
+    def test_three_character(self, fn: Callable[[str], str]):
+        assert fn("abc") == "acb"
+        assert fn("acb") == "bac"
+        assert fn("bac") == "bca"
+        assert fn("bca") == "cab"
+        assert fn("cab") == "cba"
+        assert fn("cba") == "abc"
+
+    def test_same_character(self, fn: Callable[[str], str]):
+        assert fn("aaa") == "aaa"
+
+        assert fn("aab") == "aba"
+        assert fn("aba") == "baa"
+        assert fn("baa") == "aab"
+
+    def test_four_character(self, fn: Callable[[str], str]):
+        assert fn("abcd") == "abdc"
+        assert fn("dcba") == "abcd"
+
+    def test_large_input(self, fn: Callable[[str], str]):
+        assert fn("abcedda") == "abdacde"
