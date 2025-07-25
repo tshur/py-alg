@@ -1,3 +1,4 @@
+import heapq
 from typing import Optional
 
 
@@ -76,12 +77,20 @@ class FileSystem:
         Args:
             prefix (str): The prefix string to search for.
         """
-        filtered_files = list(self._files.items())
+        matched_files = list(self._files.items())
         if prefix:
-            filtered_files = [
-                file for file in filtered_files if file[0].startswith(prefix)
+            matched_files = [
+                file for file in matched_files if file[0].startswith(prefix)
             ]
 
-        filtered_files.sort(key=lambda t: (-t[1], t[0]))
+        # Re-structure so that min-heap returns files in expected order.
+        file_heap = [(-file[1], file[0]) for file in matched_files]
+        heapq.heapify(file_heap)
 
-        return [file[0] for file in filtered_files[:10]]
+        result: list[str] = []
+        for _ in range(10):
+            if not file_heap:
+                break
+            next_file = heapq.heappop(file_heap)
+            result.append(next_file[1])  # Note: filename was moved to second index.
+        return result
