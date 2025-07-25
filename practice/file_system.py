@@ -55,3 +55,33 @@ class FileSystem:
         if source not in self._files:
             raise ValueError("Source file does not exist.")
         self._files[dest] = self._files[source]
+
+    def search(self, prefix: str) -> list[str]:
+        """Return the top 10 files whose name starts with the provided prefix.
+
+        Results will be ordered by size in decreasing order. In case of ties, file names
+        will be sorted by file name (ascending).
+
+        Complexity:
+            - Time: O(nlogn), where n is the number of files stored
+
+        Optimizations:
+            - Can store the file names in a Trie data structure. Store the actual file
+              contents at the terminal node. This makes prefix-matching faster.
+                - Before: O(n * k) where k is the length of the prefix
+                - After: O(nlogk) (?)
+            - Instead of sorting the whole set of matching files, we can use a heap data
+              structure to loosely sort the data, then only retrieve the top-10.
+
+        Args:
+            prefix (str): The prefix string to search for.
+        """
+        filtered_files = list(self._files.items())
+        if prefix:
+            filtered_files = [
+                file for file in filtered_files if file[0].startswith(prefix)
+            ]
+
+        filtered_files.sort(key=lambda t: (-t[1], t[0]))
+
+        return [file[0] for file in filtered_files[:10]]

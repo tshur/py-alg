@@ -53,3 +53,45 @@ class TestNextInSequence:
         file_system.upload("file.txt", 200)
         file_system.copy("source.txt", "file.txt")
         assert file_system.get("file.txt") == 100
+
+    def test_search(self):
+        file_system = FileSystem()
+
+        file_system.upload("a.txt", 100)
+        file_system.upload("b.txt", 500)
+        file_system.upload("c.txt", 400)
+        file_system.upload("d.txt", 200)
+        file_system.upload("e.txt", 300)
+        assert file_system.search("") == ["b.txt", "c.txt", "e.txt", "d.txt", "a.txt"]
+
+        file_system.upload("f.txt", 300)
+        file_system.upload("g.txt", 300)
+        file_system.upload("h.txt", 300)
+        file_system.upload("i.txt", 300)
+        file_system.upload("j.txt", 300)
+        file_system.upload("k.txt", 300)
+        file_system.upload("l.txt", 300)
+        assert file_system.search("") == [
+            "b.txt",
+            "c.txt",
+            "e.txt",
+            "f.txt",
+            "g.txt",
+            "h.txt",
+            "i.txt",
+            "j.txt",
+            "k.txt",
+            "l.txt",
+        ]
+
+        file_system.upload("ab.txt", 500)
+        file_system.upload("ac.txt", 300)
+        file_system.upload("ad.txt", 400)
+        file_system.upload("ae.txt", 200)
+        assert file_system.search("a") == [
+            "ab.txt",
+            "ad.txt",
+            "ac.txt",
+            "ae.txt",
+            "a.txt",
+        ]
