@@ -1,9 +1,16 @@
 import heapq
+from dataclasses import dataclass
 from typing import Optional
 
 
+@dataclass
+class File:
+    name: str
+    size: int
+
+
 class FileSystem:
-    _files: dict[str, int]
+    _files: dict[str, File]
 
     def __init__(self):
         self._files = {}
@@ -26,7 +33,7 @@ class FileSystem:
         if file_name in self._files:
             raise ValueError("A file with the same name already exists.")
 
-        self._files[file_name] = size
+        self._files[file_name] = File(file_name, size)
 
     def get(self, file_name: str) -> Optional[int]:
         """Returns the size of the file, or nothing if the file doesn't exist.
@@ -37,7 +44,9 @@ class FileSystem:
         Returns:
             Optional[int]: The size of the file. If the file is not found, returns None.
         """
-        return self._files.get(file_name)
+        if file_name in self._files:
+            return self._files[file_name].size
+        return None
 
     def copy(self, source: str, dest: str) -> None:
         """Copies the source file to a new location on the server.
@@ -77,14 +86,14 @@ class FileSystem:
         Args:
             prefix (str): The prefix string to search for.
         """
-        matched_files = list(self._files.items())
+        matched_files = list(self._files.values())
         if prefix:
             matched_files = [
-                file for file in matched_files if file[0].startswith(prefix)
+                file for file in matched_files if file.name.startswith(prefix)
             ]
 
         # Re-structure so that min-heap returns files in expected order.
-        file_heap = [(-file[1], file[0]) for file in matched_files]
+        file_heap = [(-file.size, file.name) for file in matched_files]
         heapq.heapify(file_heap)
 
         result: list[str] = []
