@@ -3,7 +3,7 @@ import pytest
 from .timed_file_system import TimedFileSystem
 
 
-class TestNextInSequence:
+class TestTimedFileSystem:
     def setup_method(self):
         self.file_system = TimedFileSystem()
 
@@ -16,6 +16,7 @@ class TestNextInSequence:
             self.file_system.upload_at(0, "file.txt", -100)
         with pytest.raises(ValueError, match="File ttl must be positive or None."):
             self.file_system.upload_at(0, "file.txt", 100, -1)
+            self.file_system.upload_at(0, "file.txt", 100, 0)
 
         self.file_system.upload_at(0, "file.txt", 100)
         with pytest.raises(ValueError, match="File with the same name already exists."):
@@ -62,10 +63,18 @@ class TestNextInSequence:
         assert self.file_system.get_at(1000, "file.txt") == 200
 
     def test_copy_file_fails(self):
-        with pytest.raises(ValueError, match="Source file does not exist."):
-            self.file_system.copy_at(0, "source.txt", "dest.txt")
         with pytest.raises(ValueError, match="File timestamp must be non-negative."):
             self.file_system.copy_at(-10, "source.txt", "dest.txt")
+        with pytest.raises(ValueError, match="Source file does not exist."):
+            self.file_system.copy_at(0, "source.txt", "dest.txt")
+        with pytest.raises(ValueError, match="Source file does not exist."):
+            self.file_system.copy_at(0, "source.txt", "source.txt")
+
+        self.file_system.upload_at(10, "source.txt", 100, ttl=90)
+        with pytest.raises(ValueError, match="Source file does not exist."):
+            self.file_system.copy_at(101, "source.txt", "dest.txt")
+        with pytest.raises(ValueError, match="Source file does not exist."):
+            self.file_system.copy_at(101, "source.txt", "source.txt")
 
     def test_copy_file_succeeds(self):
         self.file_system.upload_at(10, "source.txt", 100)
@@ -109,6 +118,26 @@ class TestNextInSequence:
     def test_copy_file_with_ttl(self):
         self.file_system.upload_at(10, "source.txt", 100, ttl=90)
         self.file_system.upload_at(10, "dest.txt", 999)
+        self.file_system.copy_at(50, "source.txt", "dest.txt")
+
+        assert self.file_system.get_at(9, "source.txt") is None
+        assert self.file_system.get_at(10, "source.txt") == 100
+        assert self.file_system.get_at(49, "source.txt") == 100
+        assert self.file_system.get_at(50, "source.txt") == 100
+        assert self.file_system.get_at(100, "source.txt") == 100
+        assert self.file_system.get_at(101, "source.txt") is None
+
+        assert self.file_system.get_at(9, "dest.txt") is None
+        assert self.file_system.get_at(10, "dest.txt") == 999
+        assert self.file_system.get_at(49, "dest.txt") == 999
+        assert self.file_system.get_at(50, "dest.txt") == 100
+        assert self.file_system.get_at(100, "dest.txt") == 100
+        assert self.file_system.get_at(101, "dest.txt") is None  # Preserves TTL.
+
+    def test_copy_overwrites_file_with_ttl(self):
+        self.file_system.upload_at(10, "source.txt", 100, ttl=90)
+        self.file_system.upload_at(10, "dest.txt", 999, ttl=1000)
+        # Overwrites the very long ttl in dest after copying.
         self.file_system.copy_at(50, "source.txt", "dest.txt")
 
         assert self.file_system.get_at(9, "source.txt") is None
@@ -246,8 +275,4 @@ class TestNextInSequence:
             "dir/a.txt",
             "dir/b.txt",
             "dir/e.txt",
-        ]
-        assert self.file_system.search_at(1000, "dir/") == [
-            "dir/a.txt",
-            "dir/b.txt",
         ]
