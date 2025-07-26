@@ -3,9 +3,8 @@ import pytest
 from .file_system import FileSystem
 
 
-class TestNextInSequence:
-    # Note: We should be testing unit behaviors, not functions. However, grouping tests
-    # for closer to 1:1 mapping with the implementation.
+class TestFileSystem:
+    # Note: We should be testing unit behaviors, not functions.
     def test_upload_file(self):
         file_system = FileSystem()
 
