@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import bisect
 import functools
-import heapq
 import operator
 from dataclasses import dataclass
 from typing import Optional
+
+from dsa.heap import MaxHeap
 
 
 # Create a type sentinel that always compares larger than any other integer.
@@ -42,6 +43,11 @@ class TimedFileSystem:
     # For each filename, store the resulting files in a sorted (ascending by timestamp)
     # list. This ensures that we can handle ttls, file existence, rollbacks, and queries
     # at specific timestamps.
+    #
+    # Space complexity: O(n * m),
+    #  - where n is the number of files
+    #  - where m is the average number of repeated uploads per file
+    #  - Note, technically all storage complexity is * Q, which is string length.
     _files: dict[str, list[File]]
 
     def __init__(self):
@@ -58,6 +64,10 @@ class TimedFileSystem:
 
         The file is (attempted to be) uploaded at the given timestamp. The file will
         live for a maximum of ttl seconds.
+
+        Complexity:
+            Time: O(m) (to insert the file)
+            Space: O(1) (beyond data structure default storage)
 
         Args:
             timestamp (int): The timestamp (in seconds) to perform the operation.
@@ -92,6 +102,10 @@ class TimedFileSystem:
 
         Only files active at the given timestamp can be retrieved.
 
+        Complexity:
+            Time: O(logm) (we can binary search to find the file)
+            Space: O(1) (beyond data structure default storage)
+
         Args:
             timestamp (int): The timestamp (in seconds) to perform the operation.
             file_name (str): The file name to retrieve.
@@ -116,6 +130,10 @@ class TimedFileSystem:
         After the copy, both the source and dest filenames will exist and hold the same
         information (overwriting if dest already exists). The files will still expire at
         the same time they would have before the copy.
+
+        Complexity:
+            Time: O(m) (to insert the copied file)
+            Space: O(1)
 
         Args:
             timestamp (int): The timestamp (in seconds) to perform the operation.
@@ -153,6 +171,12 @@ class TimedFileSystem:
         Results will be ordered by size in decreasing order. In case of ties, file names
         will be sorted by file name (ascending).
 
+        Complexity: (with p as the length of the prefix)
+            Time: O(n * logm + n * p) (likely dominated by checking prefix matches)
+            Space: O(n)
+
+            Time: O(m) (to insert the copied file)
+            Space: O(1)
         Complexity:
             - Time: O(n * k),
               n: number of files stored; k: length of the prefix
@@ -177,27 +201,40 @@ class TimedFileSystem:
         """
         if timestamp < 0:
             raise ValueError("Timestamp must be non-negative.")
+        k = 10  # Set k==10 for returning the top-k (in a parameterized way).
 
         # Filter active files by (optional) prefix.
         files = self._get_active_files(timestamp)
         if prefix:
             files = [file for file in files if file.name.startswith(prefix)]
 
-        # Heapify in O(n) time (on average, n may be smaller after filtering by prefix).
-        # Re-structure so that min-heap returns files in expected order.
-        file_heap = [(-file.size, file.name) for file in files]
-        heapq.heapify(file_heap)
+        # Optimization?: Build a *min*-heap to maintain only the k=10 largest results.
+        # We need a min-heap so that we will continuously evict the smallest elements
+        # that do not belong in the final result. We lose the ability to heapify a full
+        # array in O(n) time, but we can gain efficiency by maintaining a heap of 10
+        # items.
+        #
+        # (optimization not actually real, since dominated by building the heap time)
+        # (actually, it is even dominated by the above prefix matching method)
+        #
+        # Before: (supposing k=10 is not a simple constant)
+        #   - Build heap in O(n) time.
+        #   - Pop top-k from heap in O(klogn) (for constant k, this is O(logn)).
+        # After:
+        #   - Build heap in O(nlogk) time (for constant k, this is still O(n)).
+        #   - Pop top-k from heap in O(klogk) (for constant k, this is O(1)).
+        #
+        # Implementation note: We actually use a MaxHeap, since we cannot reverse the
+        # strings to handle alphabetical ordering properly.
+        file_heap: MaxHeap[tuple[int, str]] = MaxHeap()
+        for file in files:
+            file_heap.push((-file.size, file.name))
+            if len(file_heap) > k:
+                file_heap.pop()
 
-        # Return the top-10 results from the heap in O(logn) time. Can we do better by
-        # restricting the size of the heap to max 10 elements? Yes. Then, heapify will
-        # take O(n * log10) time, and popping the top-10 take constant time.
-        result: list[str] = []
-        for _ in range(10):
-            if not file_heap:
-                break
-            next_file = heapq.heappop(file_heap)
-            result.append(next_file[1])  # Note: filename was moved to second index.
-        return result
+        # With the way we used MaxHeap, the order is inverted.
+        top_k_files = list(reversed([file[1] for file in file_heap.consume_all()]))
+        return top_k_files
 
     def rollback(self, timestamp: int) -> None:
         """Rollback the state of file storage to the specified timestamp.
@@ -208,9 +245,13 @@ class TimedFileSystem:
         Rollback with a timestamp in the future does not recover lost data (and has no
         effect, since queries from the past are allowed).
 
+        Complexity:
+            Time: O(n * m) (even though we bisect, we have to delete a slice)
+            Space: O(n), to copy the file name keys for looping
+
         Args:
             timestamp (int): The target time to leave the file system state after
-              rollback.
+                rollback.
 
         Raises:
             ValueError: If the timestamp is negative.
@@ -228,7 +269,7 @@ class TimedFileSystem:
             if index == 0:
                 del self._files[file_name]
             else:
-                self._files[file_name] = files[:index]
+                del self._files[file_name][index:]
 
     def _insert_file(self, file: File) -> None:
         """Inserts the given file while maintaining sorted ordering.
@@ -237,6 +278,10 @@ class TimedFileSystem:
         File will be inserted according to its file.name and maintained sorted according
         to its file.created_timestamp. There should not already exist a valid file with
         the same name.
+
+        Complexity:
+            Time: O(m) (even though we bisect in logm, we still need to list.insert())
+            Space: O(1)
 
         Args:
             file (File): The file to be inserted into storage.
@@ -255,6 +300,10 @@ class TimedFileSystem:
 
         A file is considered active, if it is still available (non-expired) at the given
         timestamp. If no file with the given name is active, returns None.
+
+        Complexity:
+            Time: O(logm) (we binary search through the matched files)
+            Space: O(1)
 
         Args:
             timestamp (int): The time at which to perform the operation.
@@ -299,6 +348,10 @@ class TimedFileSystem:
 
         A file is considered active, if it is still available (non-expired) at the given
         timestamp. If no file with the given name is active, returns None.
+
+        Complexity:
+            Time: O(n * logm) (for n files, retrieve in logm)
+            Space: O(n)
 
         Args:
             timestamp (int): The timestamp at which to perform the query.
