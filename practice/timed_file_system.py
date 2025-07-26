@@ -75,7 +75,7 @@ class TimedFileSystem:
             ValueError: If the ttl is non-positive (0 ttl files cannot be created).
         """
         if timestamp < 0:
-            raise ValueError("File timestamp must be non-negative.")
+            raise ValueError("Timestamp must be non-negative.")
         if not file_name:
             raise ValueError("File name must be non-empty.")
         if file_size < 0:
@@ -103,7 +103,7 @@ class TimedFileSystem:
             ValueError: If the timestamp is negative.
         """
         if timestamp < 0:
-            raise ValueError("File timestamp must be non-negative.")
+            raise ValueError("Timestamp must be non-negative.")
 
         file = self._retrieve_file(timestamp, file_name)
         if file:
@@ -128,7 +128,7 @@ class TimedFileSystem:
             ValueError: If the source file doesn't exist.
         """
         if timestamp < 0:
-            raise ValueError("File timestamp must be non-negative.")
+            raise ValueError("Timestamp must be non-negative.")
 
         source_file = self._retrieve_file(timestamp, source)
         if not source_file:
@@ -176,7 +176,7 @@ class TimedFileSystem:
             ValueError: If the timestamp is negative.
         """
         if timestamp < 0:
-            raise ValueError("File timestamp must be non-negative.")
+            raise ValueError("Timestamp must be non-negative.")
 
         # Filter active files by (optional) prefix.
         files = self._get_active_files(timestamp)
@@ -198,6 +198,37 @@ class TimedFileSystem:
             next_file = heapq.heappop(file_heap)
             result.append(next_file[1])  # Note: filename was moved to second index.
         return result
+
+    def rollback(self, timestamp: int) -> None:
+        """Rollback the state of file storage to the specified timestamp.
+
+        The state after rollback will still contain data from queries that occurred on
+        exactly the given timestamp. All data after the given timestamp will be deleted.
+
+        Rollback with a timestamp in the future does not recover lost data (and has no
+        effect, since queries from the past are allowed).
+
+        Args:
+            timestamp (int): The target time to leave the file system state after
+              rollback.
+
+        Raises:
+            ValueError: If the timestamp is negative.
+        """
+        if timestamp < 0:
+            raise ValueError("Timestamp must be non-negative.")
+
+        file_names = list(self._files)  # Prevent mutating list during traversal.
+        for file_name in file_names:
+            # Find the index of the first file with created_timestamp > timestamp.
+            files = self._files[file_name]
+            index = bisect.bisect(
+                files, timestamp, key=operator.attrgetter("created_timestamp")
+            )
+            if index == 0:
+                del self._files[file_name]
+            else:
+                self._files[file_name] = files[:index]
 
     def _insert_file(self, file: File) -> None:
         """Inserts the given file while maintaining sorted ordering.
@@ -225,6 +256,10 @@ class TimedFileSystem:
         A file is considered active, if it is still available (non-expired) at the given
         timestamp. If no file with the given name is active, returns None.
 
+        Args:
+            timestamp (int): The time at which to perform the operation.
+            file_name (str): The name of the file to be retrieved.
+
         Returns:
             Optional[File]: An active, valid File at the timestamp with the given name.
               Returns None if no file with the given name is active or exists.
@@ -233,7 +268,7 @@ class TimedFileSystem:
             ValueError: If the timestamp is negative.
         """
         if timestamp < 0:
-            raise ValueError("File timestamp must be non-negative.")
+            raise ValueError("Timestamp must be non-negative.")
         if file_name not in self._files or not self._files[file_name]:
             return None
 
@@ -275,7 +310,7 @@ class TimedFileSystem:
             ValueError: If the timestamp is negative.
         """
         if timestamp < 0:
-            raise ValueError("File timestamp must be non-negative.")
+            raise ValueError("Timestamp must be non-negative.")
 
         return [
             file
