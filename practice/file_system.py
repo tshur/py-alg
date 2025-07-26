@@ -73,7 +73,8 @@ class FileSystem:
         will be sorted by file name (ascending).
 
         Complexity:
-            - Time: O(nlogn), where n is the number of files stored
+            - Time: O(n * k),
+              n: number of files stored; k: length of the prefix
 
         Optimizations:
             - Can store the file names in a Trie data structure. Store the actual file
@@ -86,16 +87,21 @@ class FileSystem:
         Args:
             prefix (str): The prefix string to search for.
         """
+        # Find matched-prefix files in O(n * k) time.
         matched_files = list(self._files.values())
         if prefix:
             matched_files = [
                 file for file in matched_files if file.name.startswith(prefix)
             ]
 
+        # Heapify in O(n) time (on average, n may be smaller after filtering by prefix).
         # Re-structure so that min-heap returns files in expected order.
         file_heap = [(-file.size, file.name) for file in matched_files]
         heapq.heapify(file_heap)
 
+        # Return the top-10 results from the heap in O(logn) time. Can we do better by
+        # restricting the size of the heap to max 10 elements? Yes. Then, heapify will
+        # take O(n * log10) time, and popping the top-10 take constant time.
         result: list[str] = []
         for _ in range(10):
             if not file_heap:
