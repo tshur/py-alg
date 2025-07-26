@@ -8,7 +8,7 @@ class TestTimedFileSystem:
         self.file_system = TimedFileSystem()
 
     def test_upload_file_fails(self):
-        with pytest.raises(ValueError, match="File timestamp must be non-negative."):
+        with pytest.raises(ValueError, match="Timestamp must be non-negative."):
             self.file_system.upload_at(-10, "file.txt", 100)
         with pytest.raises(ValueError, match="File name must be non-empty."):
             self.file_system.upload_at(0, "", 100)
@@ -29,7 +29,7 @@ class TestTimedFileSystem:
         assert self.file_system.get_at(1000, "file.txt") == 100
 
     def test_get_file_fails(self):
-        with pytest.raises(ValueError, match="File timestamp must be non-negative."):
+        with pytest.raises(ValueError, match="Timestamp must be non-negative."):
             self.file_system.get_at(-10, "file.txt")
 
     def test_get_file_succeeds(self):
@@ -63,7 +63,7 @@ class TestTimedFileSystem:
         assert self.file_system.get_at(1000, "file.txt") == 200
 
     def test_copy_file_fails(self):
-        with pytest.raises(ValueError, match="File timestamp must be non-negative."):
+        with pytest.raises(ValueError, match="Timestamp must be non-negative."):
             self.file_system.copy_at(-10, "source.txt", "dest.txt")
         with pytest.raises(ValueError, match="Source file does not exist."):
             self.file_system.copy_at(0, "source.txt", "dest.txt")
@@ -155,7 +155,7 @@ class TestTimedFileSystem:
         assert self.file_system.get_at(101, "dest.txt") is None  # Preserves TTL.
 
     def test_search_fails(self):
-        with pytest.raises(ValueError, match="File timestamp must be non-negative."):
+        with pytest.raises(ValueError, match="Timestamp must be non-negative."):
             self.file_system.search_at(-10, "prefix")
 
     def test_search_succeeds(self):
@@ -276,3 +276,154 @@ class TestTimedFileSystem:
             "dir/b.txt",
             "dir/e.txt",
         ]
+
+    def test_rollback_fails(self):
+        with pytest.raises(ValueError, match="Timestamp must be non-negative."):
+            self.file_system.rollback(-1)
+
+    def test_rollbacks_with_no_effect(self):
+        self.file_system.upload_at(1, "a.txt", 100)
+        self.file_system.upload_at(2, "dir/a.txt", 100)
+        self.file_system.upload_at(3, "dir/b.txt", 100)
+        self.file_system.upload_at(4, "dir/c.txt", 100, ttl=96)
+        self.file_system.copy_at(5, "dir/c.txt", "dir/d.txt")
+        self.file_system.copy_at(6, "dir/a.txt", "dir/e.txt")
+
+        assert self.file_system.search_at(100, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/c.txt",
+            "dir/d.txt",
+            "dir/e.txt",
+        ]
+        assert self.file_system.search_at(101, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/e.txt",
+        ]
+
+        self.file_system.rollback(1000)  # In the future.
+        assert self.file_system.search_at(100, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/c.txt",
+            "dir/d.txt",
+            "dir/e.txt",
+        ]
+        assert self.file_system.search_at(101, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/e.txt",
+        ]
+
+        self.file_system.rollback(6)  # All operations still have occurred.
+        assert self.file_system.search_at(100, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/c.txt",
+            "dir/d.txt",
+            "dir/e.txt",
+        ]
+        assert self.file_system.search_at(101, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/e.txt",
+        ]
+
+    def test_rollbacks_with_effects(self):
+        self.file_system.upload_at(1, "a.txt", 100)
+        self.file_system.upload_at(2, "dir/a.txt", 100)
+        self.file_system.upload_at(3, "dir/b.txt", 100)
+        self.file_system.upload_at(4, "dir/c.txt", 100, ttl=96)
+        self.file_system.copy_at(5, "dir/c.txt", "dir/d.txt")
+        self.file_system.copy_at(6, "dir/a.txt", "dir/e.txt")
+
+        assert self.file_system.search_at(100, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/c.txt",
+            "dir/d.txt",
+            "dir/e.txt",
+        ]
+        assert self.file_system.search_at(101, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/e.txt",
+        ]
+
+        self.file_system.rollback(5)  # Removes the copy-creation of e.txt.
+        assert self.file_system.search_at(100, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/c.txt",
+            "dir/d.txt",
+        ]
+        assert self.file_system.search_at(101, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+        ]
+
+        self.file_system.rollback(4)  # Removes the copy-creation of d.txt.
+        assert self.file_system.search_at(100, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+            "dir/c.txt",
+        ]
+        assert self.file_system.search_at(101, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+        ]
+
+        self.file_system.rollback(3)  # Removes the creation of c.txt.
+        assert self.file_system.search_at(100, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+        ]
+        assert self.file_system.search_at(101, "dir/") == [
+            "dir/a.txt",
+            "dir/b.txt",
+        ]
+
+        self.file_system.rollback(2)  # Removes the creation of b.txt.
+        assert self.file_system.search_at(100, "dir/") == [
+            "dir/a.txt",
+        ]
+        assert self.file_system.search_at(101, "dir/") == [
+            "dir/a.txt",
+        ]
+
+        self.file_system.rollback(0)  # No data existed at this point.
+        assert self.file_system.search_at(100, "dir/") == []
+        assert self.file_system.search_at(101, "dir/") == []
+
+    def test_rollbacks_on_copy_overwritten_ttl(self):
+        self.file_system.upload_at(10, "source.txt", 100, ttl=90)
+        self.file_system.upload_at(10, "dest.txt", 200, ttl=1000)
+        self.file_system.copy_at(50, "source.txt", "dest.txt")
+
+        assert self.file_system.get_at(9, "source.txt") is None
+        assert self.file_system.get_at(10, "source.txt") == 100
+        assert self.file_system.get_at(100, "source.txt") == 100
+        assert self.file_system.get_at(101, "source.txt") is None
+
+        assert self.file_system.get_at(9, "dest.txt") is None
+        assert self.file_system.get_at(10, "dest.txt") == 200
+        assert self.file_system.get_at(49, "dest.txt") == 200
+        assert self.file_system.get_at(50, "dest.txt") == 100
+        assert self.file_system.get_at(100, "dest.txt") == 100
+        assert self.file_system.get_at(101, "dest.txt") is None  # ttl=90 preserved.
+
+        self.file_system.rollback(49)  # Remove the copy-overwrite operation!
+        assert self.file_system.get_at(9, "source.txt") is None
+        assert self.file_system.get_at(10, "source.txt") == 100
+        assert self.file_system.get_at(100, "source.txt") == 100
+        assert self.file_system.get_at(101, "source.txt") is None
+
+        assert self.file_system.get_at(9, "dest.txt") is None
+        assert self.file_system.get_at(10, "dest.txt") == 200
+        assert self.file_system.get_at(49, "dest.txt") == 200
+        assert self.file_system.get_at(50, "dest.txt") == 200
+        assert self.file_system.get_at(100, "dest.txt") == 200
+        assert self.file_system.get_at(101, "dest.txt") == 200  # Original ttl=1000.
+        assert self.file_system.get_at(1010, "dest.txt") == 200
+        assert self.file_system.get_at(1011, "dest.txt") is None
