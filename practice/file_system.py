@@ -1,6 +1,8 @@
-import heapq
 from dataclasses import dataclass
 from typing import Optional
+
+from dsa.hash import Map
+from dsa.heap import MinHeap
 
 
 @dataclass
@@ -10,10 +12,10 @@ class File:
 
 
 class FileSystem:
-    _files: dict[str, File]
+    _files: Map[str, File]
 
     def __init__(self):
-        self._files = {}
+        self._files = Map()
 
     def upload(self, file_name: str, size: int) -> None:
         """Uploads the file to the remove storage server.
@@ -96,16 +98,7 @@ class FileSystem:
 
         # Heapify in O(n) time (on average, n may be smaller after filtering by prefix).
         # Re-structure so that min-heap returns files in expected order.
-        file_heap = [(-file.size, file.name) for file in matched_files]
-        heapq.heapify(file_heap)
-
-        # Return the top-10 results from the heap in O(logn) time. Can we do better by
-        # restricting the size of the heap to max 10 elements? Yes. Then, heapify will
-        # take O(n * log10) time, and popping the top-10 take constant time.
-        result: list[str] = []
-        for _ in range(10):
-            if not file_heap:
-                break
-            next_file = heapq.heappop(file_heap)
-            result.append(next_file[1])  # Note: filename was moved to second index.
-        return result
+        file_heap = MinHeap[tuple[int, str]].from_iterable(
+            (-file.size, file.name) for file in matched_files
+        )
+        return [file[1] for file in file_heap.consume_all()][:10]

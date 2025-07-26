@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-import bisect
+import bisect  # Could use dsa.search.binary_search, if it had a key function.
 import functools
 import operator
 from dataclasses import dataclass
 from typing import Optional
 
+from dsa.hash import Map
 from dsa.heap import MaxHeap
+from dsa.iterable import reverse
 
 
 # Create a type sentinel that always compares larger than any other integer.
@@ -48,10 +50,10 @@ class TimedFileSystem:
     #  - where n is the number of files
     #  - where m is the average number of repeated uploads per file
     #  - Note, technically all storage complexity is * Q, which is string length.
-    _files: dict[str, list[File]]
+    _files: Map[str, list[File]]
 
     def __init__(self):
-        self._files = {}
+        self._files = Map()
 
     def upload_at(
         self,
@@ -232,8 +234,8 @@ class TimedFileSystem:
             if len(file_heap) > k:
                 file_heap.pop()
 
-        # With the way we used MaxHeap, the order is inverted.
-        top_k_files = list(reversed([file[1] for file in file_heap.consume_all()]))
+        top_k_files = [file[1] for file in file_heap.consume_all()]
+        reverse(top_k_files)  # With the way we used MaxHeap, the order is inverted.
         return top_k_files
 
     def rollback(self, timestamp: int) -> None:
