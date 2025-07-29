@@ -178,6 +178,27 @@ class _Heap[CT: SupportsRichComparison](ABC):
         while (value := self.pop()) is not None:
             yield value
 
+    def __contains__(self, value: CT) -> bool:
+        """Check if a given value exists in the heap.
+
+        Args:
+            value (CT): The value to search for in the heap.
+
+        Returns:
+            bool: Whether or not the value is present in the heap.
+
+        Examples:
+            >>> heap = MinHeap.from_iterable([5, 1, 3, 2, 4])
+            >>> 2 in heap
+            True
+            >>> 6 in heap
+            False
+        """
+        # No need to iterate in heap ordering. We cannot really benefit from binary
+        # search with loose heap structure. Minor optimizations exist with stopping
+        # early in search.
+        return value in self._heap
+
     def __len__(self) -> int:
         """Return the length of the heap (number of elements).
 

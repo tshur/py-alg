@@ -60,6 +60,19 @@ class TestMinHeap:
         assert MinHeap[int].from_iterable([5]).peek() == 5
         assert MinHeap[int].from_iterable([0, 4, 5, 1, -2, 12, -1, 9]).peek() == -2
 
+    def test_contains(self) -> None:
+        heap = MinHeap[int].from_iterable([5, 1, 3, 2, 4])
+
+        assert 1 in heap
+        assert 2 in heap
+        assert 3 in heap
+        assert 4 in heap
+        assert 5 in heap
+
+        assert 0 not in heap
+        assert 6 not in heap
+        assert 10 not in heap
+
     def test_remove_on_empty(self) -> None:
         heap = MinHeap[int]()
 
