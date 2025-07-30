@@ -1,8 +1,6 @@
 # TODO List
 
 - Hash map (probing; binary tree)
-- Merge
-- Mergesort
 - Trie
 - Red-black tree
 - Union find
