@@ -1,6 +1,24 @@
 import pytest
 
-from .timed_file_system import TimedFileSystem
+from .timed_file_system import MaxSentinel, TimedFileSystem
+
+
+class TestMaxSentinel:
+    def test_always_greater_than_int(self):
+        assert 10000 < MaxSentinel()
+        assert 0 < MaxSentinel()
+        assert MaxSentinel() > 10000
+        assert not MaxSentinel() == 0
+        assert not MaxSentinel() == -1
+
+    def test_equal_to_other_max_sentinel(self):
+        assert MaxSentinel() == MaxSentinel()
+        assert not MaxSentinel() == 1000000
+
+    def test_arithmetic_returns_max_sentinel(self):
+        assert 0 + MaxSentinel() == MaxSentinel()
+        assert MaxSentinel() + 1000 == MaxSentinel()
+        assert MaxSentinel() - 1000000 == MaxSentinel()
 
 
 class TestTimedFileSystem:
@@ -16,6 +34,7 @@ class TestTimedFileSystem:
             self.file_system.upload_at(0, "file.txt", -100)
         with pytest.raises(ValueError, match="File ttl must be positive or None."):
             self.file_system.upload_at(0, "file.txt", 100, -1)
+        with pytest.raises(ValueError, match="File ttl must be positive or None."):
             self.file_system.upload_at(0, "file.txt", 100, 0)
 
         self.file_system.upload_at(0, "file.txt", 100)

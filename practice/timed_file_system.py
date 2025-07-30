@@ -3,31 +3,33 @@ from __future__ import annotations
 import bisect  # Could use dsa.search.binary_search, if it had a key function.
 import functools
 import operator
-from dataclasses import dataclass
-from typing import Optional
+from dataclasses import dataclass, field
+from typing import Literal, Optional
 
 from dsa.hash import Map
 from dsa.heap import MaxHeap
 from dsa.iterable import reverse
 
 
-# Create a type sentinel that always compares larger than any other integer.
+# Create a type sentinel that always compares larger than any other type.
 @functools.total_ordering
 class MaxSentinel:
-    def __le__(self, other: int) -> bool:
+    def __le__(self, _: int) -> Literal[False]:
         return False
 
-    def __add__(self, other: int | MaxSentinel) -> MaxSentinel:
-        return self
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, MaxSentinel):
+            return False
+        return True  # All MaxSentinel()s are equal to each other.
 
-    def __radd__(self, other: int | MaxSentinel) -> MaxSentinel:
-        return self
+    def __add__(self, _: int | MaxSentinel) -> MaxSentinel:
+        return MaxSentinel()
 
-    def __sub__(self, other: int | MaxSentinel) -> MaxSentinel:
-        return self
+    def __radd__(self, _: int | MaxSentinel) -> MaxSentinel:
+        return MaxSentinel()
 
-    def __rsub__(self, other: int | MaxSentinel) -> MaxSentinel:
-        return self
+    def __sub__(self, _: int | MaxSentinel) -> MaxSentinel:
+        return MaxSentinel()
 
 
 @dataclass
@@ -35,7 +37,7 @@ class File:
     name: str
     size: int
     created_timestamp: int
-    ttl: int | MaxSentinel = MaxSentinel()
+    ttl: int | MaxSentinel = field(default_factory=MaxSentinel)
 
     def get_last_valid_timestamp(self) -> int | MaxSentinel:
         return self.created_timestamp + self.ttl
@@ -314,12 +316,7 @@ class TimedFileSystem:
         Returns:
             Optional[File]: An active, valid File at the timestamp with the given name.
               Returns None if no file with the given name is active or exists.
-
-        Raises:
-            ValueError: If the timestamp is negative.
         """
-        if timestamp < 0:
-            raise ValueError("Timestamp must be non-negative.")
         if file_name not in self._files or not self._files[file_name]:
             return None
 
@@ -360,13 +357,7 @@ class TimedFileSystem:
 
         Returns:
             list[File]: A list of active, valid files in storage.
-
-        Raises:
-            ValueError: If the timestamp is negative.
         """
-        if timestamp < 0:
-            raise ValueError("Timestamp must be non-negative.")
-
         return [
             file
             for file_name in self._files
