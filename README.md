@@ -2,17 +2,6 @@
 
 Python data structures & algorithms repository (for learning).
 
-## Usage
-
-To actually import and use this package, you can start in the root directory.
-Open a python3 interpreter, and try the following:
-
-```python
->>> from dsa.reduce import reduce
->>> reduce([1, 2, 3, 4, 5])
-15
-```
-
 ## Setup
 
 This repo assumes you have a modern Python 3+ version installed. The repo is set
@@ -84,4 +73,17 @@ To build the project for packaging / distribution, you can run the following:
 
 ```bash
 python3 -m build
+```
+
+## Usage
+
+_Note: Requires installation first!_
+
+To actually import and use this package, you can start in the root directory.
+Open a python3 interpreter, and try the following:
+
+```python
+>>> from dsa.sort import tree_sort
+>>> tree_sort([5, 1, 3, 2, 4])
+[1, 2, 3, 4, 5]
 ```
