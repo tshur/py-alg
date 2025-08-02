@@ -84,6 +84,9 @@ be helpful for reviewers.
 At this point, your PR should be reviewed and good-to-go. We want to make it a
 part of the main branch. There can be a couple of complications.
 
+**_Note: Do not click "Merge Pull Request". Instead, we prefer clicking the
+drop-down and doing either "Rebase and Merge" or "Squash and Merge"._**
+
 Simple method (no complications):
 
 1. On github.com, viewing your pull request, click the button to "sync changes"
