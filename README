@@ -26,6 +26,7 @@ This includes:
 - Python linting using Ruff
 - Python strict type checking using pylance + mypy
 - Testing using pytest + plugins
+- ...a few more! (check `.vscode/extensions.json`)
 
 ### venv
 
@@ -46,8 +47,8 @@ iniitalize future terminal sessions in the venv.
 
 ### pytest
 
-To test code in "watch" mode, try the following command (re-runs only affected
-tests):
+Recommended: To test code in "watch" mode, try the following command (re-runs
+only affected tests):
 
 ```bash
 ptw . --clear --doctest-modules --testmon
@@ -57,7 +58,7 @@ To run pytest for all files, including doctests on modules, and collect test
 coverage reports:
 
 ```bash
-pytest --doctest-modules --cov=dsa --cov-report xml:coverage.xml
+pytest --doctest-modules --cov=dsa --cov=leetcode --cov=practice --cov-report xml:coverage.xml
 ```
 
 To run pytest with the python debugger for debugging failed tests, run the
@@ -68,12 +69,13 @@ pytest --doctest-modules --pdb
 ```
 
 In the python debugger, there are many useful commands to inspect the stack,
-variables, and such. Some starter commands (more at [pdb reference](https://docs.python.org/3/library/pdb.html#debugger-commands)):
+variables, and such. Some starter commands (more at
+[pdb reference](https://docs.python.org/3/library/pdb.html#debugger-commands)):
 
-```
-l  # List the code around the current line (e.g., breakpoint).
+```bash
+l              # List the code around the current line (e.g., breakpoint).
 p my_variable  # Print the given variable with its value at the current line.
-q  # Quit.
+q              # Quit.
 ```
 
 ## Packaging
