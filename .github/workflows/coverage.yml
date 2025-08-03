@@ -38,3 +38,4 @@ jobs:
         with:
           pytest-xml-coverage-path: ./coverage.xml
           junitxml-path: ./pytest.xml
+          xml-skip-covered: true
