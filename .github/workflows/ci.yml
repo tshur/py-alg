@@ -29,6 +29,9 @@ jobs:
       - name: Lint with ruff
         run: |
           ruff check --output-format=github .
+      - name: Type checking with mypy
+        run: |
+          mypy dsa/ leetcode/ practice/
       - name: Test with pytest
         run: |
           pytest --doctest-modules

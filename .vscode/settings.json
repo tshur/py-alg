@@ -19,6 +19,8 @@
     ".mypy_cache": true,
     ".pytest_cache": true,
     ".coverage": true,
-    ".testmondata": true
+    ".testmondata": true,
+    "dsa.egg-info": true,
+    "build": true
   }
 }
