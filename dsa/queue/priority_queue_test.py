@@ -123,3 +123,8 @@ class TestPriorityQueue:
         for value in range(100):
             priority_queue2.enqueue(value)
         assert list(priority_queue2) == list(reversed(range(100)))
+
+    def test_str(self) -> None:
+        priority_queue = PriorityQueue[int].from_iterable([5, 1, 3, 2, 4])
+
+        assert str(priority_queue) == '[5, 4, 3, 2, 1]'
