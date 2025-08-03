@@ -31,7 +31,7 @@ jobs:
           ruff check --output-format=github .
       - name: Type checking with mypy
         run: |
-          mypy dsa/ leetcode/ practice/
+          mypy dsa/ examples/
       - name: Test with pytest
         run: |
           pytest --doctest-modules
