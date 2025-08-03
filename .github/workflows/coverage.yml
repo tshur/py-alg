@@ -2,7 +2,13 @@ name: Python Coverage Check
 
 on:
   pull_request:
-    branches: ["main"]
+    branches:
+      - "*"
+
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
 
 jobs:
   build:
@@ -14,6 +20,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
