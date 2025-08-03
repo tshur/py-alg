@@ -32,8 +32,9 @@ jobs:
 
       - name: Build coverage file
         run: |
-          pytest --cov=dsa --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
+          pytest --cov=dsa --cov=examples --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-xml-coverage-path: ./coverage.xml
+          junitxml-path: ./pytest.xml
