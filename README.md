@@ -48,7 +48,7 @@ To run pytest for all files, including doctests on modules, and collect test
 coverage reports:
 
 ```bash
-pytest --doctest-modules --cov=dsa --cov=leetcode --cov=practice --cov-report xml:coverage.xml
+pytest --cov=dsa --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
 ```
 
 To run pytest with the python debugger for debugging failed tests, run the
