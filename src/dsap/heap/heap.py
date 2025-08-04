@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Iterable, Iterator, Optional, Self
 
-from src.dsap.typing import SupportsRichComparison
+from src.dsap.type import SupportsRichComparison
 
 
 class _Heap[CT: SupportsRichComparison](ABC):
