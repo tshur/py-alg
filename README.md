@@ -1,6 +1,19 @@
-# py-alg
+# dsap: Data Structures & Algorithms & Practice
 
 Python data structures & algorithms repository (for learning).
+
+## Usage
+
+_Note: Requires installation first!_
+
+To actually import and use this package, you can start in the root directory.
+Open a python3 interpreter, and try the following:
+
+```python
+>>> from src.dsap.sort import tree_sort
+>>> tree_sort([5, 1, 3, 2, 4])
+[1, 2, 3, 4, 5]
+```
 
 ## Setup
 
@@ -84,15 +97,11 @@ To build the project for packaging / distribution, you can run the following:
 python3 -m build
 ```
 
-## Usage
+To deploy the package to Test PyPi, follow [these instructions], make sure to
+update the version number, and then run the commands:
 
-_Note: Requires installation first!_
-
-To actually import and use this package, you can start in the root directory.
-Open a python3 interpreter, and try the following:
-
-```python
->>> from src.dsap.sort import tree_sort
->>> tree_sort([5, 1, 3, 2, 4])
-[1, 2, 3, 4, 5]
+```bash
+rm -r dist/
+python3 -m build
+python3 -m twine upload --repository testpypi dist/*
 ```
