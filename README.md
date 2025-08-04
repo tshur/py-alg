@@ -7,11 +7,11 @@ Python data structures & algorithms repository (for learning).
 _Note: Requires installation first!_
 
 To actually import and use this package, you can start in the root directory.
-Open a python3 interpreter, and try the following:
+Open a `python3` interpreter, and try the following:
 
 ```python
->>> from src.dsap.sort import tree_sort
->>> tree_sort([5, 1, 3, 2, 4])
+>>> from dsap.sort import heap_sort
+>>> heap_sort([5, 1, 3, 2, 4])
 [1, 2, 3, 4, 5]
 ```
 
@@ -97,11 +97,26 @@ To build the project for packaging / distribution, you can run the following:
 python3 -m build
 ```
 
-To deploy the package to Test PyPi, follow [these instructions], make sure to
-update the version number, and then run the commands:
+### Test PyPi
+
+To deploy the package to Test PyPi, follow
+[these instructions](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
+make sure to update the version number, and then run the commands:
 
 ```bash
 rm -r dist/
 python3 -m build
 python3 -m twine upload --repository testpypi dist/*
+```
+
+To install the package locally from TestPyPi, you can do the following:
+
+```bash
+python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps dsap
+```
+
+```python
+>>> from dsap.sort import heap_sort
+>>> heap_sort([5, 1, 3, 2, 4])
+[1, 2, 3, 4, 5]
 ```
