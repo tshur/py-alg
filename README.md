@@ -120,3 +120,27 @@ python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps dsap
 >>> heap_sort([5, 1, 3, 2, 4])
 [1, 2, 3, 4, 5]
 ```
+
+### Production PyPi
+
+To deploy the package to PyPi, follow
+[these instructions](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
+make sure to update the version number, and then run the commands:
+
+```bash
+rm -r dist/
+python3 -m build
+python3 -m twine upload dist/*
+```
+
+To install the package locally from PyPi, you can do the following:
+
+```bash
+python3 -m pip install dsap
+```
+
+```python
+>>> from dsap.sort import heap_sort
+>>> heap_sort([5, 1, 3, 2, 4])
+[1, 2, 3, 4, 5]
+```
