@@ -94,6 +94,7 @@ q              # Quit.
 To build the project for packaging / distribution, you can run the following:
 
 ```bash
+pip install ".[release]"
 python3 -m build
 ```
 
