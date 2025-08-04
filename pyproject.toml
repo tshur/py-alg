@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dsap"
-version = "0.0.1"
+version = "0.0.2"
 description = "Common data structures and algorithms written in Python for learning"
 readme = "README.md"
 authors = [{ name = "Tim Shur" }]
@@ -26,4 +26,5 @@ test = [
     "pytest-cov",
     "pytest-testmon",
     "pytest-watcher",
+    "twine",
 ]
