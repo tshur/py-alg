@@ -40,7 +40,7 @@ jobs:
 
     environment:
       name: release
-      url: https://pypi.org/p/py-alg
+      url: https://pypi.org/p/dsap
 
     steps:
       - name: Retrieve release distributions

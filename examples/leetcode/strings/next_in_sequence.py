@@ -6,7 +6,7 @@ https://bytebytego.com/exercises/coding-patterns/two-pointers/next-lexicographic
 from itertools import permutations
 from typing import Optional
 
-from dsa.iterable import reverse
+from src.dsap.iterable import reverse
 
 
 def next_in_sequence_v1(s: str) -> str:

@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from dsa.typing import SupportsRichComparison
+from src.dsap.typing import SupportsRichComparison
 
 
 def selection_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:

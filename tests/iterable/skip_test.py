@@ -1,6 +1,6 @@
 import pytest
 
-from dsa.iterable import skip
+from src.dsap.iterable import skip
 
 
 class TestSkip:

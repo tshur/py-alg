@@ -1,4 +1,4 @@
-from dsa.queue import PriorityQueue
+from src.dsap.queue import PriorityQueue
 
 
 class TestPriorityQueue:

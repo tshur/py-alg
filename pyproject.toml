@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dsa"
+name = "dsap"
 version = "0.0.1"
 description = "Common data structures and algorithms written in Python for learning"
 readme = "README.md"

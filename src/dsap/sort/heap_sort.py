@@ -1,7 +1,7 @@
 from typing import Iterable
 
-from dsa.heap import MinHeap
-from dsa.typing import SupportsRichComparison
+from src.dsap.heap import MinHeap
+from src.dsap.typing import SupportsRichComparison
 
 
 def heap_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:

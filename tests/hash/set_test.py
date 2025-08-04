@@ -1,6 +1,6 @@
 import pytest
 
-from dsa.hash import Set
+from src.dsap.hash import Set
 
 
 class TestSet:

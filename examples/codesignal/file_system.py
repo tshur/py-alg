@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from dsa.hash import Map
-from dsa.heap import MinHeap
+from src.dsap.hash import Map
+from src.dsap.heap import MinHeap
 
 
 @dataclass

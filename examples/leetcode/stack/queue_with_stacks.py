@@ -1,6 +1,6 @@
 from typing import Iterable, Self
 
-from dsa.stack import Stack
+from src.dsap.stack import Stack
 
 
 class QueueWithStacks:
