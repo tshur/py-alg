@@ -1,7 +1,7 @@
 from typing import Iterable, Iterator, Optional, Self
 
 from src.dsap.heap import MaxHeap
-from src.dsap.typing import SupportsRichComparison
+from src.dsap.type import SupportsRichComparison
 
 from .queue import Queue
 

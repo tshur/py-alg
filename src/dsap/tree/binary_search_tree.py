@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Iterable, Iterator, Optional
 
 from src.dsap.stack import Stack
-from src.dsap.typing import SupportsRichComparison
+from src.dsap.type import SupportsRichComparison
 
 
 @dataclass
