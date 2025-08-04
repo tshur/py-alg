@@ -1,17 +1,17 @@
 from operator import itemgetter
 from typing import Iterator
 
-from dsa.linked_list import LinkedList
+from src.dsap.search import linear_search
 
 from .map import MapBase
 
 
-class MapLinkedList[K, V](MapBase[K, V]):
-    """HashMap data structure implemented using a linked list per bucket for collisions.
+class MapList[K, V](MapBase[K, V]):
+    """HashMap data structure implemented using a list per bucket for collisions.
 
-    Instead of probing for collisions, we simply aggregate values into a linked list.
-    This enables fast add/remove without shifting list elements. We adjust capacity so
-    that collisions should be infrequent.
+    Instead of probing for collisions, we simply aggregate values into a list. We could
+    change the internal data structure from list to linked list or binary search tree
+    for potential efficiency improvements.
 
     Basic operations:
      - __setitem__, in ~O(1), but really O(k) where k is the length of collided values.
@@ -22,7 +22,7 @@ class MapLinkedList[K, V](MapBase[K, V]):
     """
 
     # We handle hash collisions simply by extending the list at the colliding key.
-    _buckets: list[LinkedList[tuple[K, V]]]
+    _buckets: list[list[tuple[K, V]]]
 
     def __init__(self, /, capacity: int = 31):
         """Create a new (empty) map.
@@ -31,7 +31,7 @@ class MapLinkedList[K, V](MapBase[K, V]):
             capacity (int, optional): Give a custom capacity to initialize the map. This
               value should be prime to maximize performance. Defaults to 31.
         """
-        self._buckets = [LinkedList() for _ in range(capacity)]
+        self._buckets = [[] for _ in range(capacity)]
         self._size = 0
 
     def __getitem__(self, key: K) -> V:
@@ -44,14 +44,14 @@ class MapLinkedList[K, V](MapBase[K, V]):
             KeyError: If the key is not found in the map.
 
         Examples:
-            >>> hm = MapLinkedList.from_items([('a', 1), ('b', 2), ('c', 3)])
+            >>> hm = MapList.from_items([('a', 1), ('b', 2), ('c', 3)])
             >>> hm['a']
             1
             >>> hm['b']
             2
         """
-        _, item = self._get(key)
-        return item[1]
+        bucket, index = self._get(key)
+        return bucket[index][1]
 
     def __setitem__(self, key: K, value: V) -> None:
         """Sets self[key] to value.
@@ -63,7 +63,7 @@ class MapLinkedList[K, V](MapBase[K, V]):
             key (K): The key to add/set.
 
         Examples:
-            >>> hm = MapLinkedList.from_items([('a', 1), ('b', 2), ('c', 3)])
+            >>> hm = MapList.from_items([('a', 1), ('b', 2), ('c', 3)])
             >>> hm['a'] = 4
             >>> hm['a']
             4
@@ -72,17 +72,15 @@ class MapLinkedList[K, V](MapBase[K, V]):
             5
         """
         bucket = self._buckets[self._hash(key)]
-        item = bucket.search(key, key=itemgetter(0))
+        index = linear_search(bucket, key, key=itemgetter(0))
 
-        # Remove then re-insert node, since LinkedList implementation does not expose
-        # any pointers to nodes. Therefore, we cannot mutate any node reference here.
-        if item is not None:
-            bucket.remove(item)
-            self._size -= 1
-        bucket.push_tail((key, value))
-        self._size += 1
-        if self._size >= MapBase._load_factor * self._capacity():
-            self._grow()
+        if index is None:
+            bucket.append((key, value))
+            self._size += 1
+            if self._size >= MapBase._load_factor * self._capacity():
+                self._grow()
+        else:
+            bucket[index] = (key, value)
 
     def __delitem__(self, key: K) -> None:
         """Delete the entry at self[key].
@@ -94,13 +92,13 @@ class MapLinkedList[K, V](MapBase[K, V]):
             KeyError: If the key is not found in the map.
 
         Examples:
-            >>> hm = MapLinkedList.from_items([('a', 1), ('b', 2), ('c', 3)])
+            >>> hm = MapList.from_items([('a', 1), ('b', 2), ('c', 3)])
             >>> del hm['a']
             >>> 'a' in hm
             False
         """
-        bucket, item = self._get(key)
-        bucket.remove(item)
+        bucket, index = self._get(key)
+        bucket.pop(index)
         self._size -= 1
 
     def keys(self) -> Iterator[K]:
@@ -110,7 +108,7 @@ class MapLinkedList[K, V](MapBase[K, V]):
             Iterator[K]: Keys in the map.
 
         Examples:
-            >>> hm = MapLinkedList.from_items([('a', 1), ('b', 2), ('c', 3)])
+            >>> hm = MapList.from_items([('a', 1), ('b', 2), ('c', 3)])
             >>> list(sorted(hm.keys()))
             ['a', 'b', 'c']
         """
@@ -125,7 +123,7 @@ class MapLinkedList[K, V](MapBase[K, V]):
             Iterator[V]: Values in the map.
 
         Examples:
-            >>> hm = MapLinkedList.from_items([('a', 1), ('b', 2), ('c', 3)])
+            >>> hm = MapList.from_items([('a', 1), ('b', 2), ('c', 3)])
             >>> list(sorted(hm.values()))
             [1, 2, 3]
         """
@@ -140,7 +138,7 @@ class MapLinkedList[K, V](MapBase[K, V]):
             Iterator[tuple[K, V]]: Entries as (key, value) pairs.
 
         Examples:
-            >>> hm = MapLinkedList.from_items([('a', 1), ('b', 2), ('c', 3)])
+            >>> hm = MapList.from_items([('a', 1), ('b', 2), ('c', 3)])
             >>> list(sorted(hm.items()))
             [('a', 1), ('b', 2), ('c', 3)]
         """
@@ -152,15 +150,11 @@ class MapLinkedList[K, V](MapBase[K, V]):
         """The total capacity of the hash map (i.e., the number of hashable buckets)."""
         return len(self._buckets)
 
-    def _get(self, key: K) -> tuple[LinkedList[tuple[K, V]], tuple[K, V]]:
+    def _get(self, key: K) -> tuple[list[tuple[K, V]], int]:
         """Get the (bucket, index) of the item at the given key.
 
         To get the item, we must find the correct bucket via hashed key. Then, we need
         to iterate through the collisions in the bucket to match the key exactly.
-
-        This operation could be slightly optimized by returning a reference to the
-        found node. Then, calling functions could use the reference to provide faster
-        removals, without re-traversing the linked list.
 
         Args:
             key (K): The key to search for.
@@ -173,10 +167,10 @@ class MapLinkedList[K, V](MapBase[K, V]):
               entry. The entry is at bucket[index].
         """
         bucket = self._buckets[self._hash(key)]
-        item = bucket.search(key, key=itemgetter(0))
-        if item is None:
+        index = linear_search(bucket, key, key=itemgetter(0))
+        if index is None:
             raise KeyError("key not found in map")
-        return bucket, item
+        return bucket, index
 
     def _grow(self) -> None:
         """Grow the capacity of the map to be roughly double. All items are rehashed.
@@ -193,7 +187,7 @@ class MapLinkedList[K, V](MapBase[K, V]):
             Space: O(n) due to storing a copy of items before rehashing.
         """
         items = list(self.items())
-        self._buckets = [LinkedList() for _ in range(self._capacity() * 2 + 1)]
+        self._buckets = [[] for _ in range(self._capacity() * 2 + 1)]
         self._size = 0
 
         for key, value in items:

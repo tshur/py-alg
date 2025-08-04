@@ -2,8 +2,8 @@ from typing import Any
 
 import pytest
 
-from dsa.linked_list.linked_list import LinkedListBase
-from dsa.linked_list import LinkedList, DoublyLinkedList, SinglyLinkedList
+from src.dsap.linked_list.linked_list import LinkedListBase
+from src.dsap.linked_list import LinkedList, DoublyLinkedList, SinglyLinkedList
 
 pytestmark = pytest.mark.parametrize(
     "cls",

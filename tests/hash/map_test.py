@@ -1,7 +1,7 @@
 import pytest
 
-from dsa.hash.map import MapBase
-from dsa.hash import Map, MapLinkedList, MapList
+from src.dsap.hash.map import MapBase
+from src.dsap.hash import Map, MapLinkedList, MapList
 
 pytestmark = pytest.mark.parametrize(
     "cls",

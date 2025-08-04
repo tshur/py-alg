@@ -1,4 +1,4 @@
-from dsa.queue import Deque
+from src.dsap.queue import Deque
 
 
 class TestDeque:

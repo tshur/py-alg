@@ -2,9 +2,9 @@ from typing import Callable, Iterable
 
 import pytest
 
-from dsa.typing import SupportsRichComparison
+from src.dsap.typing import SupportsRichComparison
 
-from dsa.sort import heap_sort, insertion_sort, selection_sort, tree_sort
+from src.dsap.sort import heap_sort, insertion_sort, selection_sort, tree_sort
 
 pytestmark = pytest.mark.parametrize(
     "sort_algorithm",

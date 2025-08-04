@@ -56,7 +56,7 @@ pytest --doctest-modules
 To collect test coverage reports (# of lines covered by tests):
 
 ```bash
-pytest --cov=dsa --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
+pytest --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
 ```
 
 To run pytest with the python debugger for debugging failed tests, run the
@@ -92,7 +92,7 @@ To actually import and use this package, you can start in the root directory.
 Open a python3 interpreter, and try the following:
 
 ```python
->>> from dsa.sort import tree_sort
+>>> from src.dsap.sort import tree_sort
 >>> tree_sort([5, 1, 3, 2, 4])
 [1, 2, 3, 4, 5]
 ```
