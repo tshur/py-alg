@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
 
 [project]
 name = "dsap"
@@ -9,6 +9,12 @@ description = "Common data structures and algorithms written in Python for learn
 readme = "README.md"
 authors = [{ name = "Tim Shur" }]
 license = "MIT"
+license-files = ["LICEN[CS]E*"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
 dependencies = []
 
 [project.optional-dependencies]
@@ -21,6 +27,3 @@ test = [
     "pytest-testmon",
     "pytest-watcher",
 ]
-
-[tool.setuptools.packages.find]
-exclude = ["*_test.py"]
