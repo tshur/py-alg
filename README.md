@@ -35,6 +35,9 @@ iniitalize future terminal sessions in the venv.
 
 ## Testing
 
+_Note: Tests are written in a separate (but parallel structure) `tests/`
+directory._
+
 ### pytest
 
 Recommended: To test code in "watch" mode, try the following command (re-runs
@@ -44,8 +47,13 @@ only affected tests):
 ptw . --clear --doctest-modules --testmon
 ```
 
-To run pytest for all files, including doctests on modules, and collect test
-coverage reports:
+To run pytest for all files, including doctests on modules:
+
+```bash
+pytest --doctest-modules
+```
+
+To collect test coverage reports (# of lines covered by tests):
 
 ```bash
 pytest --cov=dsa --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml

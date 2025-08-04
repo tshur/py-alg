@@ -20,7 +20,6 @@
     ".pytest_cache": true,
     ".coverage": true,
     ".testmondata": true,
-    "dsa.egg-info": true,
-    "build": true
+    "dsa.egg-info": true
   }
 }
