@@ -1,6 +1,6 @@
 from typing import Iterable, Iterator, Optional, Self
 
-from src.dsap.iterable import rotate
+from ..iterable import rotate
 
 
 class Deque[T]:

@@ -1,7 +1,7 @@
 from typing import Iterable
 
-from src.dsap.tree import BinarySearchTree
-from src.dsap.type import SupportsRichComparison
+from ..tree import BinarySearchTree
+from ..type import SupportsRichComparison
 
 
 def tree_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:

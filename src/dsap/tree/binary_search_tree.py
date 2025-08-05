@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterable, Iterator, Optional
 
-from src.dsap.stack import Stack
-from src.dsap.type import SupportsRichComparison
+from ..stack import Stack
+from ..type import SupportsRichComparison
 
 
 @dataclass

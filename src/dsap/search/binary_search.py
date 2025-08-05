@@ -1,6 +1,6 @@
 from typing import Optional, Sequence
 
-from src.dsap.type import SupportsRichComparison
+from ..type import SupportsRichComparison
 
 
 def binary_search[CT: SupportsRichComparison](
