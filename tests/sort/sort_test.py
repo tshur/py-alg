@@ -2,12 +2,13 @@ from typing import Callable, Iterable
 
 import pytest
 
-from src.dsap.sort import heap_sort, insertion_sort, selection_sort, tree_sort
+from src.dsap.sort import sort, heap_sort, insertion_sort, selection_sort, tree_sort
 from src.dsap.type import SupportsRichComparison
 
 pytestmark = pytest.mark.parametrize(
     "sort_algorithm",
     [
+        sort,
         heap_sort,
         insertion_sort,
         selection_sort,
