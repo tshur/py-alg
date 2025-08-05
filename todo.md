@@ -6,7 +6,6 @@
 - Union find
 - function/ cache
 - More iterable algorithms
-- More sorting algorithms
 - More tree data structures
 - More leetcode questions
 - More ctci questions

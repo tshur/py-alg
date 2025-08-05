@@ -6,7 +6,7 @@ from .quick_sort import quick_sort
 from .selection_sort import selection_sort
 from .tree_sort import tree_sort
 
-sort = merge_sort
+sort = quick_sort
 
 __all__ = [
     "bubble_sort",
