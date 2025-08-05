@@ -1,5 +1,6 @@
 import pytest
 
+from src.dsap.sort import sort
 from src.dsap.hash.map import MapBase
 from src.dsap.hash import Map, MapLinkedList, MapList
 
@@ -80,10 +81,10 @@ class TestMap:
     def test_iter(self, cls: type[MapBase[str, int]]) -> None:
         hm = cls.from_items([("a", 1), ("b", 2), ("c", 3), ("b", 4)])
 
-        assert list(sorted(hm)) == ["a", "b", "c"]
-        assert list(sorted(hm.keys())) == ["a", "b", "c"]
-        assert list(sorted(hm.values())) == [1, 3, 4]
-        assert list(sorted(hm.items())) == [("a", 1), ("b", 4), ("c", 3)]
+        assert list(sort(hm)) == ["a", "b", "c"]
+        assert list(sort(hm.keys())) == ["a", "b", "c"]
+        assert list(sort(hm.values())) == [1, 3, 4]
+        assert list(sort(hm.items())) == [("a", 1), ("b", 4), ("c", 3)]
 
     def test_contains(self, cls: type[MapBase[str, int]]) -> None:
         hm = cls.from_items([("a", 1), ("b", 2), ("c", 3), ("b", 4)])
@@ -102,5 +103,5 @@ class TestMap:
             hm[ch] = i
 
         assert len(hm) == 26
-        assert list(sorted(hm)) == list(alphabet)
-        assert list(sorted(hm.items())) == [(ch, i) for i, ch in enumerate(alphabet)]
+        assert list(sort(hm)) == list(alphabet)
+        assert list(sort(hm.items())) == [(ch, i) for i, ch in enumerate(alphabet)]

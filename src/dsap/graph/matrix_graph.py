@@ -1,5 +1,6 @@
 from typing import Iterable, Iterator, Self
 
+from src.dsap.sort import sort
 from src.dsap.hash import Map, Set
 from src.dsap.queue import Queue
 from src.dsap.stack import Stack
@@ -355,4 +356,4 @@ class MatrixGraph[T](GraphBase[T]):
                 if is_neighbor
             ]
             out.append(f"{node} -> {neighbors}")
-        return "\n".join(sorted(out))
+        return "\n".join(sort(out))

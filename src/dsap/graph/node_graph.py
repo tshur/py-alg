@@ -1,5 +1,6 @@
 from typing import Iterator
 
+from src.dsap.sort import sort
 from src.dsap.hash import Map, Set
 from src.dsap.queue import Queue
 from src.dsap.stack import Stack
@@ -273,4 +274,4 @@ class NodeGraph[T](GraphBase[T]):
         out: list[str] = []
         for node in iter(self):
             out.append(f"{node} -> {list(self._nodes[node])}")
-        return "\n".join(sorted(out))
+        return "\n".join(sort(out))

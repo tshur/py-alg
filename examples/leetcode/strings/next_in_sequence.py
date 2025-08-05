@@ -6,6 +6,7 @@ https://bytebytego.com/exercises/coding-patterns/two-pointers/next-lexicographic
 from itertools import permutations
 from typing import Optional
 
+from src.dsap.sort import sort
 from src.dsap.iterable import reverse
 
 
@@ -31,7 +32,7 @@ def next_in_sequence_v1(s: str) -> str:
     """
 
     unique_permutations = set("".join(perm) for perm in permutations(s))
-    ordered_perms = list(sorted(unique_permutations))
+    ordered_perms = sort(unique_permutations)
 
     i = ordered_perms.index(s)
     return ordered_perms[(i + 1) % len(ordered_perms)]
