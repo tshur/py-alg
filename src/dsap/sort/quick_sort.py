@@ -44,23 +44,44 @@ def quick_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
         []
     """
 
-    def recursive_helper(array: list[CT]) -> list[CT]:
-        if len(array) <= 1:
-            return array  # Already sorted.
+    def swap(array: list[CT], i: int, j: int):
+        """Swap elements at two indicies in an array (assuming they are in-bounds)."""
+        array[i], array[j] = array[j], array[i]
 
-        pivot = array[0]
-        left_partition: list[CT] = []
-        right_partition: list[CT] = []
-        for item in array[1:]:
-            if item < pivot:
-                left_partition.append(item)
-            else:
-                right_partition.append(item)
+    def partition(array: list[CT], start: int, end: int) -> int:
+        """Partition the subsequence in [start, end), and return a valid pivot.
 
-        return (
-            recursive_helper(left_partition)
-            + [pivot]
-            + recursive_helper(right_partition)
-        )
+        Sample: (using ^ to denote the pivot)
+        [2, 5, 3, 1, 4]
+         ^
+            i
+        [2, 5, 3, 1, 4]
+               i
+        [2, 5, 3, 1, 4]
+                  i (swap)
+        [2, 1, 3, 5, 4] (swap after pivot)
+        [1, 2, 3, 5, 4] (swap with pivot)
+            ^
+                     i
+        """
+        pivot = start
+        for other in range(start + 1, end):
+            if array[pivot] < array[other]:
+                continue
+            swap(array, pivot + 1, other)
+            swap(array, pivot, pivot + 1)
+            pivot += 1
+        return pivot
 
-    return recursive_helper(list(iterable))
+    def recursive_helper(array: list[CT], start: int, end: int):
+        """Recursively quick sorts the array within inclusive range [start, end)."""
+        if end - start < 2:
+            return  # Already sorted.
+
+        pivot = partition(array, start, end)
+        recursive_helper(array, start, pivot)
+        recursive_helper(array, pivot + 1, end)
+
+    array = list(iterable)
+    recursive_helper(array, 0, len(array))
+    return array
