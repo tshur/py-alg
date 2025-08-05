@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from src.dsap.type import SupportsRichComparison
+from ..type import SupportsRichComparison
 
 
 def insertion_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
