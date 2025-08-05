@@ -1,6 +1,7 @@
 import pytest
 
 from src.dsap.hash import Set
+from src.dsap.sort import sort
 
 
 class TestSet:
@@ -51,7 +52,7 @@ class TestSet:
     def test_iter(self) -> None:
         s = Set[int].from_iterable([1, 4, 2, 3, 4])
 
-        assert list(sorted(s)) == [1, 2, 3, 4]
+        assert list(sort(s)) == [1, 2, 3, 4]
 
     def test_contains(self) -> None:
         s = Set[int].from_iterable([1, 2, 3, 4])
@@ -67,4 +68,4 @@ class TestSet:
         s = Set[int].from_iterable([1, 2, 3, 4, 1, 3, 2, 1, 2, 2, 1, 1])
 
         assert len(s) == 4
-        assert list(sorted(s)) == [1, 2, 3, 4]
+        assert list(sort(s)) == [1, 2, 3, 4]
