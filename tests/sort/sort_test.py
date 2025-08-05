@@ -38,7 +38,6 @@ class TestSortAlgorithms:
     ) -> None:
         assert sort_algorithm([5, 1, 3, 2, 4]) == [1, 2, 3, 4, 5]
         assert sort_algorithm([5, 5, 2, 1, 2, 1, 1]) == [1, 1, 1, 2, 2, 5, 5]
-        assert sort_algorithm([1, 1, 1]) == [1, 1, 1]
 
     def test_near_sorted(
         self,
@@ -49,6 +48,14 @@ class TestSortAlgorithms:
         assert sort_algorithm([1, 2, 3, 4, 5])
         assert sort_algorithm([5, 4, 3, 2, 1])
         assert sort_algorithm([1, 3, 2, 4, 5])
+
+    def test_equal_values(
+        self,
+        sort_algorithm: Callable[
+            [Iterable[SupportsRichComparison]], list[SupportsRichComparison]
+        ],
+    ) -> None:
+        assert sort_algorithm([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
 
     def test_larger_input(
         self,
@@ -75,3 +82,11 @@ class TestSortAlgorithms:
         ],
     ) -> None:
         assert sort_algorithm([]) == []
+
+    def test_single_value(
+        self,
+        sort_algorithm: Callable[
+            [Iterable[SupportsRichComparison]], list[SupportsRichComparison]
+        ],
+    ) -> None:
+        assert sort_algorithm([1]) == [1]
