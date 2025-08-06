@@ -18,12 +18,17 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-test = [
-    "hatch",
-    "mypy",
-    "pytest",
-    "pytest-cov",
-    "pytest-testmon",
-    "pytest-watcher",
-    "ruff",
-]
+test = ["hatch", "mypy", "ruff"]
+
+[tool.hatch.envs.hatch-test]
+installer = "pip"
+extra-dependencies = ["pytest-cov", "pytest-testmon", "pytest-watcher"]
+
+[tool.hatch.envs.test.scripts]
+watch = "ptw . --clear --doctest-modules --testmon"
+
+[tool.hatch.envs.hatch-test.scripts]
+run = "pytest{env:HATCH_TEST_ARGS:} --doctest-modules {args}"
+run-cov = "pytest{env:HATCH_TEST_ARGS:} --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml {args}"
+cov-combine = ""
+cov-report = ""
