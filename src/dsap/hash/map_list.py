@@ -1,7 +1,7 @@
 from operator import itemgetter
 from typing import Iterator
 
-from ..search import linear_search
+from dsap.search import linear_search
 
 from .map import MapBase
 

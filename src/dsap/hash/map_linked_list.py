@@ -1,7 +1,7 @@
 from operator import itemgetter
 from typing import Iterator
 
-from ..linked_list import LinkedList
+from dsap.linked_list import LinkedList
 
 from .map import MapBase
 

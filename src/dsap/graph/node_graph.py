@@ -1,9 +1,10 @@
 from typing import Iterator
 
-from ..hash import Map, Set
-from ..queue import Queue
-from ..sort import sort
-from ..stack import Stack
+from dsap.hash import Map, Set
+from dsap.queue import Queue
+from dsap.sort import sort
+from dsap.stack import Stack
+
 from .graph import GraphBase
 
 

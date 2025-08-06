@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from ..type import SupportsRichComparison
+from dsap.type import SupportsRichComparison
 
 
 def merge_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
