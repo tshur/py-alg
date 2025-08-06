@@ -2,13 +2,11 @@
   "recommendations": [
     "esbenp.prettier-vscode",
     "charliermarsh.ruff",
-    "cstrap.python-snippets",
     "ms-python.python",
     "ms-python.black-formatter",
     "ms-python.debugpy",
     "ms-python.mypy-type-checker",
     "ms-python.vscode-pylance",
-    "njpwerner.autodocstring",
-    "ryanluker.vscode-coverage-gutters"
+    "njpwerner.autodocstring"
   ]
 }
