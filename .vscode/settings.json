@@ -10,7 +10,6 @@
     }
   },
   "prettier.proseWrap": "always",
-  "coverage-gutters.showGutterCoverage": true,
   "python.analysis.typeCheckingMode": "strict",
   "python.analysis.autoImportCompletions": true,
   "autoDocstring.quoteStyle": "'''",
