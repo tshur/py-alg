@@ -19,11 +19,11 @@ dependencies = []
 
 [project.optional-dependencies]
 test = [
-    "ruff",
+    "hatch",
     "mypy",
     "pytest",
     "pytest-cov",
     "pytest-testmon",
     "pytest-watcher",
+    "ruff",
 ]
-release = ["build", "twine"]
