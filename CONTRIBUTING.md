@@ -12,13 +12,51 @@ merge a PR to the project!
 
 ### 0. (one time) Cloning and setting up your workspace
 
-Clone the repository, pull the latest changes, and follow the instructions in
-the `README`.
+Clone the repository, pull the latest changes, and follow these instructions to
+install the development environment.
 
-- You should get all the VSCode extensions and workspace settings (like
-  auto-format).
-- You should have a local `venv` enabled with packages installed.
-- You should run tests and verify that they are all passing (`ptw` command)
+You should get all the recommended VSCode extensions and workspace settings
+(like auto-format), see `.vscode/extensions.json`.
+
+Cloning the repo:
+
+```bash
+git clone git@github.com:tshur/py-alg.git
+cd py-alg
+```
+
+Installing dependencies:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -e ".[test]"
+```
+
+Verifying tests are passing:
+
+```bash
+pytest --doctest-modules
+```
+
+And all lines of code are covered by tests.
+
+```bash
+pytest                                   \
+  --cov=src --cov=examples               \
+  --cov-report=term-missing:skip-covered \
+  --cov-report xml:coverage.xml
+```
+
+As a last check, you can verify the package is installed in the python
+interpreter (run `python3` in command-line):
+
+```python
+>>> from dsap.sort import heap_sort
+>>> heap_sort([5, 1, 3, 2, 4])
+[1, 2, 3, 4, 5]
+```
 
 ### 1. (optional) Create a new issue
 
@@ -50,7 +88,14 @@ git status                              # Verify that you are on the new branch.
 
 Once you make your changes in your code editor, commit them to your branch.
 
-Possible steps:
+Make sure tests are passing, and strive for 100% test coverage! You can "watch"
+modified files and run tests automatically with the following command:
+
+```bash
+ptw . --clear --doctest-modules --testmon
+```
+
+Possible steps to create your commit:
 
 ```bash
 git status                 # You should see the pending changes on your branch.
@@ -148,10 +193,70 @@ you align with the repository style guide (sometimes, this means nit-picky
 comments; sorry!).
 
 Note: there is an auto-formatter extension recommended for VSCode (and enabled
-in project settings). If you use this formatter, you will be 90% of the way
+in project settings). If you use this formatter, you will be 95% of the way
 there!
 
 ## Community Guidelines
 
 Please be respectful, courteous, and compassionate. We all want to grow and
 improve, let's learn together!
+
+## Releasing
+
+_Note: The production release process is reserved for code owners of the repo.
+Feel free to build a distribution and release it to Test PyPi for learning!_
+
+To build the project for packaging / distribution, you can run the following:
+
+```bash
+pip install ".[release]"
+python3 -m build
+```
+
+### Test PyPi
+
+To deploy the package to Test PyPi, follow
+[these instructions](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
+make sure to update the version number, and then run the commands:
+
+```bash
+rm -r dist/
+python3 -m build
+python3 -m twine upload --repository testpypi dist/*
+```
+
+To install the package locally from TestPyPi, you can do the following:
+
+```bash
+python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps dsap
+```
+
+```python
+>>> from dsap.sort import heap_sort
+>>> heap_sort([5, 1, 3, 2, 4])
+[1, 2, 3, 4, 5]
+```
+
+### Production PyPi
+
+To deploy the package to PyPi, follow
+[these instructions](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
+make sure to update the version number, and then run the commands:
+
+```bash
+rm -r dist/
+python3 -m build
+python3 -m twine upload dist/*
+```
+
+To install the package locally from PyPi, you can do the following:
+
+```bash
+python3 -m pip install dsap
+```
+
+```python
+>>> from dsap.sort import heap_sort
+>>> heap_sort([5, 1, 3, 2, 4])
+[1, 2, 3, 4, 5]
+```
