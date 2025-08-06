@@ -37,16 +37,13 @@ pip install -e ".[test]"
 Verifying tests are passing:
 
 ```bash
-pytest --doctest-modules
+hatch test
 ```
 
 And all lines of code are covered by tests.
 
 ```bash
-pytest                                   \
-  --cov=src --cov=examples               \
-  --cov-report=term-missing:skip-covered \
-  --cov-report xml:coverage.xml
+hatch test --cover
 ```
 
 As a last check, you can verify the package is installed in the python
@@ -92,7 +89,7 @@ Make sure tests are passing, and strive for 100% test coverage! You can "watch"
 modified files and run tests automatically with the following command:
 
 ```bash
-ptw . --clear --doctest-modules --testmon
+hatch run test:watch
 ```
 
 Possible steps to create your commit:
@@ -163,10 +160,13 @@ It is good to write unit tests for any code you add to the repository. You
 should ensure that all tests are passing before sending a PR for review.
 
 Ideally, unit testing at a minimum has 100% code coverage (meaning every line of
-code is exercised by at least one test). Check the `README` for how to measure
-code coverage. Also, there is an extension you can enable to view which lines
-are actually covered by tests in the gutter
-(`ryanluker.vscode-coverage-gutters`).
+code is exercised by at least one test). The following commands will be useful:
+
+```bash
+hatch run test:watch  # Run tests on affected files in "watch" mode.
+hatch test            # Run all tests.
+hatch test --cover    # Generate coverage report.
+```
 
 ## AI Usage
 
@@ -229,12 +229,6 @@ To install the package locally from TestPyPi, you can do the following:
 python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps dsap
 ```
 
-```python
->>> from dsap.sort import heap_sort
->>> heap_sort([5, 1, 3, 2, 4])
-[1, 2, 3, 4, 5]
-```
-
 ### Production PyPi
 
 To deploy the package to PyPi, follow
@@ -250,10 +244,4 @@ To install the package locally from PyPi, you can do the following:
 
 ```bash
 python3 -m pip install dsap
-```
-
-```python
->>> from dsap.sort import heap_sort
->>> heap_sort([5, 1, 3, 2, 4])
-[1, 2, 3, 4, 5]
 ```
