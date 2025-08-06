@@ -1,7 +1,7 @@
 import pytest
 
-from src.dsap.graph.graph import GraphBase
 from src.dsap.graph import Graph, MatrixGraph, NodeGraph
+from src.dsap.graph.graph import GraphBase
 
 pytestmark = pytest.mark.parametrize(
     "cls",

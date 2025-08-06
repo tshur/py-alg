@@ -2,7 +2,10 @@ from typing import Callable
 
 import pytest
 
-from examples.leetcode.strings.next_in_sequence import next_in_sequence_v1, next_in_sequence_v2
+from examples.leetcode.strings.next_in_sequence import (
+    next_in_sequence_v1,
+    next_in_sequence_v2,
+)
 
 pytestmark = pytest.mark.parametrize(
     "fn",

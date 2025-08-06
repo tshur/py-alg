@@ -1,8 +1,8 @@
 from typing import Iterable, Iterator, Self
 
-from src.dsap.sort import sort
 from src.dsap.hash import Map, Set
 from src.dsap.queue import Queue
+from src.dsap.sort import sort
 from src.dsap.stack import Stack
 
 from .graph import GraphBase

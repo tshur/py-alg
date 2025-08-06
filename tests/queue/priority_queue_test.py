@@ -127,4 +127,4 @@ class TestPriorityQueue:
     def test_str(self) -> None:
         priority_queue = PriorityQueue[int].from_iterable([5, 1, 3, 2, 4])
 
-        assert str(priority_queue) == '[5, 4, 3, 2, 1]'
+        assert str(priority_queue) == "[5, 4, 3, 2, 1]"
