@@ -7,21 +7,27 @@ _For developers or contributors, please see CONTRIBUTING.md._
 ## Usage
 
 To install this project, run the following commands. We recommend first
-preparing a virtual python environment.
+preparing a virtual python environment. Commands are given with the `uv` tool
+[docs](https://docs.astral.sh/uv/).
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
+uv init example
+cd example
 ```
 
 To actually install this package:
 
 ```bash
-pip install dsap
+uv add dsap
+uv sync
 ```
 
 To verify the installation, open a `python3` interpreter, and try the following:
+
+```bash
+source .venv/bin/activate
+python
+```
 
 ```python
 >>> from dsap.sort import heap_sort

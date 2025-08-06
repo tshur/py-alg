@@ -18,10 +18,9 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-test = ["hatch", "mypy", "ruff"]
+test = ["hatch", "mypy", "pytest", "ruff"]
 
 [tool.hatch.envs.hatch-test]
-installer = "pip"
 extra-dependencies = ["pytest-cov", "pytest-testmon", "pytest-watcher"]
 
 [tool.hatch.envs.test.scripts]

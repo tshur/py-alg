@@ -13,7 +13,8 @@ merge a PR to the project!
 ### 0. (one time) Cloning and setting up your workspace
 
 Clone the repository, pull the latest changes, and follow these instructions to
-install the development environment.
+install the development environment. Commands are given with the `uv` tool
+[docs](https://docs.astral.sh/uv/).
 
 You should get all the recommended VSCode extensions and workspace settings
 (like auto-format), see `.vscode/extensions.json`.
@@ -28,10 +29,8 @@ cd py-alg
 Installing dependencies:
 
 ```bash
-python3 -m venv .venv
+uv sync --all-extras
 source .venv/bin/activate
-pip install --upgrade pip
-pip install -e ".[test]"
 ```
 
 Verifying tests are passing:
@@ -226,7 +225,7 @@ hatch publish --repo https://test.pypi.org/legacy/
 To install the package locally from TestPyPi, you can do the following:
 
 ```bash
-python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps dsap
+uv pip install dsap --index https://test.pypi.org/simple/
 ```
 
 ### Production PyPi
@@ -243,5 +242,5 @@ hatch publish
 To install the package locally from PyPi, you can do the following:
 
 ```bash
-python3 -m pip install dsap
+uv add dsap
 ```
