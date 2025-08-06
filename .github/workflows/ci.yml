@@ -25,13 +25,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install ruff mypy pytest
+          python -m pip install -e ".[test]"
 
       - name: Lint with ruff
         run: |
           ruff check --output-format=github .
       - name: Type checking with mypy
         run: |
-          mypy src/ examples/ --explicit-package-bases
+          mypy src/ examples/ --no-namespace-packages
       - name: Test with pytest
         run: |
           pytest --doctest-modules
