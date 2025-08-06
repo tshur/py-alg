@@ -209,8 +209,7 @@ Feel free to build a distribution and release it to Test PyPi for learning!_
 To build the project for packaging / distribution, you can run the following:
 
 ```bash
-pip install ".[release]"
-python3 -m build
+hatch build
 ```
 
 ### Test PyPi
@@ -220,9 +219,8 @@ To deploy the package to Test PyPi, follow
 make sure to update the version number, and then run the commands:
 
 ```bash
-rm -r dist/
-python3 -m build
-python3 -m twine upload --repository testpypi dist/*
+hatch build
+hatch publish --repo https://test.pypi.org/legacy/
 ```
 
 To install the package locally from TestPyPi, you can do the following:
@@ -244,9 +242,8 @@ To deploy the package to PyPi, follow
 make sure to update the version number, and then run the commands:
 
 ```bash
-rm -r dist/
-python3 -m build
-python3 -m twine upload dist/*
+hatch build
+hatch publish
 ```
 
 To install the package locally from PyPi, you can do the following:
