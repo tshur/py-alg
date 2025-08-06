@@ -6,9 +6,9 @@ import operator
 from dataclasses import dataclass, field
 from typing import Literal, Optional
 
-from src.dsap.hash import Map
-from src.dsap.heap import MaxHeap
-from src.dsap.iterable import reverse
+from dsap.hash import Map
+from dsap.heap import MaxHeap
+from dsap.iterable import reverse
 
 
 # Create a type sentinel that always compares larger than any other type.

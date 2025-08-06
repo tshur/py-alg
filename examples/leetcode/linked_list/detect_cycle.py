@@ -1,6 +1,6 @@
-from src.dsap.hash import Set
-from src.dsap.iterable import skip
-from src.dsap.linked_list import SinglyLinkedList
+from dsap.hash import Set
+from dsap.iterable import skip
+from dsap.linked_list import SinglyLinkedList
 
 
 class DetectCycle(SinglyLinkedList[int]):

@@ -6,8 +6,8 @@ https://bytebytego.com/exercises/coding-patterns/two-pointers/next-lexicographic
 from itertools import permutations
 from typing import Optional
 
-from src.dsap.iterable import reverse
-from src.dsap.sort import sort
+from dsap.iterable import reverse
+from dsap.sort import sort
 
 
 def next_in_sequence_v1(s: str) -> str:
