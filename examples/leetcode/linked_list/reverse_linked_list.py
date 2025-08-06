@@ -1,6 +1,6 @@
 from typing import Optional
 
-from src.dsap.linked_list import SinglyLinkedList
+from dsap.linked_list import SinglyLinkedList
 
 
 class ReverseLinkedList(SinglyLinkedList[int]):
