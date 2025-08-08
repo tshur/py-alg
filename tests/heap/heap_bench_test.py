@@ -8,8 +8,8 @@ class TestBenchHeap:
         def fn():
             heap = [7, 5, 1, 3, 9, 0, 4, 6, 2, 8]
             heapq.heapify(heap)
-
             consumed = [heapq.heappop(heap) for _ in range(len(heap))]
+
             assert consumed == list(range(10))
 
         benchmark(fn)
