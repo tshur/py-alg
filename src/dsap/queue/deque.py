@@ -268,6 +268,7 @@ class Deque[T]:
             [2, 3, None, None]
         """
         rotate(self._ring_buffer, -self._start)
+        self._start = 0
 
     def _grow(self) -> None:
         """Helper to grow (double) the capacity if needed.

@@ -111,7 +111,7 @@ class TestDeque:
         assert None not in empty_deque
 
     def test_capacity_doubles(self) -> None:
-        deque: Deque[int] = Deque(capacity=1)
+        deque = Deque[int](capacity=1)
         assert deque.capacity() == 1
 
         deque.push_back(1)
@@ -160,3 +160,12 @@ class TestDeque:
             deque.push_back(deque.pop_front())
         assert len(deque) == 3
         assert deque.capacity() == 3
+
+    def test_large_deque(self) -> None:
+        deque = Deque[int]()
+
+        for i in range(100):
+            deque.push_front(i)
+
+        consumed = [deque.pop_back() for _ in range(len(deque))]
+        assert consumed == list(range(100))
