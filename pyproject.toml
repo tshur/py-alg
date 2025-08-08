@@ -21,13 +21,19 @@ dependencies = []
 test = ["hatch", "mypy", "pytest", "ruff"]
 
 [tool.hatch.envs.hatch-test]
-extra-dependencies = ["pytest-cov", "pytest-testmon", "pytest-watcher"]
+extra-dependencies = [
+    "pytest-benchmark",
+    "pytest-cov",
+    "pytest-testmon",
+    "pytest-watcher",
+]
 
 [tool.hatch.envs.test.scripts]
-watch = "ptw . --clear --doctest-modules --testmon"
+bench = "pytest{env:HATCH_TEST_ARGS:} --benchmark-only {args}"
+watch = "ptw . --clear --doctest-modules --benchmark-skip --testmon"
 
 [tool.hatch.envs.hatch-test.scripts]
-run = "pytest{env:HATCH_TEST_ARGS:} --doctest-modules {args}"
-run-cov = "pytest{env:HATCH_TEST_ARGS:} --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml {args}"
+run = "pytest{env:HATCH_TEST_ARGS:} --doctest-modules --benchmark-skip {args}"
+run-cov = "pytest{env:HATCH_TEST_ARGS:} --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml {args}"
 cov-combine = ""
 cov-report = ""
