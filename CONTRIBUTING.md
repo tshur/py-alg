@@ -167,6 +167,15 @@ hatch test            # Run all tests.
 hatch test --cover    # Generate coverage report.
 ```
 
+You can also run benchmark tests for some functions which compare performance
+vs. similar builtin libraries. We are not expecting to be faster than code
+implemented in C or hyper-optimized, but we want to measure the performance
+differences! Try the following:
+
+```bash
+hatch run test:bench  # Run benchmark tests only.
+```
+
 ## AI Usage
 
 It is our current opinion that heavy AI use would deter from maximal learning,
