@@ -1,4 +1,4 @@
-from src.dsap.tree import BinarySearchTree
+from dsap.tree import BinarySearchTree
 
 
 class TestBinarySearchTree:

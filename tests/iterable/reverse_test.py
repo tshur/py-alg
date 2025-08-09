@@ -1,4 +1,4 @@
-from src.dsap.iterable import reverse
+from dsap.iterable import reverse
 
 
 class TestReverse:

@@ -1,6 +1,6 @@
 import operator
 
-from src.dsap.iterable import adjacent_transform, pairwise_transform
+from dsap.iterable import adjacent_transform, pairwise_transform
 
 
 class TestAdjacentTransform:

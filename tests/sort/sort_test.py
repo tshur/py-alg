@@ -2,7 +2,7 @@ from typing import Callable, Iterable
 
 import pytest
 
-from src.dsap.sort import (
+from dsap.sort import (
     bubble_sort,
     heap_sort,
     insertion_sort,
@@ -12,7 +12,7 @@ from src.dsap.sort import (
     sort,
     tree_sort,
 )
-from src.dsap.type import SupportsRichComparison
+from dsap.type import SupportsRichComparison
 
 pytestmark = pytest.mark.parametrize(
     "sort_algorithm",

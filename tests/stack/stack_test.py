@@ -1,4 +1,4 @@
-from src.dsap.stack import Stack
+from dsap.stack import Stack
 
 
 class TestStack:

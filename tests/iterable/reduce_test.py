@@ -1,6 +1,6 @@
 import operator
 
-from src.dsap.iterable import reduce
+from dsap.iterable import reduce
 
 
 class TestReduce:

@@ -1,5 +1,5 @@
-from src.dsap.search import binary_search
-from src.dsap.search.binary_search import lower_bound, upper_bound
+from dsap.search import binary_search
+from dsap.search.binary_search import lower_bound, upper_bound
 
 
 class TestBinarySearch:

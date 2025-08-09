@@ -1,4 +1,4 @@
-from src.dsap.queue import Queue
+from dsap.queue import Queue
 
 
 class TestQueue:

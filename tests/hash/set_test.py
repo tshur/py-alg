@@ -1,7 +1,7 @@
 import pytest
 
-from src.dsap.hash import Set
-from src.dsap.sort import sort
+from dsap.hash import Set
+from dsap.sort import sort
 
 
 class TestSet:
