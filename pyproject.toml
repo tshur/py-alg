@@ -18,7 +18,7 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-test = [
+dev = [
     "hatch",
     "mypy",
     "pytest",
@@ -27,6 +27,12 @@ test = [
     "pytest-watcher",
     "ruff",
 ]
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
 
 [tool.hatch.envs.hatch-test]
 extra-dependencies = ["pytest-benchmark", "pytest-cov"]

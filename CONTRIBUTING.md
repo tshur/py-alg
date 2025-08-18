@@ -224,12 +224,12 @@ uv build
 ### Test PyPi
 
 To deploy the package to Test PyPi, follow
-[these instructions](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
-make sure to update the version number, and then run the commands:
+[these instructions](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+Make sure to update the version number. Then run the commands:
 
 ```bash
 uv build
-uv publish --index https://test.pypi.org/legacy/
+uv publish --index testpypi --token pypi-...
 ```
 
 To install the package locally from TestPyPi, you can do the following:
