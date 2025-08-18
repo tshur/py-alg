@@ -1,4 +1,4 @@
-from src.dsap.iterable import rotate
+from dsap.iterable import rotate
 
 
 class TestRotate:

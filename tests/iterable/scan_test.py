@@ -1,6 +1,6 @@
 import operator
 
-from src.dsap.iterable import scan
+from dsap.iterable import scan
 
 
 class TestScan:

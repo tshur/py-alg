@@ -1,4 +1,4 @@
-from src.dsap.heap import MaxHeap, MinHeap
+from dsap.heap import MaxHeap, MinHeap
 
 
 class TestMinHeap:

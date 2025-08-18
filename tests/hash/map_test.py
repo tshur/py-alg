@@ -1,8 +1,8 @@
 import pytest
 
-from src.dsap.hash import Map, MapLinkedList, MapList
-from src.dsap.hash.map import MapBase
-from src.dsap.sort import sort
+from dsap.hash import Map, MapLinkedList, MapList
+from dsap.hash.map import MapBase
+from dsap.sort import sort
 
 pytestmark = pytest.mark.parametrize(
     "cls",
