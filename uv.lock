@@ -187,7 +187,7 @@ version = "0.0.3"
 source = { editable = "." }
 
 [package.optional-dependencies]
-test = [
+dev = [
     { name = "hatch" },
     { name = "mypy" },
     { name = "pytest" },
@@ -199,15 +199,15 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "hatch", marker = "extra == 'test'" },
-    { name = "mypy", marker = "extra == 'test'" },
-    { name = "pytest", marker = "extra == 'test'" },
-    { name = "pytest-benchmark", marker = "extra == 'test'" },
-    { name = "pytest-testmon", marker = "extra == 'test'" },
-    { name = "pytest-watcher", marker = "extra == 'test'" },
-    { name = "ruff", marker = "extra == 'test'" },
+    { name = "hatch", marker = "extra == 'dev'" },
+    { name = "mypy", marker = "extra == 'dev'" },
+    { name = "pytest", marker = "extra == 'dev'" },
+    { name = "pytest-benchmark", marker = "extra == 'dev'" },
+    { name = "pytest-testmon", marker = "extra == 'dev'" },
+    { name = "pytest-watcher", marker = "extra == 'dev'" },
+    { name = "ruff", marker = "extra == 'dev'" },
 ]
-provides-extras = ["test"]
+provides-extras = ["dev"]
 
 [[package]]
 name = "filelock"
