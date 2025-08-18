@@ -18,15 +18,18 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-test = ["hatch", "mypy", "pytest", "ruff"]
-
-[tool.hatch.envs.hatch-test]
-extra-dependencies = [
+test = [
+    "hatch",
+    "mypy",
+    "pytest",
     "pytest-benchmark",
-    "pytest-cov",
     "pytest-testmon",
     "pytest-watcher",
+    "ruff",
 ]
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = ["pytest-cov"]
 
 [tool.hatch.envs.test.scripts]
 bench = "pytest{env:HATCH_TEST_ARGS:} --benchmark-only {args}"
