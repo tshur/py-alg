@@ -19,10 +19,10 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
-    "hatch",
     "mypy",
     "pytest",
     "pytest-benchmark",
+    "pytest-cov",
     "pytest-testmon",
     "pytest-watcher",
     "ruff",
@@ -33,16 +33,3 @@ name = "testpypi"
 url = "https://test.pypi.org/simple"
 publish-url = "https://test.pypi.org/legacy/"
 explicit = true
-
-[tool.hatch.envs.hatch-test]
-extra-dependencies = ["pytest-benchmark", "pytest-cov"]
-
-[tool.hatch.envs.test.scripts]
-bench = "pytest{env:HATCH_TEST_ARGS:} --benchmark-only {args}"
-watch = "ptw . --clear --doctest-modules --benchmark-skip --testmon"
-
-[tool.hatch.envs.hatch-test.scripts]
-run = "pytest{env:HATCH_TEST_ARGS:} --doctest-modules --benchmark-skip {args}"
-run-cov = "pytest{env:HATCH_TEST_ARGS:} --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml {args}"
-cov-combine = ""
-cov-report = ""
