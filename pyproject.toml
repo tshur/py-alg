@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling >= 1.26"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
 
 [project]
 name = "dsap"

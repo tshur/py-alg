@@ -49,6 +49,7 @@ As a last check, you can verify the package is installed in the python
 interpreter (run `python3` in command-line):
 
 ```python
+>>> import dsap
 >>> from dsap.sort import heap_sort
 >>> heap_sort([5, 1, 3, 2, 4])
 [1, 2, 3, 4, 5]
@@ -217,7 +218,7 @@ Feel free to build a distribution and release it to Test PyPi for learning!_
 To build the project for packaging / distribution, you can run the following:
 
 ```bash
-hatch build
+uv build
 ```
 
 ### Test PyPi
@@ -227,14 +228,14 @@ To deploy the package to Test PyPi, follow
 make sure to update the version number, and then run the commands:
 
 ```bash
-hatch build
-hatch publish --repo https://test.pypi.org/legacy/
+uv build
+uv publish --index https://test.pypi.org/legacy/
 ```
 
 To install the package locally from TestPyPi, you can do the following:
 
 ```bash
-uv pip install dsap --index https://test.pypi.org/simple/
+uv run --with dsap --index https://test.pypi.org/simple/ --no-project -- python -c "import dsap"
 ```
 
 ### Production PyPi
@@ -244,12 +245,19 @@ To deploy the package to PyPi, follow
 make sure to update the version number, and then run the commands:
 
 ```bash
-hatch build
-hatch publish
+uv build
+uv publish
 ```
 
 To install the package locally from PyPi, you can do the following:
 
 ```bash
 uv add dsap
+```
+
+For a quick test that the package installs / imports correctly, try (outside the
+project directory, to prevent locally importing the package!):
+
+```bash
+uv run --with dsap --no-project -- python -c "import dsap"
 ```
