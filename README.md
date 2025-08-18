@@ -15,11 +15,10 @@ uv init example
 cd example
 ```
 
-To actually install this package:
+To actually install this package (or, `pip install dsap`):
 
 ```bash
 uv add dsap
-uv sync
 ```
 
 To verify the installation, open a `python3` interpreter, and try the following:
