@@ -18,7 +18,6 @@ uv run --with dsap --no-project -- python
 ```
 
 ```python
->>> import dsap
 >>> from dsap.sort import heap_sort
 >>> heap_sort([5, 1, 3, 2, 4])
 [1, 2, 3, 4, 5]
@@ -47,7 +46,6 @@ uv run python
 ```
 
 ```python
->>> import dsap
 >>> from dsap.sort import heap_sort
 >>> heap_sort([5, 1, 3, 2, 4])
 [1, 2, 3, 4, 5]
