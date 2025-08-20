@@ -48,7 +48,6 @@ As a last check, you can verify the package is installed in the python
 interpreter (run `python3` in command-line):
 
 ```python
->>> import dsap
 >>> from dsap.sort import heap_sort
 >>> heap_sort([5, 1, 3, 2, 4])
 [1, 2, 3, 4, 5]
