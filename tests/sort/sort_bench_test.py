@@ -10,6 +10,7 @@ from src.dsap.sort import (
     selection_sort,
     sort,
     tree_sort,
+    tim_sort,
 )
 
 

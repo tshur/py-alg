@@ -11,6 +11,7 @@ from dsap.sort import (
     selection_sort,
     sort,
     tree_sort,
+    tim_sort,
 )
 from dsap.type import SupportsRichComparison
 
@@ -25,6 +26,7 @@ pytestmark = pytest.mark.parametrize(
         selection_sort,
         sort,
         tree_sort,
+        tim_sort,
     ],
 )
 
