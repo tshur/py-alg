@@ -30,19 +30,18 @@ Installing dependencies:
 
 ```bash
 uv sync --all-extras
-source .venv/bin/activate
 ```
 
 Verifying tests are passing:
 
 ```bash
-hatch test
+uv run pytest --doctest-modules --benchmark-skip
 ```
 
 And all lines of code are covered by tests.
 
 ```bash
-hatch test --cover
+uv run pytest --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
 ```
 
 As a last check, you can verify the package is installed in the python
@@ -88,7 +87,7 @@ Make sure tests are passing, and strive for 100% test coverage! You can "watch"
 modified files and run tests automatically with the following command:
 
 ```bash
-hatch run test:watch
+uv run ptw . --clear --doctest-modules --benchmark-skip --testmon
 ```
 
 Possible steps to create your commit:
@@ -162,9 +161,14 @@ Ideally, unit testing at a minimum has 100% code coverage (meaning every line of
 code is exercised by at least one test). The following commands will be useful:
 
 ```bash
-hatch run test:watch  # Run tests on affected files in "watch" mode.
-hatch test            # Run all tests.
-hatch test --cover    # Generate coverage report.
+# Run tests on affected files in "watch" mode.
+uv run ptw . --clear --doctest-modules --benchmark-skip --testmon
+
+# Run all tests (except long-running benchmarks).
+uv run pytest --doctest-modules --benchmark-skip
+
+# Generate coverage report.
+uv run pytest --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
 ```
 
 You can also run benchmark tests for some functions which compare performance
@@ -173,7 +177,14 @@ implemented in C or hyper-optimized, but we want to measure the performance
 differences! Try the following:
 
 ```bash
-hatch run test:bench  # Run benchmark tests only.
+# Run benchmark tests only.
+uv run pytest --benchmark-only
+```
+
+(optional) You can verify typechecking with `mypy` using the following:
+
+```bash
+uv run mypy src/ examples/
 ```
 
 ## AI Usage
@@ -217,24 +228,24 @@ Feel free to build a distribution and release it to Test PyPi for learning!_
 To build the project for packaging / distribution, you can run the following:
 
 ```bash
-hatch build
+uv build
 ```
 
 ### Test PyPi
 
 To deploy the package to Test PyPi, follow
-[these instructions](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
-make sure to update the version number, and then run the commands:
+[these instructions](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+Make sure to update the version number. Then run the commands:
 
 ```bash
-hatch build
-hatch publish --repo https://test.pypi.org/legacy/
+uv build
+uv publish --index testpypi --token pypi-...
 ```
 
 To install the package locally from TestPyPi, you can do the following:
 
 ```bash
-uv pip install dsap --index https://test.pypi.org/simple/
+uv run --with dsap --index https://test.pypi.org/simple/ --no-project -- python -c "import dsap"
 ```
 
 ### Production PyPi
@@ -244,12 +255,19 @@ To deploy the package to PyPi, follow
 make sure to update the version number, and then run the commands:
 
 ```bash
-hatch build
-hatch publish
+uv build
+uv publish
 ```
 
 To install the package locally from PyPi, you can do the following:
 
 ```bash
 uv add dsap
+```
+
+For a quick test that the package installs / imports correctly, try (outside the
+project directory, to prevent locally importing the package!):
+
+```bash
+uv run --with dsap --no-project -- python -c "import dsap"
 ```
