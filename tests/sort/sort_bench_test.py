@@ -9,8 +9,8 @@ from src.dsap.sort import (
     quick_sort,
     selection_sort,
     sort,
-    tree_sort,
     tim_sort,
+    tree_sort,
 )
 
 
@@ -174,6 +174,25 @@ class TestBenchHeap:
 
         benchmark(fn)
 
+    def test_dsap_tim_sort_sm(self, benchmark):  # type: ignore
+        def fn():
+            assert list(tim_sort(repeat(0, 10))) == list(repeat(0, 10))
+            assert list(tim_sort(range(10))) == list(range(10))
+            assert list(tim_sort([7, 3, 1, 4, 5, 0, 9, 6, 2, 8])) == list(range(10))
+
+        benchmark(fn)
+
+    def test_dsap_tim_sort_lg(self, benchmark):  # type: ignore
+        def fn():
+            assert list(tim_sort(repeat(0, 800))) == list(repeat(0, 800))
+            assert list(tim_sort(range(800))) == list(range(800))
+
+            nums = list(range(800))
+            shuffle(nums)
+            assert list(tim_sort(nums)) == list(range(800))
+
+        benchmark(fn)
+    
     def test_dsap_tree_sort_sm(self, benchmark):  # type: ignore
         def fn():
             assert list(tree_sort(repeat(0, 10))) == list(repeat(0, 10))
