@@ -17,6 +17,6 @@ __all__ = [
     "quick_sort",
     "selection_sort",
     "sort",
-    "tree_sort",
     "tim_sort",
+    "tree_sort",
 ]
