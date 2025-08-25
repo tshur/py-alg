@@ -1,5 +1,4 @@
 from typing import Callable, Iterable
-from random import shuffle
 
 import pytest
 
