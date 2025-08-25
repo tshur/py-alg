@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling >= 1.26"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
 
 [project]
 name = "dsap"
-version = "0.0.3"
+version = "0.1.0"
 description = "Common data structures and algorithms written in Python for learning"
 authors = [{ name = "Tim Shur" }, { name = "Daniel Ochoa" }]
 readme = "README.md"
@@ -17,26 +17,19 @@ classifiers = [
 requires-python = ">=3.12"
 dependencies = []
 
-[project.optional-dependencies]
-test = [
-    "hatch",
+[dependency-groups]
+dev = [
     "mypy",
     "pytest",
     "pytest-benchmark",
+    "pytest-cov",
     "pytest-testmon",
     "pytest-watcher",
     "ruff",
 ]
 
-[tool.hatch.envs.hatch-test]
-extra-dependencies = ["pytest-benchmark", "pytest-cov"]
-
-[tool.hatch.envs.test.scripts]
-bench = "pytest{env:HATCH_TEST_ARGS:} --benchmark-only {args}"
-watch = "ptw . --clear --doctest-modules --benchmark-skip --testmon"
-
-[tool.hatch.envs.hatch-test.scripts]
-run = "pytest{env:HATCH_TEST_ARGS:} --doctest-modules --benchmark-skip {args}"
-run-cov = "pytest{env:HATCH_TEST_ARGS:} --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml {args}"
-cov-combine = ""
-cov-report = ""
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
