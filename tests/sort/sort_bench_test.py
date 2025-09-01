@@ -192,7 +192,7 @@ class TestBenchHeap:
             assert list(tim_sort(nums)) == list(range(800))
 
         benchmark(fn)
-    
+
     def test_dsap_tree_sort_sm(self, benchmark):  # type: ignore
         def fn():
             assert list(tree_sort(repeat(0, 10))) == list(repeat(0, 10))

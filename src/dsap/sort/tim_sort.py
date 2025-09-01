@@ -9,7 +9,7 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
     Timsort is a hybrid sorting algorithm derived from merge sort and insertion sort.
     The algorithm finds natural, already sorted subsequences called "runs," then
     efficiently merges them together.
-    Insertion sort is used to sort small runs for optimal performance. Winthin 2 
+    Insertion sort is used to sort small runs for optimal performance. Winthin 2
     items for our sample case. (In real world: 32 or 64)
 
     Sample: (using | to denote the sub run locations)
@@ -19,7 +19,7 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
         [1, 2, 3, 4, 5] second merge sort
 
     Complexity:
-        Time: O(nlogn), worst case when we have no existing ascending trend in the 
+        Time: O(nlogn), worst case when we have no existing ascending trend in the
         input array for optimization.
         Space: O(n), for consuming the input into an array.
 
@@ -64,8 +64,7 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
             array[j + 1] = key_item
 
     def merge(array: list[CT], lft: int, mid: int, rgt: int) -> None:
-        """Merges two sorted subarrays arr[lft..mid] and arr[mid+1..rgt].
-        """
+        """Merges two sorted subarrays arr[lft..mid] and arr[mid+1..rgt]."""
         left, right = array[lft : mid + 1], array[mid + 1 : rgt + 1]
         len1, len2 = len(left), len(right)
 
@@ -73,7 +72,6 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
         k = lft
         # Merge
         while i < len1 and j < len2:
-
             if right[j] < left[i]:
                 array[k] = right[j]
                 j += 1
@@ -93,7 +91,6 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
             array[k] = right[j]
             k += 1
             j += 1
-    
 
     array = list(iterable)
     n = len(array)
@@ -117,7 +114,7 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
 
             if mid < right:  # Spot optimized location for merge.
                 merge(array, left, mid, right)
-        
+
         size *= 2
-    
+
     return array

@@ -4,8 +4,8 @@ from .insertion_sort import insertion_sort
 from .merge_sort import merge_sort
 from .quick_sort import quick_sort
 from .selection_sort import selection_sort
-from .tree_sort import tree_sort
 from .tim_sort import tim_sort
+from .tree_sort import tree_sort
 
 sort = merge_sort
 
