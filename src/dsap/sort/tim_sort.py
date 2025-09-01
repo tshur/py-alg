@@ -43,7 +43,7 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
         """Calculates the minimum run size for Timsort.
         Returns the smallest power of 2 that is less than or equal to n.
         """
-        # Subsequences insertition sort length can be changed to 64 if list longer than 2^10.
+        # Subsequence insertition sort length can be changed to 64 if list longer than 2^10.
         INSERTION_SORT_LENGTH = 32
         r = 0
         while n >= INSERTION_SORT_LENGTH:
