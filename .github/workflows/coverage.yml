@@ -2,8 +2,8 @@ name: Python Coverage Check
 
 on:
   pull_request:
-    branches:
-      - "*"
+  pull_request_target:
+    branches: main
 
 permissions:
   contents: write
