@@ -8,19 +8,18 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
 
     Timsort is a hybrid sorting algorithm derived from merge sort and insertion sort.
     The algorithm finds natural, already sorted subsequences called "runs," then
-    efficiently merges them together.
-    Insertion sort is used to sort small runs for optimal performance. Winthin 2
-    items for our sample case. (In real world: 32 or 64)
+    efficiently merges them together. Insertion sort is used to sort small runs for
+    optimal performance (e.g., chunks of 32).
 
-    Sample: (using | to denote the sub run locations)
+    Sample: (using | to denote the sub run locations; insertion sort runs of size 2)
         [5, 1|, 3, 2|, 4]
         [1, 5|, 2, 3|, 4] first insert sort
         [1, 2, 3, 5|, 4] first merge sort
         [1, 2, 3, 4, 5] second merge sort
 
     Complexity:
-        Time: O(nlogn), worst case when we have no existing ascending trend in the
-        input array for optimization.
+        Time: O(nlogn), worst case when we have no existing ascending trend in the input
+          array for optimization.
         Space: O(n), for consuming the input into an array.
 
     Args:
@@ -41,9 +40,10 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
 
     def calc_minrun(n: int) -> int:
         """Calculates the minimum run size for Timsort.
+
         Returns the smallest power of 2 that is less than or equal to n.
         """
-        # Subsequence insertition sort length can be changed to 64 if list longer than 2^10.
+        # Insertion sort length can be changed to 64 if list longer than 2^10.
         INSERTION_SORT_LENGTH = 32
         r = 0
         while n >= INSERTION_SORT_LENGTH:
@@ -53,6 +53,7 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
 
     def insertion_sort(array: list[CT], left: int, right: int) -> None:
         """Sorts a slice of an array using insertion sort.
+
         This is used for sorting small runs.
         """
         for i in range(left + 1, right + 1):
@@ -105,7 +106,7 @@ def tim_sort[CT: SupportsRichComparison](iterable: Iterable[CT]) -> list[CT]:
         end = min(start + minrun - 1, n - 1)
         insertion_sort(array, start, end)
 
-    # Merge runs.
+    # Merge runs together, bottom-up.
     size = minrun
     while size < n:
         for left in range(0, n, 2 * size):
