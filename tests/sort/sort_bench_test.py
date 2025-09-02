@@ -14,7 +14,7 @@ from src.dsap.sort import (
 )
 
 
-class TestBenchHeap:
+class TestBenchSort:
     def setup_method(self):
         seed(42)  # So that all benchmarks shuffle the same ways.
 
