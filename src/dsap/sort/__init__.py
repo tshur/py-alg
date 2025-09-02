@@ -1,3 +1,7 @@
+from typing import Callable, Iterable
+
+from dsap.type import SupportsRichComparison
+
 from .bubble_sort import bubble_sort
 from .heap_sort import heap_sort
 from .insertion_sort import insertion_sort
@@ -7,9 +11,14 @@ from .selection_sort import selection_sort
 from .tim_sort import tim_sort
 from .tree_sort import tree_sort
 
-sort = merge_sort
+type SortAlgorithm = Callable[
+    [Iterable[SupportsRichComparison]], list[SupportsRichComparison]
+]
+
+sort: SortAlgorithm = merge_sort
 
 __all__ = [
+    "SortAlgorithm",
     "bubble_sort",
     "heap_sort",
     "insertion_sort",
