@@ -1,10 +1,12 @@
 from collections import deque
 
+from pytest_benchmark.fixture import BenchmarkFixture  # type: ignore
+
 from src.dsap.queue import Deque
 
 
 class TestBenchHeap:
-    def test_builtin_deque(self, benchmark):  # type: ignore
+    def test_builtin_deque(self, benchmark: BenchmarkFixture):
         def fn():
             dq = deque[int]()
 
@@ -16,7 +18,7 @@ class TestBenchHeap:
 
         benchmark(fn)
 
-    def test_dsap_deque(self, benchmark):  # type: ignore
+    def test_dsap_deque(self, benchmark: BenchmarkFixture):
         def fn():
             dq = Deque[int]()
 
