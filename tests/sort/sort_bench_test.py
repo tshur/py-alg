@@ -2,6 +2,7 @@ from itertools import repeat
 from random import seed, shuffle
 
 import pytest
+from pytest_benchmark.fixture import BenchmarkFixture  # type: ignore
 
 from src.dsap.sort import (
     SortAlgorithm,
@@ -35,7 +36,7 @@ class TestBenchSort:
     def setup_method(self):
         seed(42)  # So that all benchmarks shuffle the same ways.
 
-    def test_sort_sm(self, benchmark, sort_algorithm: SortAlgorithm):  # type: ignore
+    def test_sort_sm(self, benchmark: BenchmarkFixture, sort_algorithm: SortAlgorithm):
         def fn():
             assert list(sort_algorithm(repeat(0, 10))) == list(repeat(0, 10))
             assert list(sort_algorithm(range(10))) == list(range(10))
@@ -45,7 +46,7 @@ class TestBenchSort:
 
         benchmark(fn)
 
-    def test_sort_lg(self, benchmark, sort_algorithm: SortAlgorithm):  # type: ignore
+    def test_sort_lg(self, benchmark: BenchmarkFixture, sort_algorithm: SortAlgorithm):
         def fn():
             assert list(sort_algorithm(repeat(0, 800))) == list(repeat(0, 800))
             assert list(sort_algorithm(range(800))) == list(range(800))
