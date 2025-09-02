@@ -15,7 +15,7 @@ type SortAlgorithm = Callable[
     [Iterable[SupportsRichComparison]], list[SupportsRichComparison]
 ]
 
-sort: SortAlgorithm = merge_sort
+sort: SortAlgorithm = tim_sort
 
 __all__ = [
     "SortAlgorithm",
