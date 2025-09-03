@@ -184,7 +184,7 @@ uv run pytest --benchmark-only
 (optional) You can verify typechecking with `mypy` using the following:
 
 ```bash
-uv run mypy src/ examples/
+uv run mypy src/ examples/ tests/ --no-namespace-packages
 ```
 
 ## AI Usage
