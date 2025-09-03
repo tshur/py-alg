@@ -177,8 +177,11 @@ implemented in C or hyper-optimized, but we want to measure the performance
 differences! Try the following:
 
 ```bash
-# Run benchmark tests only.
-uv run pytest --benchmark-only
+# Run benchmark tests only (expedite by limiting max time per test).
+uv run pytest --benchmark-only --benchmark-max-time=0.1
+
+# Run specific benchmark group with default 1.0s max time.
+uv run pytest --benchmark-only tests/sort/ -k "_lg"
 ```
 
 (optional) You can verify typechecking with `mypy` using the following:

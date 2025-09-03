@@ -1,10 +1,12 @@
 import heapq
 
+import pytest
 from pytest_benchmark.fixture import BenchmarkFixture  # type: ignore
 
 from dsap.heap import MinHeap
 
 
+@pytest.mark.benchmark(group="heap")
 class TestBenchHeap:
     def test_builtin_heap(self, benchmark: BenchmarkFixture):
         def fn():
