@@ -4,7 +4,7 @@ from random import seed, shuffle
 import pytest
 from pytest_benchmark.fixture import BenchmarkFixture  # type: ignore
 
-from src.dsap.sort import (
+from dsap.sort import (
     SortAlgorithm,
     bubble_sort,
     heap_sort,

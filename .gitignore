@@ -54,6 +54,7 @@ coverage.xml
 .pytest_cache/
 cover/
 .testmondata*
+.benchmarks/
 
 # Translations
 *.mo
