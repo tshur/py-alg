@@ -33,7 +33,7 @@ jobs:
           uv run ruff check --output-format=github .
       - name: Type checking with mypy
         run: |
-          uv run mypy src/ examples/ --no-namespace-packages
+          uv run mypy src/ examples/ tests/ --no-namespace-packages
       - name: Test with pytest
         run: |
           uv run pytest --doctest-modules --benchmark-skip
