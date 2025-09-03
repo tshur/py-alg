@@ -2,7 +2,7 @@ import heapq
 
 from pytest_benchmark.fixture import BenchmarkFixture  # type: ignore
 
-from src.dsap.heap import MinHeap
+from dsap.heap import MinHeap
 
 
 class TestBenchHeap:

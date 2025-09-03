@@ -2,7 +2,7 @@ from collections import deque
 
 from pytest_benchmark.fixture import BenchmarkFixture  # type: ignore
 
-from src.dsap.queue import Deque
+from dsap.queue import Deque
 
 
 class TestBenchHeap:
