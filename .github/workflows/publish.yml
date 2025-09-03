@@ -29,8 +29,7 @@ jobs:
         run: uv sync --locked --all-extras --dev
 
       - name: Build release distributions
-        run: |
-          uv build
+        run: uv build
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4
@@ -46,7 +45,7 @@ jobs:
       id-token: write
 
     environment:
-      name: release
+      name: pypi
       url: https://pypi.org/p/dsap
 
     steps:
