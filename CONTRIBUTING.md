@@ -14,7 +14,7 @@ merge a PR to the project!
 
 Clone the repository, pull the latest changes, and follow these instructions to
 install the development environment. Commands are given with the `uv` tool
-[docs](https://docs.astral.sh/uv/).
+([docs](https://docs.astral.sh/uv/)).
 
 You should get all the recommended VSCode extensions and workspace settings
 (like auto-format), see `.vscode/extensions.json`.
@@ -35,13 +35,13 @@ uv sync --all-extras
 Verifying tests are passing:
 
 ```bash
-uv run pytest --doctest-modules --benchmark-skip
+uv run task test
 ```
 
 And all lines of code are covered by tests.
 
 ```bash
-uv run pytest --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
+uv run task test_coverage
 ```
 
 As a last check, you can verify the package is installed in the python
@@ -87,7 +87,7 @@ Make sure tests are passing, and strive for 100% test coverage! You can "watch"
 modified files and run tests automatically with the following command:
 
 ```bash
-uv run ptw . --clear --doctest-modules --benchmark-skip --testmon
+uv run task test_watch
 ```
 
 Possible steps to create your commit:
@@ -162,13 +162,13 @@ code is exercised by at least one test). The following commands will be useful:
 
 ```bash
 # Run tests on affected files in "watch" mode.
-uv run ptw . --clear --doctest-modules --benchmark-skip --testmon
+uv run task test_watch
 
 # Run all tests (except long-running benchmarks).
-uv run pytest --doctest-modules --benchmark-skip
+uv run task test
 
 # Generate coverage report.
-uv run pytest --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml
+uv run task test_coverage
 ```
 
 You can also run benchmark tests for some functions which compare performance
@@ -177,17 +177,17 @@ implemented in C or hyper-optimized, but we want to measure the performance
 differences! Try the following:
 
 ```bash
-# Run benchmark tests only (expedite by limiting max time per test).
-uv run pytest --benchmark-only --benchmark-max-time=0.1
+# Standard benchmark run.
+uv run task test_bench
 
-# Run specific benchmark group with default 1.0s max time.
-uv run pytest --benchmark-only tests/sort/ -k "_lg"
+# Only benchmark a specific group of tests.
+uv run task test_bench_full tests/sort/ -k "_lg"
 ```
 
 (optional) You can verify typechecking with `mypy` using the following:
 
 ```bash
-uv run mypy src/ examples/ tests/ --no-namespace-packages
+uv run task lint_mypy
 ```
 
 ## AI Usage
@@ -241,8 +241,7 @@ To deploy the package to Test PyPi, follow
 Make sure to update the version number. Then run the commands:
 
 ```bash
-uv build
-uv publish --index testpypi --token pypi-...
+uv run task publish_test --token pypi-...
 ```
 
 To install the package locally from TestPyPi, you can do the following:
@@ -258,8 +257,7 @@ To deploy the package to PyPi, follow
 make sure to update the version number, and then run the commands:
 
 ```bash
-uv build
-uv publish
+uv run task publish
 ```
 
 To install the package locally from PyPi, you can do the following:
