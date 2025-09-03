@@ -26,7 +26,22 @@ dev = [
     "pytest-testmon",
     "pytest-watcher",
     "ruff",
+    "taskipy",
 ]
+
+[[tool.taskipy.tasks]]
+lint = "task lint_ruff && task lint_mypy"
+lint_mypy = "uv run mypy src/ examples/ tests/ --no-namespace-packages"
+lint_ruff = "uv run ruff check --output-format=github ."
+test = "uv run pytest --doctest-modules --benchmark-skip"
+test_bench = "uv run pytest --benchmark-only --benchmark-max-time=0.1"
+test_bench_fast = "uv run pytest --benchmark-only --benchmark-max-time=0.0 --benchmark-min-rounds=1 --benchmark-warmup=off"
+test_bench_full = "uv run pytest --benchmark-only"
+test_coverage = "uv run pytest --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml"
+test_watch = "uv run ptw . --clear --doctest-modules --benchmark-skip --testmon"
+publish = "uv build && uv publish"
+publish_test = "uv build && uv publish --index testpypi"
+
 
 [[tool.uv.index]]
 name = "testpypi"
