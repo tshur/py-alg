@@ -36,6 +36,7 @@ class TestBenchSort:
     def setup_method(self):
         seed(42)  # So that all benchmarks shuffle the same ways.
 
+    @pytest.mark.benchmark(group="sort_sm")
     def test_sort_sm(self, benchmark: BenchmarkFixture, sort_algorithm: SortAlgorithm):
         def fn():
             assert list(sort_algorithm(repeat(0, 10))) == list(repeat(0, 10))
@@ -46,6 +47,7 @@ class TestBenchSort:
 
         benchmark(fn)
 
+    @pytest.mark.benchmark(group="sort_lg")
     def test_sort_lg(self, benchmark: BenchmarkFixture, sort_algorithm: SortAlgorithm):
         def fn():
             assert list(sort_algorithm(repeat(0, 800))) == list(repeat(0, 800))
