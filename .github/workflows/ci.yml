@@ -38,5 +38,5 @@ jobs:
         run: uv run pytest --doctest-modules --benchmark-skip
 
       - name: Test benchmarks
-        run:
-        | uv run pytest --benchmark-only --benchmark-quiet --benchmark-max-time=0.0 --benchmark-min-rounds=1 --benchmark-warmup=off
+        run: |
+          uv run pytest --benchmark-only --benchmark-quiet --benchmark-max-time=0.0 --benchmark-min-rounds=1 --benchmark-warmup=off
