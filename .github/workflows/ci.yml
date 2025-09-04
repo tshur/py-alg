@@ -29,14 +29,13 @@ jobs:
         run: uv sync --locked --all-extras --dev
 
       - name: Lint with ruff
-        run: uv run ruff check --output-format=github .
+        run: uv run task lint_ruff
 
       - name: Type checking with mypy
-        run: uv run mypy src/ examples/ tests/ --no-namespace-packages
+        run: uv run task lint_mypy
 
       - name: Test with pytest
-        run: uv run pytest --doctest-modules --benchmark-skip
+        run: uv run task test
 
-      - name: Test benchmarks
-        run: |
-          uv run pytest --benchmark-only --benchmark-quiet --benchmark-max-time=0.0 --benchmark-min-rounds=1 --benchmark-warmup=off
+      - name: Test benchmarks (fast)
+        run: uv run task test_bench_fast
