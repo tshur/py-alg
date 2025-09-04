@@ -32,8 +32,7 @@ jobs:
         run: uv sync --locked --all-extras --dev
 
       - name: Build coverage file
-        run: |
-          uv run pytest --benchmark-skip --cov=src --cov=examples --cov-report=term-missing:skip-covered --cov-report xml:coverage.xml --junitxml=pytest.xml
+        run: uv run task test_coverage --junitxml=pytest.xml
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
