@@ -1,4 +1,4 @@
-from dsap.trie import Trie
+from dsap.tree import Trie
 
 
 class TestTrie:
@@ -7,4 +7,3 @@ class TestTrie:
 
         assert trie.search("hello") is False
         assert trie.starts_with("hello") is False
-
