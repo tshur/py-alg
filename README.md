@@ -1,5 +1,12 @@
 # dsap: Data Structures & Algorithms & Practice
 
+[![pypi](https://img.shields.io/pypi/v/dsap?style=flat-square)](https://pypi.org/project/dsap/)
+[![pypi-downloads](https://img.shields.io/pypi/dm/dsap?style=flat-square)](https://pypi.org/project/dsap/)
+[![ci](https://github.com/tshur/py-alg/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tshur/py-alg/actions/workflows/ci.yml)
+
+<!-- Pytest Coverage Comment:Begin -->
+<!-- Pytest Coverage Comment:End -->
+
 Python data structures & algorithms repository (for learning).
 
 _For developers or contributors, please see CONTRIBUTING.md._
