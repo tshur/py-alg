@@ -1,3 +1,5 @@
-from .binary_search_tree import BinarySearchTree
 
-__all__ = ["BinarySearchTree"]
+from .binary_search_tree import BinarySearchTree
+from .trie import Trie
+
+__all__ = ["BinarySearchTree", "Trie"]
