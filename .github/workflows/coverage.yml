@@ -39,3 +39,12 @@ jobs:
           pytest-xml-coverage-path: ./coverage.xml
           junitxml-path: ./pytest.xml
           xml-skip-covered: true
+
+      - name: Update README
+        run: |
+          sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n[![coverage](https://img.shields.io/badge/Coverage-${{ steps.coverageComment.outputs.coverage }}25-${{ steps.coverageComment.outputs.color }}.svg)](https://github.com/tshur/py-alg/actions/workflows/coverage.yml)\n<!-- Pytest Coverage Comment:End -->' ./README.md
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[bot] Update README coverage badge."
+          file_pattern: README.md
