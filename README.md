@@ -4,6 +4,7 @@
 [![pypi-downloads](https://img.shields.io/pypi/dm/dsap?style=flat-square)](https://pypi.org/project/dsap/)
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![ci](https://github.com/tshur/py-alg/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tshur/py-alg/actions/workflows/ci.yml)<!-- Pytest Coverage Comment:Begin -->
+[![coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)](https://github.com/tshur/py-alg/actions/workflows/coverage.yml)
 
 <!-- Pytest Coverage Comment:End -->
 
