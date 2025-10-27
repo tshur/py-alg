@@ -22,7 +22,7 @@ You should get all the recommended VSCode extensions and workspace settings
 Cloning the repo:
 
 ```bash
-git clone git@github.com:tshur/py-alg.git
+git clone https://github.com/tshur/py-alg.git
 cd py-alg
 ```
 
