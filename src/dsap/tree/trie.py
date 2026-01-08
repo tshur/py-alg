@@ -202,5 +202,4 @@ class Trie:
                 extension = "    " if is_last else "|   "
                 _print(child, prefix + extension)
 
-        print("Trie")
         _print(self.trie, "")
