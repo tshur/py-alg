@@ -46,10 +46,13 @@ class Trie:
         >>> trie.starts_with("app")
         True
     """
+    trie: TrieNode
+    _size: int
 
     def __init__(self):
         """Initialize an empty Trie with a root node."""
-        self.trie: TrieNode = TrieNode("")
+        self.trie = TrieNode("")
+        self._size = 0
 
     def insert(self, word: str) -> None:
         """Insert a word into the trie.
@@ -81,6 +84,7 @@ class Trie:
         for char in word:
             if char not in current_node.children:
                 current_node.children[char] = TrieNode(char)
+                self._size += 1
             
             current_node = current_node.children[char]
         current_node.children["*"] = TrieNode("*")
@@ -153,6 +157,10 @@ class Trie:
                 return False
             current_node = current_node.children[char]
         return True
+
+    def __len__(self) -> int:
+        """Output the number of character nodes in the trie"""
+        return self._size
 
     def print(self) -> None:
         """Print a visual representation of the trie structure.
