@@ -90,10 +90,36 @@ class TestTrie:
         """Test that starts_with for an empty string returns True."""
         trie = Trie()
         assert trie.starts_with("") is True
+
+    def test_len(self) -> None:
+        """Test that the length of the trie is correct."""
+        trie = Trie()
+        trie.insert("app")
+        assert trie.search("app") is True
+        # insert app and search app
+        trie.insert("apple")
+        assert trie.search("apple") is True
+        # insert banana and search banana
+        trie.insert("banana")
+        assert trie.search("banana") is True
+        # insert bandana and search bandana
+        trie.insert("bandana")
+        assert trie.search("bandana") is True
+        assert len(trie) == 15
+
+        trie = Trie()
+        trie.insert("karma")
+        trie.insert("karnataka")
+        assert len(trie) == 11
+        
     def test_insert_same_word_multiple_times(self) -> None:
         """Test that inserting the same word multiple times doesn't raise an error."""
         trie = Trie()
         trie.insert("apple")
         trie.insert("apple")
+        trie.insert("apple")
         assert trie.search("apple") is True
-        # assert len(trie) == 1
+        assert len(trie) == 5
+
+
+
