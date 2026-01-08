@@ -73,8 +73,11 @@ class Trie:
             >>> trie.starts_with("hel")
             True
         """
+        if not word:
+            raise ValueError("word cannot be empty")
+        
         current_node = self.trie
-
+        
         for char in word:
             if char not in current_node.children:
                 current_node.children[char] = TrieNode(char)
