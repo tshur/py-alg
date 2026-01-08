@@ -193,18 +193,3 @@ class Trie:
 
         print("Trie")
         _print(self.trie, "")
-
-
-def main():
-    trie = Trie()
-    trie.insert("apple")
-    print(trie.search("apple"))
-    trie.insert("app")
-    print(trie.search("app"))
-    trie.insert("banana")
-    trie.insert("bandana")
-    trie.print()
-
-
-if __name__ == "__main__":
-    main()
