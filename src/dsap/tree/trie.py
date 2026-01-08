@@ -13,7 +13,7 @@ class TrieNode:
 
     val: str
     children: dict[str, "TrieNode"]
-    
+
     def __init__(self, letter: str):
         """Initialize a TrieNode with the given character.
 
@@ -75,12 +75,12 @@ class Trie:
         """
         current_node = self.trie
 
-        for i, char in enumerate(word):
+        for char in word:
             if char not in current_node.children:
                 current_node.children[char] = TrieNode(char)
-                if i == len(word) - 1:
-                    current_node.children[char].children["*"] = TrieNode("*")
+            
             current_node = current_node.children[char]
+        current_node.children["*"] = TrieNode("*")
 
     def search(self, word: str) -> bool:
         """Search for a complete word in the trie.
