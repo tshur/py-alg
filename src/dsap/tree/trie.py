@@ -178,7 +178,6 @@ class Trie:
                             `-- e
                                 `-- *
         """
-        import builtins
 
         def _print(node: TrieNode, prefix: str) -> None:
             children: list[TrieNode] = sorted(
@@ -188,11 +187,11 @@ class Trie:
             for idx, child in enumerate(children):
                 is_last = idx == num_children - 1
                 branch = "`-- " if is_last else "|-- "
-                builtins.print(prefix + branch + child.val)
+                print(prefix + branch + child.val)
                 extension = "    " if is_last else "|   "
                 _print(child, prefix + extension)
 
-        builtins.print("Trie")
+        print("Trie")
         _print(self.trie, "")
 
 
