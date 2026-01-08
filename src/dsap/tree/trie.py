@@ -11,6 +11,9 @@ class TrieNode:
         children (dict[str, TrieNode]): Mapping from characters to child nodes.
     """
 
+    val: str
+    children: dict[str, "TrieNode"]
+    
     def __init__(self, letter: str):
         """Initialize a TrieNode with the given character.
 
