@@ -7,8 +7,8 @@ class TestTrie:
         trie = Trie()
 
         assert len(trie) == 0
-        assert trie.trie.val == ""
-        assert trie.trie.children == {}
+        assert trie._trie.val == ""
+        assert trie._trie.children == {}
         assert trie.search("dharma") is False
         assert trie.starts_with("dharma") is False
 
