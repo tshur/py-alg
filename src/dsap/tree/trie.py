@@ -46,12 +46,12 @@ class Trie:
         >>> trie.starts_with("app")
         True
     """
-    trie: TrieNode
+    _trie: TrieNode
     _size: int
 
     def __init__(self):
         """Initialize an empty Trie with a root node."""
-        self.trie = TrieNode("")
+        self._trie = TrieNode("")
         self._size = 0
 
     def insert(self, word: str) -> None:
@@ -79,7 +79,7 @@ class Trie:
         if not word:
             raise ValueError("word cannot be empty")
         
-        current_node = self.trie
+        current_node = self._trie
         
         for char in word:
             if char not in current_node.children:
@@ -116,7 +116,7 @@ class Trie:
             >>> trie.search("application")
             False
         """
-        current_node = self.trie
+        current_node = self._trie
         for char in word:
             if char not in current_node.children:
                 return False
@@ -151,7 +151,7 @@ class Trie:
             >>> trie.starts_with("apple")
             True
         """
-        current_node = self.trie
+        current_node = self._trie
         for char in prefix:
             if char not in current_node.children:
                 return False
@@ -180,7 +180,6 @@ class Trie:
             >>> trie.insert("app")
             >>> trie.insert("apple")
             >>> trie.print()
-            Trie
             `-- a
                 `-- p
                     `-- p
@@ -202,4 +201,4 @@ class Trie:
                 extension = "    " if is_last else "|   "
                 _print(child, prefix + extension)
 
-        _print(self.trie, "")
+        _print(self._trie, "")
