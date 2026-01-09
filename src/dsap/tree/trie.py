@@ -162,24 +162,25 @@ class Trie:
         """Output the number of character nodes in the trie"""
         return self._size
 
-    def print(self) -> None:
-        """Print a visual representation of the trie structure.
+    def __str__(self) -> str:
+        """Return a visual representation of the trie structure.
 
         Displays the trie as a tree with branches showing the hierarchical
         relationship between characters. Uses "|--" and "`--" to indicate
         branches and last children respectively.
 
-        Function written by claude 3.5 sonnet
-
         Complexity:
             Time: O(n), where n is the total number of nodes in the trie.
             Space: O(h), where h is the height of the trie (recursion depth).
+
+        Returns:
+            str: A string representation of the trie.
 
         Examples:
             >>> trie = Trie()
             >>> trie.insert("app")
             >>> trie.insert("apple")
-            >>> trie.print()
+            >>> print(trie)
             `-- a
                 `-- p
                     `-- p
@@ -188,8 +189,9 @@ class Trie:
                             `-- e
                                 `-- *
         """
+        lines: list[str] = []
 
-        def _print(node: TrieNode, prefix: str) -> None:
+        def _build_str(node: TrieNode, prefix: str) -> None:
             children: list[TrieNode] = sorted(
                 node.children.values(), key=lambda n: n.val
             )
@@ -197,8 +199,9 @@ class Trie:
             for idx, child in enumerate(children):
                 is_last = idx == num_children - 1
                 branch = "`-- " if is_last else "|-- "
-                print(prefix + branch + child.val)
+                lines.append(prefix + branch + child.val)
                 extension = "    " if is_last else "|   "
-                _print(child, prefix + extension)
+                _build_str(child, prefix + extension)
 
-        _print(self._trie, "")
+        _build_str(self._trie, "")
+        return "\n".join(lines) + ("\n" if lines else "")
