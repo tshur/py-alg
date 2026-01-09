@@ -204,4 +204,4 @@ class Trie:
                 _build_str(child, prefix + extension)
 
         _build_str(self._trie, "")
-        return "\n".join(lines) + ("\n" if lines else "")
+        return "\n".join(lines)
