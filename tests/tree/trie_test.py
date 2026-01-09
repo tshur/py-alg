@@ -114,7 +114,7 @@ class TestTrie:
             "                `-- u\n"
             "                    `-- r\n"
             "                        `-- u\n"
-            "                            `-- *\n"
+            "                            `-- *"
         )
         assert str(trie) == expected
 
