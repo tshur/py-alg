@@ -3,7 +3,7 @@ from dsap.tree import Trie
 
 
 class TestTrie:
-    def test_init(self, capsys: pytest.CaptureFixture[str]) -> None:
+    def test_init(self) -> None:
         trie = Trie()
 
         assert len(trie) == 0
@@ -12,9 +12,7 @@ class TestTrie:
         assert trie.search("dharma") is False
         assert trie.starts_with("dharma") is False
 
-        trie.print()
-        captured = capsys.readouterr()
-        assert captured.out == ""
+        assert str(trie) == ""
 
     def test_insert(self) -> None:
         """Test the insert function of the trie with creative Sanskrit words."""
@@ -92,14 +90,12 @@ class TestTrie:
         # Starts with empty string should be True
         assert trie.starts_with("") is True
 
-    def test_print(self, capsys: pytest.CaptureFixture[str]) -> None:
-        """Test the print function of the trie."""
+    def test_str(self) -> None:
+        """Test the __str__ function of the trie."""
         trie = Trie()
         trie.insert("satguru")
         trie.insert("guru")
         trie.insert("gurudeva")
-        trie.print()
-        captured = capsys.readouterr()
         expected = (
             "|-- g\n"
             "|   `-- u\n"
@@ -120,7 +116,7 @@ class TestTrie:
             "                        `-- u\n"
             "                            `-- *\n"
         )
-        assert captured.out == expected
+        assert str(trie) == expected
 
 
 
